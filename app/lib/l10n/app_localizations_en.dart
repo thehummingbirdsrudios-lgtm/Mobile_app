@@ -1063,4 +1063,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vaatRemove => 'Remove note';
+
+  @override
+  String get billColPhoto => 'Photo';
+
+  @override
+  String get billContinued => 'continued';
+
+  @override
+  String billPdfPreparing(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count photos', one: '1 photo');
+    return 'Preparing PDF with $_temp0…';
+  }
 }

@@ -399,7 +399,15 @@ void main() {
         'amount_paise',
         'weight_mg',
         'thumb_path',
+        'image',
       });
+      for (final item in items) {
+        final image = item['image'] as Map<String, dynamic>?;
+        if (image == null) continue;
+        // Storage keys and dimensions only: never the original, never a URL.
+        expect(image.keys.toSet(), {'source_path', 'thumb_path', 'width', 'height', 'sha256'});
+        expect(image['source_path'] as String, isNot(contains('original')));
+      }
       await expectLater(
         () => staffMin.query('select public.bill_payload(@b::uuid)', {'b': billId}),
         throwsDbError('bill_not_found'),

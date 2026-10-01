@@ -1994,6 +1994,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove note'**
   String get vaatRemove;
+
+  /// Bill PDF column
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get billColPhoto;
+
+  /// Header on later bill pages
+  ///
+  /// In en, this message translates to:
+  /// **'continued'**
+  String get billContinued;
+
+  /// Progress while building the bill PDF
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing PDF with {count, plural, =1{1 photo} other{{count} photos}}…'**
+  String billPdfPreparing(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

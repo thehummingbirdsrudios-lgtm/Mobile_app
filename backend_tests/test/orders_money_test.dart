@@ -436,6 +436,23 @@ void main() {
       expect(payload['balance_after_paise'], await balance(a.rajesh));
     });
 
+    test('bill lines carry the ordered photo as a storage key, never bytes or URLs', () async {
+      final order = await createOrder(owner, a.rajesh, orderItems([(a.kundan, 2), (a.jhumka, 1)]));
+      final bill = await owner.json('select public.issue_bill(@o::uuid)', {'o': order['order_id']});
+      final payload = await owner.json('select public.bill_payload(@b::uuid)', {'b': bill['bill_id']});
+      final items = (payload['items'] as List).cast<Map<String, dynamic>>();
+      final kundan = items.firstWhere((i) => i['design_no'] == '1024');
+      final jhumka = items.firstWhere((i) => i['design_no'] == '1025');
+      final image = kundan['image'] as Map<String, dynamic>;
+      expect(image['source_path'], '${a.tenantId}/products/1024/catalogue.jpg');
+      expect(image['thumb_path'], '${a.tenantId}/products/1024/thumb.jpg');
+      expect(image['width'], 3000);
+      expect(image['sha256'], 'a' * 64);
+      expect(jhumka['image'], isNull); // design without a photo
+      expect(payload.toString(), isNot(contains('http')));
+      expect(payload.toString(), isNot(contains('original.jpg'))); // never the multi-MB original
+    });
+
     test('cancelled orders cannot be billed', () async {
       final order = await createOrder(owner, a.rajesh, orderItems([(a.jhumka, 1)]));
       await owner.query('select public.cancel_order(@o::uuid)', {'o': order['order_id']});

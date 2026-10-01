@@ -1520,5 +1520,22 @@
   "vaatRemove": "Remove note",
   "@vaatRemove": {
     "description": "Archive remark"
+  },
+  "billColPhoto": "Photo",
+  "@billColPhoto": {
+    "description": "Bill PDF column"
+  },
+  "billContinued": "continued",
+  "@billContinued": {
+    "description": "Header on later bill pages"
+  },
+  "billPdfPreparing": "Preparing PDF with {count, plural, =1{1 photo} other{{count} photos}}…",
+  "@billPdfPreparing": {
+    "description": "Progress while building the bill PDF",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

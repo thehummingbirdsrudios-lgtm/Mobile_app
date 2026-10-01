@@ -47,6 +47,7 @@ class BillItem {
     required this.amount,
     this.weightMg,
     this.thumbPath,
+    this.imagePath,
   });
 
   final String designNo;
@@ -55,7 +56,13 @@ class BillItem {
   final Money rate;
   final Money amount;
   final int? weightMg;
+
+  /// 256px thumbnail key (on-screen bill).
   final String? thumbPath;
+
+  /// Best stored source for the PDF photo (the 800px derivative of the photo
+  /// as ordered), a key in the private product-media bucket. Never a URL.
+  final String? imagePath;
 }
 
 /// Everything printed on a bill, from `bill_payload` (share-safe fields

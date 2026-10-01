@@ -1059,4 +1059,15 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get vaatRemove => 'નોંધ કાઢો';
+
+  @override
+  String get billColPhoto => 'ફોટો';
+
+  @override
+  String get billContinued => 'ચાલુ';
+
+  @override
+  String billPdfPreparing(int count) {
+    return '$count ફોટા સાથે PDF તૈયાર થાય છે…';
+  }
 }

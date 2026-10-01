@@ -316,5 +316,8 @@
   "vaatYou": "તમે",
   "vaatPlay": "વગાડો",
   "vaatStop": "બંધ કરો",
-  "vaatRemove": "નોંધ કાઢો"
+  "vaatRemove": "નોંધ કાઢો",
+  "billColPhoto": "ફોટો",
+  "billContinued": "ચાલુ",
+  "billPdfPreparing": "{count} ફોટા સાથે PDF તૈયાર થાય છે…"
 }

@@ -70,6 +70,12 @@ BillDocument billDocumentFromJson(Map<String, dynamic> j) {
             amount: Money.paise(i.requireInt('amount_paise')),
             weightMg: i.optionalInt('weight_mg'),
             thumbPath: i.optionalString('thumb_path'),
+            imagePath:
+                switch (i['image']) {
+                  final Map<String, dynamic> image => image.optionalString('source_path'),
+                  _ => null,
+                } ??
+                i.optionalString('thumb_path'),
           ),
     ],
   );
