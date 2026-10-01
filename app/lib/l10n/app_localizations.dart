@@ -908,6 +908,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Order #{orderNo}'**
   String orderNumberTitle(String orderNo);
+
+  /// Navo Maal screen subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Added in the last 7 days'**
+  String get navoMaalSubtitle;
+
+  /// Navo Maal empty state
+  ///
+  /// In en, this message translates to:
+  /// **'No new designs in the last 7 days.'**
+  String get navoMaalEmpty;
+
+  /// Starts multi-select for sharing
+  ///
+  /// In en, this message translates to:
+  /// **'Select to share'**
+  String get selectToShare;
+
+  /// Share the selected designs
+  ///
+  /// In en, this message translates to:
+  /// **'Share {count}'**
+  String shareSelected(int count);
+
+  /// Shown when selecting too many designs
+  ///
+  /// In en, this message translates to:
+  /// **'You can share up to {max} designs at once.'**
+  String selectionLimit(int max);
+
+  /// Number of selected designs
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String selectionCount(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

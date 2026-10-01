@@ -580,5 +580,44 @@
         "type": "String"
       }
     }
+  },
+  "navoMaalSubtitle": "Added in the last 7 days",
+  "@navoMaalSubtitle": {
+    "description": "Navo Maal screen subtitle"
+  },
+  "navoMaalEmpty": "No new designs in the last 7 days.",
+  "@navoMaalEmpty": {
+    "description": "Navo Maal empty state"
+  },
+  "selectToShare": "Select to share",
+  "@selectToShare": {
+    "description": "Starts multi-select for sharing"
+  },
+  "shareSelected": "Share {count}",
+  "@shareSelected": {
+    "description": "Share the selected designs",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "selectionLimit": "You can share up to {max} designs at once.",
+  "@selectionLimit": {
+    "description": "Shown when selecting too many designs",
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "selectionCount": "{count} selected",
+  "@selectionCount": {
+    "description": "Number of selected designs",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

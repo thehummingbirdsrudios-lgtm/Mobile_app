@@ -97,9 +97,13 @@ typedef CatalogueCursor = ({DateTime publishedAt, String id});
 class CatalogueFilter {
   const CatalogueFilter({this.categoryId, this.newSince});
 
-  /// Navo Maal: designs published in the last [days] days.
-  factory CatalogueFilter.navoMaal(DateTime now, {int days = 7}) =>
-      CatalogueFilter(newSince: DateTime.utc(now.year, now.month, now.day).subtract(Duration(days: days)));
+  /// Navo Maal: designs published in the last [days] days — the same window
+  /// as the dashboard's "new maal" count. Truncated to the minute so one
+  /// screen keeps one stable filter.
+  factory CatalogueFilter.navoMaal(DateTime now, {int days = 7}) {
+    final u = now.toUtc().subtract(Duration(days: days));
+    return CatalogueFilter(newSince: DateTime.utc(u.year, u.month, u.day, u.hour, u.minute));
+  }
 
   final String? categoryId;
   final DateTime? newSince;

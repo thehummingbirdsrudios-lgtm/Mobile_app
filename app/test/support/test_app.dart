@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:vepari/app/app.dart';
 import 'package:vepari/core/core.dart';
@@ -40,6 +41,7 @@ Future<ProviderContainer> pumpVepari(
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
   bool settle = true,
+  List<Override> extraOverrides = const [],
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -59,6 +61,7 @@ Future<ProviderContainer> pumpVepari(
       preferenceStoreProvider.overrideWithValue(prefs),
       authRepositoryProvider.overrideWithValue(auth),
       dashboardRepositoryProvider.overrideWithValue(dashboard ?? FakeDashboardRepository(summary: sampleSummary)),
+      ...extraOverrides,
     ],
   );
   addTearDown(container.dispose);

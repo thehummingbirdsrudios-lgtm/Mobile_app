@@ -135,5 +135,11 @@
   "searchSectionDesigns": "डिज़ाइन",
   "searchSectionCustomers": "ग्राहक",
   "searchSectionOrders": "ऑर्डर",
-  "orderNumberTitle": "ऑर्डर #{orderNo}"
+  "orderNumberTitle": "ऑर्डर #{orderNo}",
+  "navoMaalSubtitle": "पिछले 7 दिनों में आया",
+  "navoMaalEmpty": "पिछले 7 दिनों में कोई नई डिज़ाइन नहीं।",
+  "selectToShare": "चुनकर भेजें",
+  "shareSelected": "{count} भेजें",
+  "selectionLimit": "एक साथ अधिकतम {max} डिज़ाइन भेज सकते हैं।",
+  "selectionCount": "{count} चुनी गईं"
 }

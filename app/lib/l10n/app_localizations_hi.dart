@@ -437,4 +437,28 @@ class AppLocalizationsHi extends AppLocalizations {
   String orderNumberTitle(String orderNo) {
     return 'ऑर्डर #$orderNo';
   }
+
+  @override
+  String get navoMaalSubtitle => 'पिछले 7 दिनों में आया';
+
+  @override
+  String get navoMaalEmpty => 'पिछले 7 दिनों में कोई नई डिज़ाइन नहीं।';
+
+  @override
+  String get selectToShare => 'चुनकर भेजें';
+
+  @override
+  String shareSelected(int count) {
+    return '$count भेजें';
+  }
+
+  @override
+  String selectionLimit(int max) {
+    return 'एक साथ अधिकतम $max डिज़ाइन भेज सकते हैं।';
+  }
+
+  @override
+  String selectionCount(int count) {
+    return '$count चुनी गईं';
+  }
 }

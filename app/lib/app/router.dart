@@ -104,6 +104,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.splash, builder: (_, _) => const SplashScreen()),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.search, builder: (_, _) => const SearchScreen()),
+      GoRoute(path: AppRoutes.navoMaal, builder: (_, _) => const NavoMaalScreen()),
       GoRoute(path: AppRoutes.newProduct, builder: (_, _) => const ProductEditScreen()),
       GoRoute(
         path: '/product/:id',

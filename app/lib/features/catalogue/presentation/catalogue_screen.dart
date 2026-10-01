@@ -6,6 +6,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../auth/auth.dart';
 import '../application/catalogue_providers.dart';
 import '../domain/catalogue.dart';
+import 'product_detail_screen.dart';
 import 'product_tile.dart';
 
 /// Maal: photo-first grid. Category chips + Navo Maal shortcut; search lives
@@ -31,6 +32,7 @@ class _CatalogueScreenState extends ConsumerState<CatalogueScreen> {
     final feed = ref.watch(catalogueFeedProvider(_filter));
     final notifier = ref.read(catalogueFeedProvider(_filter).notifier);
     final categories = ref.watch(categoriesProvider).value ?? const <Category>[];
+    final onAdd = ref.watch(productActionsProvider).onAdd;
 
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +89,11 @@ class _CatalogueScreenState extends ConsumerState<CatalogueScreen> {
               gridDelegate: catalogueGridDelegate,
               onLoadMore: notifier.loadMore,
               onRetry: notifier.retry,
-              itemBuilder: (context, p) => ProductTile(product: p, onTap: () => nav.openProduct(p.id)),
+              itemBuilder: (context, p) => ProductTile(
+                product: p,
+                onTap: () => nav.openProduct(p.id),
+                onAdd: onAdd == null ? null : () => onAdd(p),
+              ),
               skeleton: const CatalogueSkeleton(),
               empty: EmptyState(
                 icon: Icons.diamond_outlined,

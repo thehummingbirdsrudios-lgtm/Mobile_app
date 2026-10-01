@@ -11,10 +11,17 @@ import 'product_tile.dart';
 /// Optional actions supplied by other modules (order, share, vaat) so this
 /// module does not depend on them.
 class ProductActions {
-  const ProductActions({this.onOrder, this.onShare, this.vaatBuilder});
+  const ProductActions({this.onOrder, this.onAdd, this.onShare, this.onShareMany, this.vaatBuilder});
 
+  /// Detail screen "Order Karo".
   final void Function(ProductDetail product)? onOrder;
-  final void Function(ProductDetail product)? onShare;
+
+  /// Grid "+" (add one piece to the cart). Null hides the button.
+  final void Function(ProductSummary product)? onAdd;
+  final Future<void> Function(ProductDetail product)? onShare;
+
+  /// Navo Maal multi-select share. Null hides selection mode.
+  final Future<void> Function(List<ProductSummary> products)? onShareMany;
   final Widget Function(ProductDetail product)? vaatBuilder;
 }
 

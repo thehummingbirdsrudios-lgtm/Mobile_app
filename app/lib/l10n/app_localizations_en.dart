@@ -437,4 +437,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String orderNumberTitle(String orderNo) {
     return 'Order #$orderNo';
   }
+
+  @override
+  String get navoMaalSubtitle => 'Added in the last 7 days';
+
+  @override
+  String get navoMaalEmpty => 'No new designs in the last 7 days.';
+
+  @override
+  String get selectToShare => 'Select to share';
+
+  @override
+  String shareSelected(int count) {
+    return 'Share $count';
+  }
+
+  @override
+  String selectionLimit(int max) {
+    return 'You can share up to $max designs at once.';
+  }
+
+  @override
+  String selectionCount(int count) {
+    return '$count selected';
+  }
 }
