@@ -8,7 +8,8 @@ class SharedPreferencesStore implements PreferenceStore {
 
   static Future<SharedPreferencesStore> create() async => SharedPreferencesStore(
     await SharedPreferencesWithCache.create(
-      cacheOptions: const SharedPreferencesWithCacheOptions(allowList: {'locale'}),
+      // Device preferences only (language, recent searches, order drafts).
+      cacheOptions: const SharedPreferencesWithCacheOptions(),
     ),
   );
 

@@ -20,6 +20,17 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.5.5
   meta: ^1.19.0
+  image_picker: ^1.2.3
+  image: ^4.10.1
+  crypto: ^3.0.7
+  cached_network_image: ^4.0.4
+  share_plus: ^13.3.0
+  url_launcher: ^6.3.2
+  pdf: ^3.13.1
+  path_provider: ^2.1.6
+  record: ^7.1.1
+  just_audio: ^0.10.6
+  permission_handler: ^13.0.2
 
 dev_dependencies:
   flutter_test:
