@@ -28,3 +28,6 @@ supabase/.branches/
 # OS
 .DS_Store
 Thumbs.db
+
+# Visual review renders (not committed; platform-dependent)
+app/test/visual/goldens/

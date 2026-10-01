@@ -72,9 +72,16 @@ class FakeDashboardRepository implements DashboardRepository {
   AppFailure? error;
   int calls = 0;
 
+  /// When true, fetches wait until [release] (to observe loading states).
+  bool gate = false;
+  final _gate = Completer<void>();
+
+  void release() => _gate.complete();
+
   @override
   Future<DashboardSummary> fetchSummary() async {
     calls++;
+    if (gate) await _gate.future;
     if (error != null) throw error!;
     return summary!;
   }

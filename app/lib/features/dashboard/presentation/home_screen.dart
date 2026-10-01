@@ -27,67 +27,73 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: RefreshIndicator(
-          color: AppColors.ink,
-          onRefresh: () => ref.refresh(dashboardSummaryProvider.future),
-          child: CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, AppSpacing.xl, AppSpacing.gutter, 0),
-                sliver: SliverList.list(
-                  children: [
-                    Text(
-                      l10n.greeting(session?.displayName ?? ''),
-                      style: text.headlineSmall,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    if (session != null)
-                      Text(session.businessName, style: text.bodyMedium!.copyWith(color: AppColors.muted)),
-                    const SizedBox(height: AppSpacing.xl),
-                  ],
-                ),
-              ),
-              if (session?.can(Permission.reportsView) ?? false)
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
-                  sliver: SliverToBoxAdapter(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: AppSpacing.maxContentWidth),
+            child: RefreshIndicator(
+              color: AppColors.ink,
+              onRefresh: () => ref.refresh(dashboardSummaryProvider.future),
+              child: CustomScrollView(
+                slivers: [
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, AppSpacing.xl, AppSpacing.gutter, 0),
+                    sliver: SliverList.list(
                       children: [
-                        Text(l10n.homeTodayQuestion, style: text.titleLarge),
-                        const SizedBox(height: AppSpacing.sm),
-                        switch (summary) {
-                          AsyncData(:final value?) => _StatsGrid(summary: value, onNavigate: onNavigate),
-                          AsyncError(:final error) => SizedBox(
-                            height: 220,
-                            child: ErrorState(
-                              failure: AppFailure.from(error),
-                              onRetry: () => ref.refresh(dashboardSummaryProvider.future),
-                            ),
-                          ),
-                          _ => const _StatsSkeleton(),
-                        },
+                        Text(
+                          l10n.greeting(session?.displayName ?? ''),
+                          style: text.headlineSmall,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (session != null)
+                          Text(session.businessName, style: text.bodyMedium!.copyWith(color: AppColors.muted)),
                         const SizedBox(height: AppSpacing.xl),
                       ],
                     ),
                   ),
-                ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
-                sliver: SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(l10n.quickActions, style: text.titleLarge),
-                      const SizedBox(height: AppSpacing.sm),
-                      _QuickActions(onNavigate: onNavigate),
-                      const SizedBox(height: AppSpacing.xxl),
-                    ],
+                  if (session?.can(Permission.reportsView) ?? false)
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
+                      sliver: SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(l10n.homeTodayQuestion, style: text.titleLarge),
+                            const SizedBox(height: AppSpacing.sm),
+                            switch (summary) {
+                              AsyncData(:final value?) => _StatsGrid(summary: value, onNavigate: onNavigate),
+                              AsyncError(:final error) => SizedBox(
+                                height: 220,
+                                child: ErrorState(
+                                  failure: AppFailure.from(error),
+                                  onRetry: () => ref.refresh(dashboardSummaryProvider.future),
+                                ),
+                              ),
+                              _ => const _StatsSkeleton(),
+                            },
+                            const SizedBox(height: AppSpacing.xl),
+                          ],
+                        ),
+                      ),
+                    ),
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.gutter),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(l10n.quickActions, style: text.titleLarge),
+                          const SizedBox(height: AppSpacing.sm),
+                          _QuickActions(onNavigate: onNavigate),
+                          const SizedBox(height: AppSpacing.xxl),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

@@ -52,6 +52,10 @@ abstract final class AppSpacing {
 
   /// Standard horizontal page gutter on phones.
   static const gutter = md;
+
+  /// Max content widths on tablets/desktop so text and cards stay readable.
+  static const maxContentWidth = 840.0;
+  static const maxListWidth = 640.0;
 }
 
 abstract final class AppRadius {

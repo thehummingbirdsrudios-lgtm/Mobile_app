@@ -25,6 +25,7 @@ Future<ProviderContainer> pumpVepari(
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
+  bool settle = true,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -41,6 +42,11 @@ Future<ProviderContainer> pumpVepari(
   );
   addTearDown(container.dispose);
   await tester.pumpWidget(UncontrolledProviderScope(container: container, child: const VepariApp()));
-  await tester.pumpAndSettle();
+  if (settle) {
+    await tester.pumpAndSettle();
+  } else {
+    await tester.pump();
+    await tester.pump();
+  }
   return container;
 }
