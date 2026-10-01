@@ -1070,4 +1070,7 @@ class AppLocalizationsGu extends AppLocalizations {
   String billPdfPreparing(int count) {
     return '$count ફોટા સાથે PDF તૈયાર થાય છે…';
   }
+
+  @override
+  String get billColItem => 'વસ્તુ';
 }

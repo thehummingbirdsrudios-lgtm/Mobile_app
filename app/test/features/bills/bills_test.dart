@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image/image.dart' as img;
 import 'package:vepari/app/router.dart';
 import 'package:vepari/core/core.dart';
 import 'package:vepari/features/bills/bills.dart';
@@ -12,6 +9,7 @@ import 'package:vepari/features/orders/domain/orders.dart' show OrderBillRef;
 import 'package:vepari/features/orders/orders.dart';
 
 import '../../support/fakes.dart';
+import '../../support/pdf_inspector.dart';
 import '../../support/test_app.dart';
 
 Future<void> _go(WidgetTester tester, String location) async {
@@ -53,13 +51,6 @@ void main() {
     expect(b.business.gstin, '24ABCDE1234F1Z5');
     expect(b.business.watermark, isTrue);
     expect(b.items.single.amount, const Money.paise(744000));
-  });
-
-  test('an image becomes a one-page PDF sized to the image', () async {
-    final png = img.encodePng(img.Image(width: 100, height: 300));
-    final pdf = await renderImagePdf(ImagePdfInput(png: png, title: 'Bill #12'));
-    expect(ascii.decode(pdf.sublist(0, 5)), '%PDF-');
-    expect(latin1.decode(pdf), contains('/Count 1'));
   });
 
   testWidgets('owner makes a bill from the order and sees it', (tester) async {
@@ -122,7 +113,12 @@ void main() {
     await tester.pumpAndSettle();
     final pdf = sharer.shared.last.$1.single;
     expect(pdf.name, 'bill-12.pdf');
-    expect(ascii.decode(pdf.bytes.sublist(0, 5)), '%PDF-');
+    expect(pdf.mimeType, 'application/pdf');
+    final inside = PdfInspection(pdf.bytes);
+    expect(inside.isPdf, isTrue);
+    // The line's product photo is really inside the PDF.
+    expect(inside.images.values.where((i) => i.filter == 'DCTDecode'), hasLength(1));
+    expect(inside.imagesDrawn, isNotEmpty);
   });
 
   testWidgets('sharing unavailable is explained', (tester) async {

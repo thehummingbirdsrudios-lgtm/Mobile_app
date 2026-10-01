@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/core.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/bill_providers.dart';
+import '../application/pdf/bill_pdf_renderer.dart' show BillPdfLabels;
+import '../application/pdf/bill_pdf_service.dart';
 import '../domain/bills.dart';
 import 'bill_view.dart';
 
@@ -35,24 +37,76 @@ class _BillScreenState extends ConsumerState<BillScreen> {
     return (bytes: png, name: 'bill-${bill.billNo}');
   }
 
-  Future<void> _share(BillDocument bill, {required bool pdf}) async {
+  Future<void> _sharePhoto(BillDocument bill) async {
     final l10n = AppLocalizations.of(context);
     try {
       final photo = await _photo(bill);
-      final file = pdf
-          ? ShareFile(
-              bytes: await ref.read(pdfBuilderProvider)(
-                ImagePdfInput(png: photo.bytes, title: l10n.billNumber('${bill.billNo}')),
-              ),
-              name: '${photo.name}.pdf',
-              mimeType: 'application/pdf',
-            )
-          : ShareFile(bytes: photo.bytes, name: '${photo.name}.png', mimeType: 'image/png');
       final ok = await ref
           .read(fileSharerProvider)
-          .share(files: [file], text: l10n.billShareText('${bill.billNo}', bill.business.name));
+          .share(
+            files: [ShareFile(bytes: photo.bytes, name: '${photo.name}.png', mimeType: 'image/png')],
+            text: l10n.billShareText('${bill.billNo}', bill.business.name),
+          );
       if (!ok && mounted) AppFeedback.show(context, l10n.shareFailed, tone: FeedbackTone.error);
     } on Object {
+      if (mounted) AppFeedback.show(context, l10n.shareFailed, tone: FeedbackTone.error);
+    }
+  }
+
+  BillPdfLabels _labels(BillDocument bill) {
+    final l10n = AppLocalizations.of(context);
+    final locale = Localizations.localeOf(context).toLanguageTag();
+    return BillPdfLabels(
+      title: l10n.billTitle,
+      billNo: l10n.billNumber('${bill.billNo}'),
+      date: AppFormat.fullDate(bill.issuedAt, locale),
+      orderRef: l10n.billOrderRef('${bill.orderNo}'),
+      billTo: l10n.billTo,
+      colPhoto: l10n.billColPhoto,
+      colDesign: l10n.billColDesign,
+      colItem: l10n.billColItem,
+      colQty: l10n.billColQty,
+      colRate: l10n.billColRate,
+      colAmount: l10n.billColAmount,
+      totalQty: l10n.billColQty,
+      totalWeight: l10n.billWeight,
+      total: l10n.billTotal,
+      paid: l10n.billPaid,
+      bakiAfter: l10n.billBakiAfter,
+      advance: l10n.advanceLabel,
+      continued: l10n.billContinued,
+    );
+  }
+
+  /// The real bill PDF: every line with its product photo (fetched,
+  /// optimised, cached), paginated, typeset off the UI thread.
+  Future<void> _sharePdf(BillDocument bill) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        duration: const Duration(minutes: 2),
+        content: Row(
+          children: [
+            const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2)),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(child: Text(l10n.billPdfPreparing(bill.items.where((i) => i.imagePath != null).length))),
+          ],
+        ),
+      ),
+    );
+    try {
+      final pdf = await ref.read(billPdfServiceProvider).generate(bill, _labels(bill));
+      messenger.hideCurrentSnackBar();
+      final ok = await ref
+          .read(fileSharerProvider)
+          .share(
+            files: [ShareFile(bytes: pdf.bytes, name: 'bill-${bill.billNo}.pdf', mimeType: 'application/pdf')],
+            text: l10n.billShareText('${bill.billNo}', bill.business.name),
+          );
+      if (!ok && mounted) AppFeedback.show(context, l10n.shareFailed, tone: FeedbackTone.error);
+    } on Object {
+      messenger.hideCurrentSnackBar();
       if (mounted) AppFeedback.show(context, l10n.shareFailed, tone: FeedbackTone.error);
     }
   }
@@ -73,7 +127,7 @@ class _BillScreenState extends ConsumerState<BillScreen> {
                   child: AppButton(
                     label: l10n.billSendPhoto,
                     icon: Icons.image_outlined,
-                    onPressed: () => _share(value, pdf: false),
+                    onPressed: () => _sharePhoto(value),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
@@ -82,7 +136,7 @@ class _BillScreenState extends ConsumerState<BillScreen> {
                     label: l10n.billSharePdf,
                     icon: Icons.picture_as_pdf_outlined,
                     variant: AppButtonVariant.secondary,
-                    onPressed: () => _share(value, pdf: true),
+                    onPressed: () => _sharePdf(value),
                   ),
                 ),
               ],

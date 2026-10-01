@@ -319,5 +319,6 @@
   "vaatRemove": "નોંધ કાઢો",
   "billColPhoto": "ફોટો",
   "billContinued": "ચાલુ",
-  "billPdfPreparing": "{count} ફોટા સાથે PDF તૈયાર થાય છે…"
+  "billPdfPreparing": "{count} ફોટા સાથે PDF તૈયાર થાય છે…",
+  "billColItem": "વસ્તુ"
 }

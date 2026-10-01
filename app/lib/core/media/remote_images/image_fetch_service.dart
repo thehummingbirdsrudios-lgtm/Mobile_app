@@ -108,20 +108,45 @@ class ImageFetchService {
     final declared = response.contentLength;
     if (declared != null && declared > policy.maxBytes) fail(ImageFetchFailure.tooLarge);
 
+    final body = await _readBody(response.stream);
+    if (body.isEmpty) throw const ImageFetchException(ImageFetchFailure.notAnImage);
+    return body;
+  }
+
+  /// Reads the body with an idle timeout (reset by every chunk) and a hard
+  /// byte cap: the download is cancelled the moment it would exceed the cap,
+  /// so an oversized or endless response is never buffered.
+  Future<Uint8List> _readBody(Stream<List<int>> stream) {
+    final result = Completer<Uint8List>();
     final bytes = BytesBuilder(copy: false);
-    try {
-      await for (final chunk in response.stream.timeout(policy.timeout)) {
-        if (bytes.length + chunk.length > policy.maxBytes) {
-          throw const ImageFetchException(ImageFetchFailure.tooLarge);
-        }
-        bytes.add(chunk);
-      }
-    } on TimeoutException {
-      throw const ImageFetchException(ImageFetchFailure.timeout);
-    } on http.ClientException {
-      throw const ImageFetchException(ImageFetchFailure.network);
+    late final StreamSubscription<List<int>> subscription;
+    Timer? idle;
+
+    void fail(ImageFetchFailure reason) {
+      idle?.cancel();
+      unawaited(subscription.cancel());
+      if (!result.isCompleted) result.completeError(ImageFetchException(reason));
     }
-    if (bytes.isEmpty) throw const ImageFetchException(ImageFetchFailure.notAnImage);
-    return bytes.takeBytes();
+
+    void arm() {
+      idle?.cancel();
+      idle = Timer(policy.timeout, () => fail(ImageFetchFailure.timeout));
+    }
+
+    subscription = stream.listen(
+      (chunk) {
+        if (bytes.length + chunk.length > policy.maxBytes) return fail(ImageFetchFailure.tooLarge);
+        bytes.add(chunk);
+        arm();
+      },
+      onError: (Object error) => fail(ImageFetchFailure.network),
+      onDone: () {
+        idle?.cancel();
+        if (!result.isCompleted) result.complete(bytes.takeBytes());
+      },
+      cancelOnError: true,
+    );
+    arm();
+    return result.future;
   }
 }

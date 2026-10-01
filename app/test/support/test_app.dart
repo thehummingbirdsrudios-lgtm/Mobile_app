@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,9 @@ import 'package:image/image.dart' as img;
 import 'package:vepari/app/app.dart';
 import 'package:vepari/core/core.dart';
 import 'package:vepari/features/auth/auth.dart';
+import 'package:vepari/features/bills/application/pdf/bill_pdf_renderer.dart' show renderBillPdf;
+import 'package:vepari/features/bills/application/pdf/bill_pdf_service.dart'
+    show billFontsProvider, billPdfRendererProvider;
 import 'package:vepari/features/bills/bills.dart';
 import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/customers/customers.dart';
@@ -20,6 +24,7 @@ import 'package:vepari/features/settings/settings.dart';
 import 'package:vepari/features/sharing/sharing.dart';
 
 import 'fakes.dart';
+import 'image_host.dart';
 
 const testConfig = AppConfig(
   environment: 'test',
@@ -41,6 +46,15 @@ Widget testImageBuilder({
 /// A real 2×2 PNG (fake time cannot await a real raster capture).
 Future<Uint8List> fakeCapture(GlobalKey key, {double pixelRatio = 1}) async =>
     img.encodePng(img.Image(width: 2, height: 3));
+
+/// Shaped text stand-in (fake time cannot await a real raster).
+Future<RasterText> fakeShaper(
+  String text, {
+  required double fontSize,
+  bool bold = false,
+  double maxWidth = 0,
+  int maxLines = 2,
+}) async => RasterText(png: img.encodePng(img.Image(width: 4, height: 2)), width: 40, height: fontSize * 1.3);
 
 /// Records watermark requests instead of rasterising (fake time).
 final composedWatermarks = <String?>[];
@@ -99,7 +113,16 @@ Future<ProviderContainer> pumpVepari(
       billsRepositoryProvider.overrideWithValue(bills ?? FakeBillsRepository()),
       fileSharerProvider.overrideWithValue(sharer ?? FakeFileSharer()),
       widgetCapturerProvider.overrideWithValue(fakeCapture),
-      pdfBuilderProvider.overrideWithValue(renderImagePdf),
+      optimizedImageLoaderProvider.overrideWithValue(loaderFor(FakeImageHost())),
+      imageCacheServiceProvider.overrideWithValue(MemoryImageCache()),
+      textRasterizerProvider.overrideWithValue(fakeShaper),
+      billPdfRendererProvider.overrideWithValue(renderBillPdf),
+      billFontsProvider.overrideWithValue(
+        () async => (
+          regular: File('assets/fonts/Hind-Regular.ttf').readAsBytesSync(),
+          bold: File('assets/fonts/Hind-SemiBold.ttf').readAsBytesSync(),
+        ),
+      ),
       sharingRepositoryProvider.overrideWithValue(sharing ?? FakeSharingRepository()),
       shareImageComposerProvider.overrideWithValue(fakeComposer),
       remarksRepositoryProvider.overrideWithValue(remarks ?? FakeRemarksRepository()),

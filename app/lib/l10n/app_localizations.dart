@@ -2012,6 +2012,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preparing PDF with {count, plural, =1{1 photo} other{{count} photos}}…'**
   String billPdfPreparing(int count);
+
+  /// Bill PDF column
+  ///
+  /// In en, this message translates to:
+  /// **'Product / item'**
+  String get billColItem;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

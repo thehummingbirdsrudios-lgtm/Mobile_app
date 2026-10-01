@@ -925,6 +925,7 @@ final sampleBill = BillDocument(
       rate: Money.paise(62000),
       amount: Money.paise(744000),
       weightMg: 42000,
+      imagePath: 'p/1024.jpg', // served by FakeImageHost
     ),
   ],
 );

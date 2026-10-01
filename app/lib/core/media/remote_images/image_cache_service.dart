@@ -112,8 +112,12 @@ class DiskImageCache implements ImageCacheService {
 
   @override
   Future<void> clear() async {
-    final dir = await _folder();
-    if (dir.existsSync()) await dir.delete(recursive: true);
+    try {
+      final dir = await _folder();
+      if (dir.existsSync()) await dir.delete(recursive: true);
+    } on Object {
+      // Storage unavailable (or never created): nothing to clear.
+    }
     _dir = null;
   }
 }

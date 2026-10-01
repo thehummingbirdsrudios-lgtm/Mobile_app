@@ -319,5 +319,6 @@
   "vaatRemove": "नोट हटाएँ",
   "billColPhoto": "फ़ोटो",
   "billContinued": "जारी",
-  "billPdfPreparing": "{count} फ़ोटो के साथ PDF तैयार हो रहा है…"
+  "billPdfPreparing": "{count} फ़ोटो के साथ PDF तैयार हो रहा है…",
+  "billColItem": "सामान"
 }

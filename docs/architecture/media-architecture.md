@@ -40,3 +40,13 @@ objects and `pending` rows older than 24 h.
 - DB CHECKs ensure a media row can only point inside its own tenant.
 - Shares use the `share` derivative, never the original.
 - Filenames carry no business data.
+
+## Bill PDF photos (ADR-0009)
+`bill_payload` gives each line the storage key of the photo as ordered (the
+800px catalogue derivative; `product_media` stays the single source of
+truth). The app resolves keys to short-lived signed URLs, downloads with
+hard limits (HTTPS storage host only, no redirects, timeouts, byte cap),
+validates by content, optimises to the bill cell size (≥ 5 px/pt JPEG, no
+metadata) in an isolate, caches the result (memory + bounded disk, cleared
+on sign-out) and embeds one copy per distinct photo. A missing or broken
+photo becomes a placeholder; it never fails the bill.

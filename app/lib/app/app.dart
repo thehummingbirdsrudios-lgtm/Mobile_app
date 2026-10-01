@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +30,8 @@ class VepariApp extends ConsumerWidget {
     ref.listen(currentSessionProvider.select((s) => (s?.tenantId, s?.userId)), (previous, next) {
       if (previous == next) return;
       ref.invalidate(signedUrlCacheProvider);
+      // Optimised bill photos too (memory and disk).
+      unawaited(ref.read(imageCacheServiceProvider).clear());
       PaintingBinding.instance.imageCache
         ..clear()
         ..clearLiveImages();

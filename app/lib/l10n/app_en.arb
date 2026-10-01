@@ -1537,5 +1537,9 @@
         "type": "int"
       }
     }
+  },
+  "billColItem": "Product / item",
+  "@billColItem": {
+    "description": "Bill PDF column"
   }
 }

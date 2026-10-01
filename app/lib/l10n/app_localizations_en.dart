@@ -1075,4 +1075,7 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count photos', one: '1 photo');
     return 'Preparing PDF with $_temp0…';
   }
+
+  @override
+  String get billColItem => 'Product / item';
 }

@@ -81,6 +81,49 @@ class BillPdfInput {
   final Uint8List boldFont;
 }
 
+/// Strings derived from the bill (shared with the text shaper so both see
+/// exactly the same runs).
+String billBakiText(BillDocument bill, BillPdfLabels l) =>
+    bill.balanceAfter.isNegative ? '${l.advance} ${(-bill.balanceAfter).format()}' : bill.balanceAfter.format();
+
+String billContactLine(BillBusiness b) => [?b.phone, if (b.gstin != null) 'GSTIN ${b.gstin}'].join('  ·  ');
+
+String billContinuedText(BillPdfLabels l) => '${l.billNo} · ${l.continued}';
+
+/// Every (style, text, max width) the typesetter draws. Runs that need
+/// Indic shaping are rasterised from this list before typesetting.
+List<(BillText, String, double)> billTextRuns(BillDocument bill, BillPdfLabels l, BillPdfLayout layout) {
+  final b = bill.business;
+  const wide = 300.0;
+  const narrow = 230.0;
+  const designWidth = BillPdfLayout.designWidth - BillPdfLayout.cellPadding * 2;
+  return [
+    (BillText.title, b.name, wide),
+    if (b.address != null) (BillText.small, b.address!, wide),
+    if (b.phone != null || b.gstin != null) (BillText.small, billContactLine(b), wide),
+    (BillText.title, l.title, narrow),
+    (BillText.bodyBold, l.billNo, narrow),
+    (BillText.small, l.date, narrow),
+    (BillText.small, l.orderRef, narrow),
+    (BillText.small, l.billTo, wide),
+    (BillText.heading, bill.customerName, wide),
+    if (bill.customerPhone != null) (BillText.small, bill.customerPhone!, wide),
+    for (final label in [l.colPhoto, l.colDesign, l.colItem, l.colQty, l.colRate, l.colAmount])
+      (BillText.label, label, layout.itemTextWidth),
+    for (final item in bill.items) ...[
+      (BillText.bodyBold, item.designNo, designWidth),
+      (BillText.body, item.name, layout.itemTextWidth),
+    ],
+    for (final label in [l.totalQty, l.totalWeight, l.paid]) (BillText.body, label, narrow),
+    for (final label in [l.total, l.bakiAfter]) (BillText.bodyBold, label, narrow),
+    (BillText.heading, billBakiText(bill, l), narrow),
+    (BillText.bodyBold, b.name, wide),
+    (BillText.small, billContinuedText(l), narrow),
+    (BillText.small, l.billNo, narrow),
+    if ((b.footer ?? '').isNotEmpty) (BillText.small, b.footer!, wide),
+  ];
+}
+
 const _ink = PdfColor.fromInt(0xFF1B1A17);
 const _muted = PdfColor.fromInt(0xFF6B655C);
 const _rule = PdfColor.fromInt(0xFFE7E0D5);
@@ -211,7 +254,7 @@ Future<Uint8List> renderBillPdf(BillPdfInput input) {
     ),
   );
 
-  final baki = bill.balanceAfter.isNegative ? '${l.advance} ${money(-bill.balanceAfter)}' : money(bill.balanceAfter);
+  final baki = billBakiText(bill, l);
 
   final b = bill.business;
   final firstHeader = pw.Column(
@@ -287,7 +330,7 @@ Future<Uint8List> renderBillPdf(BillPdfInput input) {
                 child: pw.Row(
                   children: [
                     pw.Expanded(child: text(b.name, BillText.bodyBold, maxLines: 1)),
-                    text('${l.billNo} · ${l.continued}', BillText.small, color: _muted),
+                    text(billContinuedText(l), BillText.small, color: _muted),
                   ],
                 ),
               ),
