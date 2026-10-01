@@ -77,6 +77,8 @@ void main() {
     final state = container.read(sessionControllerProvider);
     expect(state, isA<SessionSignedOut>());
     expect((state as SessionSignedOut).reason?.kind, FailureKind.sessionExpired);
+    expect(auth.signOutCalls, 1, reason: 'persisted session is dropped too');
+    expect(container.read(tenantCacheProvider).isBound, isFalse);
   });
 
   test('owner implicitly has every permission; staff only granted ones', () {

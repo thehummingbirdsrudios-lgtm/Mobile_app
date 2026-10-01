@@ -13,7 +13,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final String loginDomain;
 
   @override
-  Stream<void> get sessionEnded => _remote.signedOutEvents;
+  Stream<void> get sessionEnded => _remote.sessionEnded;
 
   @override
   Future<UserSession?> restore() async {

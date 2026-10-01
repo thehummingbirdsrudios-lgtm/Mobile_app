@@ -69,6 +69,17 @@ void main() {
     );
   });
 
+  test('session rejection is published so the app can sign out', () async {
+    final api = client((_, _) async => throw const PostgrestException(message: 'not_authenticated', code: 'P0001'));
+    final events = <void>[];
+    final sub = api.sessionRejected.listen(events.add);
+    await expectLater(api.rpc('dashboard_summary', decode: (j) => j), throwsA(isA<AppFailure>()));
+    await Future<void>.delayed(Duration.zero);
+    expect(events, hasLength(1));
+    await sub.cancel();
+    await api.dispose();
+  });
+
   test('logger redacts sensitive field names and respects level', () {
     final quiet = AppLogger(minLevel: LogLevel.warning, sinks: [sink]);
     quiet.info('hidden');

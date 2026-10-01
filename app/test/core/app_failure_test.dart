@@ -38,6 +38,41 @@ void main() {
     );
   });
 
+  test('5-digit SQLSTATEs are never mistaken for HTTP 5xx', () {
+    PostgrestException pg(String code) => PostgrestException(message: 'x', code: code);
+    expect(AppFailure.from(pg('23502')).kind, FailureKind.invalidInput);
+    expect(AppFailure.from(pg('22001')).kind, FailureKind.invalidInput);
+    expect(AppFailure.from(pg('22023')).kind, FailureKind.invalidInput);
+    expect(AppFailure.from(pg('42883')).kind, FailureKind.unknown);
+    expect(
+      AppFailure.from(pg('42883')).isRetryable,
+      isTrue,
+      reason: 'unknown stays retryable but is not "server down"',
+    );
+    expect(AppFailure.from(pg('57014')).kind, FailureKind.timeout);
+    expect(AppFailure.from(pg('40001')).kind, FailureKind.serverUnavailable);
+  });
+
+  test('3-digit codes are HTTP statuses', () {
+    PostgrestException pg(String code) => PostgrestException(message: 'x', code: code);
+    expect(AppFailure.from(pg('502')).kind, FailureKind.serverUnavailable);
+    expect(AppFailure.from(pg('503')).kind, FailureKind.maintenance);
+    expect(AppFailure.from(pg('504')).kind, FailureKind.timeout);
+    expect(AppFailure.from(pg('401')).kind, FailureKind.sessionExpired);
+  });
+
+  test('auth: specific codes win over the 400 status', () {
+    expect(
+      AppFailure.from(const AuthException('banned', statusCode: '400', code: 'user_banned')).kind,
+      FailureKind.accountDisabled,
+    );
+    expect(
+      AppFailure.from(const AuthException('gone', statusCode: '400', code: 'refresh_token_not_found')).kind,
+      FailureKind.sessionExpired,
+    );
+    expect(AppFailure.from(AuthRetryableFetchException(message: 'offline')).kind, FailureKind.network);
+  });
+
   test('auth errors', () {
     expect(
       AppFailure.from(const AuthException('Invalid login credentials', statusCode: '400', code: 'invalid_credentials'))

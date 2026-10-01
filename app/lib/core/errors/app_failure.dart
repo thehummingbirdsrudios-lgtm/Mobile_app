@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io' show SocketException;
 
 import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show AuthException, PostgrestException;
+import 'package:supabase_flutter/supabase_flutter.dart'
+    show AuthException, AuthRetryableFetchException, PostgrestException;
 
 import '../../l10n/app_localizations.dart';
 
@@ -106,33 +107,63 @@ class AppFailure implements Exception {
     'maintenance': FailureKind.maintenance,
   };
 
+  static final _httpStatus = RegExp(r'^\d{3}$');
+
+  /// PostgREST puts a SQLSTATE (5 chars) or a `PGRST…` code in [PostgrestException.code],
+  /// and the HTTP status (3 digits) only when the response body was not JSON.
   static AppFailure _fromPostgrest(PostgrestException e) {
     final byMessage = _serverCodes[e.message];
     if (byMessage != null) return AppFailure(byMessage, code: e.message, diagnostic: 'postgrest:${e.code}');
-    final kind = switch (e.code) {
-      '42501' => FailureKind.permissionDenied,
-      '23505' => FailureKind.alreadyExists,
-      '23503' || '23514' || '22P02' || '22003' => FailureKind.invalidInput,
-      'PGRST301' || 'PGRST302' => FailureKind.sessionExpired,
-      'PGRST116' => FailureKind.notFound,
-      _ => (int.tryParse(e.code ?? '') ?? 0) >= 500 ? FailureKind.serverUnavailable : FailureKind.unknown,
-    };
-    return AppFailure(kind, diagnostic: 'postgrest:${e.code}');
+    final code = e.code ?? '';
+    final kind = _httpStatus.hasMatch(code) ? _fromHttpStatus(int.parse(code)) : _fromSqlState(code);
+    return AppFailure(kind, diagnostic: 'postgrest:$code');
   }
 
+  static FailureKind _fromHttpStatus(int status) => switch (status) {
+    401 => FailureKind.sessionExpired,
+    403 => FailureKind.permissionDenied,
+    404 => FailureKind.notFound,
+    408 || 504 => FailureKind.timeout,
+    503 => FailureKind.maintenance,
+    >= 500 => FailureKind.serverUnavailable,
+    _ => FailureKind.unknown,
+  };
+
+  static FailureKind _fromSqlState(String code) => switch (code) {
+    'PGRST301' || 'PGRST302' => FailureKind.sessionExpired,
+    'PGRST116' => FailureKind.notFound,
+    '42501' => FailureKind.permissionDenied,
+    '23505' => FailureKind.alreadyExists,
+    '57014' => FailureKind.timeout, // statement timeout
+    '40001' || '40P01' => FailureKind.serverUnavailable, // serialization failure / deadlock: safe to retry
+    '53300' || '57P03' => FailureKind.serverUnavailable, // too many connections / starting up
+    _ when code.startsWith('22') || code.startsWith('23') => FailureKind.invalidInput, // data / constraint
+    _ => FailureKind.unknown,
+  };
+
   static AppFailure _fromAuth(AuthException e) {
+    // Network-level failure inside the auth client (no HTTP response at all).
+    if (e is AuthRetryableFetchException) return const AppFailure(FailureKind.network, diagnostic: 'auth:fetch');
     final status = int.tryParse(e.statusCode ?? '') ?? 0;
     final code = e.code ?? '';
-    if (code == 'invalid_credentials' || status == 400) {
-      return AppFailure(FailureKind.invalidCredentials, diagnostic: 'auth:$code');
-    }
-    if (code == 'user_banned') return AppFailure(FailureKind.accountDisabled, diagnostic: 'auth:$code');
-    if (code == 'session_expired' || code == 'refresh_token_not_found' || status == 401) {
-      return AppFailure(FailureKind.sessionExpired, diagnostic: 'auth:$code');
-    }
-    if (status == 429) return const AppFailure(FailureKind.serverUnavailable, diagnostic: 'auth:rate_limited');
-    if (status >= 500) return AppFailure(FailureKind.serverUnavailable, diagnostic: 'auth:$status');
-    return AppFailure(FailureKind.unknown, diagnostic: 'auth:$code');
+    // Specific codes first: GoTrue also uses HTTP 400 for bans and bad refresh tokens.
+    final kind = switch (code) {
+      'invalid_credentials' => FailureKind.invalidCredentials,
+      'user_banned' => FailureKind.accountDisabled,
+      'session_expired' ||
+      'session_not_found' ||
+      'refresh_token_not_found' ||
+      'refresh_token_already_used' => FailureKind.sessionExpired,
+      'over_request_rate_limit' => FailureKind.serverUnavailable,
+      _ => switch (status) {
+        400 => FailureKind.invalidCredentials,
+        401 || 403 => FailureKind.sessionExpired,
+        429 => FailureKind.serverUnavailable,
+        >= 500 => FailureKind.serverUnavailable,
+        _ => FailureKind.unknown,
+      },
+    };
+    return AppFailure(kind, diagnostic: 'auth:${code.isEmpty ? status : code}');
   }
 
   @override

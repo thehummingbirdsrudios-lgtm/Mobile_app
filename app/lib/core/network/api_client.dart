@@ -35,6 +35,15 @@ class ApiClient {
   final AppLogger _logger;
   final Duration timeout;
   int _sequence = 0;
+  final _sessionRejected = StreamController<void>.broadcast();
+
+  /// Fires whenever the server rejects the caller's session or membership
+  /// (expired JWT, deactivated staff, suspended business). The auth module
+  /// turns this into a local sign-out so stale data is never kept on screen.
+  Stream<void> get sessionRejected => _sessionRejected.stream;
+
+  /// Closes the client's streams. Call once at shutdown (or in tests).
+  Future<void> dispose() => _sessionRejected.close();
 
   /// Calls a backend RPC and decodes the result with [decode]. Any malformed
   /// payload surfaces as [FailureKind.invalidResponse].
@@ -66,6 +75,9 @@ class ApiClient {
   }
 
   AppFailure _fail(String operation, String requestId, Stopwatch watch, AppFailure failure) {
+    if (failure.kind == FailureKind.sessionExpired && !_sessionRejected.isClosed) {
+      _sessionRejected.add(null);
+    }
     final level = switch (failure.kind) {
       FailureKind.invalidResponse || FailureKind.unknown => LogLevel.error,
       FailureKind.invalidCredentials || FailureKind.permissionDenied => LogLevel.info,

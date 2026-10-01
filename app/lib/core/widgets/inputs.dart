@@ -29,7 +29,19 @@ class AppSearchField extends StatefulWidget {
 }
 
 class _AppSearchFieldState extends State<AppSearchField> {
+  // Ownership is decided once: we dispose only a controller we created.
+  late final bool _ownsController = widget.controller == null;
   late final TextEditingController _controller = widget.controller ?? TextEditingController();
+
+  @override
+  void didUpdateWidget(AppSearchField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    assert(
+      (oldWidget.controller == null) == (widget.controller == null),
+      'AppSearchField does not support switching between owned and external controllers',
+    );
+  }
+
   Timer? _timer;
 
   void _changed(String value) {
@@ -48,7 +60,7 @@ class _AppSearchFieldState extends State<AppSearchField> {
   @override
   void dispose() {
     _timer?.cancel();
-    if (widget.controller == null) _controller.dispose();
+    if (_ownsController) _controller.dispose();
     super.dispose();
   }
 

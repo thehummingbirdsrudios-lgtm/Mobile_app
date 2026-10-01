@@ -54,7 +54,10 @@ class SessionController extends Notifier<SessionState> {
   @override
   SessionState build() {
     _endedSub = _repo.sessionEnded.listen((_) {
-      if (state is SessionSignedIn) _becomeSignedOut(const AppFailure(FailureKind.sessionExpired));
+      if (state is! SessionSignedIn) return;
+      _becomeSignedOut(const AppFailure(FailureKind.sessionExpired));
+      // Also drop the persisted session so a restart cannot reuse it.
+      unawaited(_repo.signOut());
     });
     ref.onDispose(() => _endedSub?.cancel());
     // Resolve identity after the first frame; state is SessionUnknown until then.

@@ -16,8 +16,17 @@ class AuthApi {
 
   bool get hasPersistedSession => _auth.currentSession != null;
 
-  Stream<void> get signedOutEvents =>
-      _auth.onAuthStateChange.where((state) => state.event == AuthChangeEvent.signedOut).map((_) {});
+  /// The session ended on the backend: the auth client signed out (refresh
+  /// failed, signed out elsewhere) or the API rejected our membership.
+  Stream<void> get sessionEnded => Stream<void>.multi((controller) {
+    final subscriptions = [
+      _auth.onAuthStateChange
+          .where((state) => state.event == AuthChangeEvent.signedOut)
+          .listen((_) => controller.add(null), onError: controller.addError),
+      _api.sessionRejected.listen((_) => controller.add(null)),
+    ];
+    controller.onCancel = () => Future.wait(subscriptions.map((s) => s.cancel()));
+  }, isBroadcast: true);
 
   Future<void> signInWithPassword({required String identifier, required String password}) =>
       _api.run('auth.sign_in', () => _auth.signInWithPassword(email: identifier, password: password));
