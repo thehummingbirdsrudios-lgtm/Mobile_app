@@ -33,7 +33,11 @@ class SignedUrlCache {
           _entries[id] = (url: url, expires: _clock().add(reuseFor));
           return url;
         })
-        .whenComplete(() => _inFlight.remove(id));
+        // Block body on purpose: `=> _inFlight.remove(id)` would return this
+        // very future, and whenComplete would wait on itself forever.
+        .whenComplete(() {
+          _inFlight.remove(id);
+        });
   }
 }
 

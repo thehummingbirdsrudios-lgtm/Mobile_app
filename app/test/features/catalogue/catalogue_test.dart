@@ -63,6 +63,8 @@ void main() {
     expect(find.text('Kundan Set'), findsOneWidget);
     expect(find.text('Jhumka'), findsOneWidget);
     expect(find.text('₹620'), findsOneWidget);
+    // The photo resolves through a signed URL and is drawn (regression).
+    expect(find.byKey(const ValueKey('img:product-media/t/p/1024/thumb.jpg')), findsOneWidget);
 
     await tester.tap(find.text('Kundan Set'));
     await tester.pumpAndSettle();
