@@ -1748,6 +1748,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This payment was already saved — nothing was added twice.'**
   String get paymentAlreadySaved;
+
+  /// Issue a bill for an order
+  ///
+  /// In en, this message translates to:
+  /// **'Make bill'**
+  String get billMake;
+
+  /// Open the bill
+  ///
+  /// In en, this message translates to:
+  /// **'View bill'**
+  String get billView;
+
+  /// Section/screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Bill'**
+  String get billTitle;
+
+  /// Share the bill as an image
+  ///
+  /// In en, this message translates to:
+  /// **'Send bill photo'**
+  String get billSendPhoto;
+
+  /// Share the bill as a PDF
+  ///
+  /// In en, this message translates to:
+  /// **'Share PDF'**
+  String get billSharePdf;
+
+  /// Progress
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing bill…'**
+  String get billPreparing;
+
+  /// Bill label
+  ///
+  /// In en, this message translates to:
+  /// **'Bill to'**
+  String get billTo;
+
+  /// Bill label
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get billDate;
+
+  /// Bill label
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNo}'**
+  String billOrderRef(String orderNo);
+
+  /// Bill column
+  ///
+  /// In en, this message translates to:
+  /// **'Design'**
+  String get billColDesign;
+
+  /// Bill column
+  ///
+  /// In en, this message translates to:
+  /// **'Qty'**
+  String get billColQty;
+
+  /// Bill column
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get billColRate;
+
+  /// Bill column
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get billColAmount;
+
+  /// Bill total
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get billTotal;
+
+  /// Bill paid
+  ///
+  /// In en, this message translates to:
+  /// **'Paid with this order'**
+  String get billPaid;
+
+  /// Bill balance
+  ///
+  /// In en, this message translates to:
+  /// **'Baki after this bill'**
+  String get billBakiAfter;
+
+  /// Bill weight
+  ///
+  /// In en, this message translates to:
+  /// **'Total weight'**
+  String get billWeight;
+
+  /// Text sent with the bill
+  ///
+  /// In en, this message translates to:
+  /// **'Bill #{billNo} from {business}'**
+  String billShareText(String billNo, String business);
+
+  /// Error
+  ///
+  /// In en, this message translates to:
+  /// **'A cancelled order cannot be billed.'**
+  String get billCancelledOrder;
+
+  /// Error
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open sharing on this phone.'**
+  String get shareFailed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

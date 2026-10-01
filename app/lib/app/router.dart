@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/core.dart';
 import '../features/auth/auth.dart';
+import '../features/bills/bills.dart';
 import '../features/catalogue/catalogue.dart';
 import '../features/customers/customers.dart';
 import '../features/dashboard/dashboard.dart';
@@ -51,6 +52,7 @@ abstract final class AppRoutes {
   static String ledger(String customerId) => '/ledger/$customerId';
   static String payment(String customerId) => '/ledger/$customerId/pay';
   static String receipt(String paymentId) => '/receipts/$paymentId';
+  static String bill(String billId) => '/bills/$billId';
 
   static const businessProfile = '/settings/business';
   static const staff = '/settings/staff';
@@ -123,6 +125,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (_, s) => PaymentScreen(customerId: s.pathParameters['id']!),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/bills/:id',
+        redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.order),
+        builder: (_, s) => BillScreen(billId: s.pathParameters['id']!),
       ),
       GoRoute(
         path: '/receipts/:id',
@@ -260,6 +267,8 @@ class GoRouterNavigator implements AppNavigator {
   void openPayment(String customerId) => _push(AppRoutes.payment(customerId));
   @override
   void openReceipt(String paymentId) => _push(AppRoutes.receipt(paymentId));
+  @override
+  void openBill(String billId) => _push(AppRoutes.bill(billId));
 
   @override
   void openBusinessProfile() => _push(AppRoutes.businessProfile);

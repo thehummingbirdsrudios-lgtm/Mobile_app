@@ -922,4 +922,68 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get paymentAlreadySaved => 'આ પેમેન્ટ પહેલેથી સેવ હતું — કંઈ બે વાર ઉમેરાયું નથી.';
+
+  @override
+  String get billMake => 'બિલ બનાવો';
+
+  @override
+  String get billView => 'બિલ જુઓ';
+
+  @override
+  String get billTitle => 'બિલ';
+
+  @override
+  String get billSendPhoto => 'બિલનો ફોટો મોકલો';
+
+  @override
+  String get billSharePdf => 'PDF મોકલો';
+
+  @override
+  String get billPreparing => 'બિલ તૈયાર થાય છે…';
+
+  @override
+  String get billTo => 'ગ્રાહક';
+
+  @override
+  String get billDate => 'તારીખ';
+
+  @override
+  String billOrderRef(String orderNo) {
+    return 'ઓર્ડર #$orderNo';
+  }
+
+  @override
+  String get billColDesign => 'ડિઝાઇન';
+
+  @override
+  String get billColQty => 'નંગ';
+
+  @override
+  String get billColRate => 'ભાવ';
+
+  @override
+  String get billColAmount => 'રકમ';
+
+  @override
+  String get billTotal => 'કુલ';
+
+  @override
+  String get billPaid => 'આ ઓર્ડરમાં ચૂકવ્યા';
+
+  @override
+  String get billBakiAfter => 'આ બિલ પછી બાકી';
+
+  @override
+  String get billWeight => 'કુલ વજન';
+
+  @override
+  String billShareText(String billNo, String business) {
+    return '$business તરફથી બિલ #$billNo';
+  }
+
+  @override
+  String get billCancelledOrder => 'રદ ઓર્ડરનું બિલ ન બને.';
+
+  @override
+  String get shareFailed => 'આ ફોનમાં શેર ખૂલ્યું નહીં.';
 }

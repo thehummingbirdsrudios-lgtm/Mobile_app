@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 
 import '../core/core.dart';
 import '../features/auth/auth.dart';
+import '../features/bills/bills.dart';
 import '../features/catalogue/catalogue.dart';
 import '../features/customers/customers.dart';
 import '../features/orders/orders.dart';
@@ -13,6 +14,11 @@ import 'router.dart';
 /// other's screens or state: catalogue and customers get "add to order"
 /// without depending on the orders module.
 List<Override> crossModuleOverrides() => [
+  orderActionsProvider.overrideWithValue(
+    OrderActions(
+      billSection: (order) => BillSection(orderId: order.id, billId: order.bill?.id, billNo: order.bill?.billNo),
+    ),
+  ),
   productActionsProvider.overrideWith((ref) {
     final canOrder = ref.watch(currentSessionProvider)?.can(Permission.ordersCreate) ?? false;
     if (!canOrder) return const ProductActions();

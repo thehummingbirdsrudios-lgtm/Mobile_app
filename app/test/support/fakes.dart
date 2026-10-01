@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:vepari/core/core.dart';
 import 'package:vepari/features/auth/auth.dart';
+import 'package:vepari/features/bills/bills.dart';
 import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/catalogue/domain/catalogue.dart'
     show CatalogueCursor, PhotoUpload, ProductDraft, ProductPrivate;
@@ -880,3 +881,59 @@ final sampleReceipt = PaymentReceipt(
   businessName: 'Shree Jewels',
   businessAddress: 'Soni Bazar, Rajkot',
 );
+
+// ---------------------------------------------------------------------------
+// Bills and sharing
+// ---------------------------------------------------------------------------
+const billFirstId = '00000000-0000-4000-8000-00000000d001';
+
+class FakeBillsRepository implements BillsRepository {
+  final issued = <String>[];
+  final documents = <String, BillDocument>{billFirstId: sampleBill};
+  AppFailure? issueError;
+
+  @override
+  Future<IssuedBill> issue(String orderId) async {
+    if (issueError != null) throw issueError!;
+    issued.add(orderId);
+    return const IssuedBill(billId: billFirstId, billNo: 12, replayed: false);
+  }
+
+  @override
+  Future<BillDocument?> document(String billId) async => documents[billId];
+}
+
+final sampleBill = BillDocument(
+  billNo: 12,
+  issuedAt: DateTime.utc(2026, 10, 1, 10),
+  orderNo: 1045,
+  customerName: 'Patel Kundan Stores',
+  customerPhone: '9825012345',
+  business: const BillBusiness(name: 'Shree Jewels', address: 'Soni Bazar, Rajkot', footer: 'Thank you'),
+  totalQty: 12,
+  total: const Money.paise(744000),
+  totalWeightMg: 504000,
+  paid: const Money.paise(100000),
+  balanceAfter: const Money.paise(5320000),
+  items: const [
+    BillItem(
+      designNo: '1024',
+      name: 'Kundan Set',
+      qty: 12,
+      rate: Money.paise(62000),
+      amount: Money.paise(744000),
+      weightMg: 42000,
+    ),
+  ],
+);
+
+class FakeFileSharer implements FileSharer {
+  final shared = <(List<ShareFile>, String?)>[];
+  bool available = true;
+
+  @override
+  Future<bool> share({List<ShareFile> files = const [], String? text}) async {
+    shared.add((files, text));
+    return available;
+  }
+}

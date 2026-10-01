@@ -8,6 +8,8 @@ import 'core/network/api_client.dart' show SupabaseRpcTransport;
 import 'core/network/storage_client.dart' show SupabaseObjectStorage;
 import 'features/auth/auth.dart';
 import 'features/auth/auth_adapters.dart';
+import 'features/bills/bills.dart';
+import 'features/bills/bills_adapters.dart';
 import 'features/catalogue/catalogue.dart';
 import 'features/catalogue/catalogue_adapters.dart';
 import 'features/customers/customers.dart';
@@ -55,6 +57,7 @@ Future<void> main() async {
       customerRepositoryProvider.overrideWithValue(CustomerRepositoryImpl(CustomersApi(client, api))),
       ordersRepositoryProvider.overrideWithValue(OrdersRepositoryImpl(OrdersApi(api))),
       hisaabRepositoryProvider.overrideWithValue(HisaabRepositoryImpl(HisaabApi(api))),
+      billsRepositoryProvider.overrideWithValue(BillsRepositoryImpl(BillsApi(api))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

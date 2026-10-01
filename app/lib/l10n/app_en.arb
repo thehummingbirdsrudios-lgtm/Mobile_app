@@ -1315,5 +1315,98 @@
   "paymentAlreadySaved": "This payment was already saved — nothing was added twice.",
   "@paymentAlreadySaved": {
     "description": "Idempotent replay"
+  },
+  "billMake": "Make bill",
+  "@billMake": {
+    "description": "Issue a bill for an order"
+  },
+  "billView": "View bill",
+  "@billView": {
+    "description": "Open the bill"
+  },
+  "billTitle": "Bill",
+  "@billTitle": {
+    "description": "Section/screen title"
+  },
+  "billSendPhoto": "Send bill photo",
+  "@billSendPhoto": {
+    "description": "Share the bill as an image"
+  },
+  "billSharePdf": "Share PDF",
+  "@billSharePdf": {
+    "description": "Share the bill as a PDF"
+  },
+  "billPreparing": "Preparing bill…",
+  "@billPreparing": {
+    "description": "Progress"
+  },
+  "billTo": "Bill to",
+  "@billTo": {
+    "description": "Bill label"
+  },
+  "billDate": "Date",
+  "@billDate": {
+    "description": "Bill label"
+  },
+  "billOrderRef": "Order #{orderNo}",
+  "@billOrderRef": {
+    "description": "Bill label",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      }
+    }
+  },
+  "billColDesign": "Design",
+  "@billColDesign": {
+    "description": "Bill column"
+  },
+  "billColQty": "Qty",
+  "@billColQty": {
+    "description": "Bill column"
+  },
+  "billColRate": "Rate",
+  "@billColRate": {
+    "description": "Bill column"
+  },
+  "billColAmount": "Amount",
+  "@billColAmount": {
+    "description": "Bill column"
+  },
+  "billTotal": "Total",
+  "@billTotal": {
+    "description": "Bill total"
+  },
+  "billPaid": "Paid with this order",
+  "@billPaid": {
+    "description": "Bill paid"
+  },
+  "billBakiAfter": "Baki after this bill",
+  "@billBakiAfter": {
+    "description": "Bill balance"
+  },
+  "billWeight": "Total weight",
+  "@billWeight": {
+    "description": "Bill weight"
+  },
+  "billShareText": "Bill #{billNo} from {business}",
+  "@billShareText": {
+    "description": "Text sent with the bill",
+    "placeholders": {
+      "billNo": {
+        "type": "String"
+      },
+      "business": {
+        "type": "String"
+      }
+    }
+  },
+  "billCancelledOrder": "A cancelled order cannot be billed.",
+  "@billCancelledOrder": {
+    "description": "Error"
+  },
+  "shareFailed": "Could not open sharing on this phone.",
+  "@shareFailed": {
+    "description": "Error"
   }
 }

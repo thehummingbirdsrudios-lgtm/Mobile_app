@@ -925,4 +925,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get paymentAlreadySaved => 'This payment was already saved — nothing was added twice.';
+
+  @override
+  String get billMake => 'Make bill';
+
+  @override
+  String get billView => 'View bill';
+
+  @override
+  String get billTitle => 'Bill';
+
+  @override
+  String get billSendPhoto => 'Send bill photo';
+
+  @override
+  String get billSharePdf => 'Share PDF';
+
+  @override
+  String get billPreparing => 'Preparing bill…';
+
+  @override
+  String get billTo => 'Bill to';
+
+  @override
+  String get billDate => 'Date';
+
+  @override
+  String billOrderRef(String orderNo) {
+    return 'Order #$orderNo';
+  }
+
+  @override
+  String get billColDesign => 'Design';
+
+  @override
+  String get billColQty => 'Qty';
+
+  @override
+  String get billColRate => 'Rate';
+
+  @override
+  String get billColAmount => 'Amount';
+
+  @override
+  String get billTotal => 'Total';
+
+  @override
+  String get billPaid => 'Paid with this order';
+
+  @override
+  String get billBakiAfter => 'Baki after this bill';
+
+  @override
+  String get billWeight => 'Total weight';
+
+  @override
+  String billShareText(String billNo, String business) {
+    return 'Bill #$billNo from $business';
+  }
+
+  @override
+  String get billCancelledOrder => 'A cancelled order cannot be billed.';
+
+  @override
+  String get shareFailed => 'Could not open sharing on this phone.';
 }
