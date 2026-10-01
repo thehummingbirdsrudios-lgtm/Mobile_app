@@ -47,9 +47,12 @@ Gujarati/Devanagari shaping.
   original at a time; only small JPEGs are retained.
 
 ## Consequences
-- 100-line bill measured at ~0.3 MB with synthetic photos (real photos est.
-  1.5–3 MB), 9 pages; every line's photo verified in the right row by
-  decoding the embedded JPEGs in drawing order (`bill_pdf_test.dart`).
+- Measured per-photo size on a deliberately hard (textured + noisy) 800px
+  source: 49 KB at 360 px, 30 KB at 300 px, 17 KB at 240 px. Worst-case
+  bills therefore stay around 0.8 MB (15 lines), 0.65 MB (20) and 1.8 MB
+  (100 lines, 9 pages); smooth real photos compress further. Every line's
+  photo is verified in the right row by decoding the embedded JPEGs in
+  drawing order (`bill_pdf_test.dart`).
 - Generation happens on the device that shares the bill (no custom server,
   ADR-0001/0006); a server-side generator could reuse the same pipeline
   design later.
