@@ -165,11 +165,15 @@ begin
   if found then
     -- A retry must see exactly what the first call did, including any
     -- payment taken with the order, so the client never re-records it.
+    -- Payment details (and Baki before/after) are returned only to callers
+    -- who may see payments — a replay must never widen what a caller can read.
     v_result := app.order_json(v_order, true);
-    select * into v_payment from public.payments
-     where tenant_id = v_tenant and client_request_id = md5('payment:' || p_client_request_id::text)::uuid;
-    if found then
-      v_result := v_result || jsonb_build_object('payment', app.payment_json(v_payment, true));
+    if app.has_permission('payments.record') or app.has_permission('hisaab.view') then
+      select * into v_payment from public.payments
+       where tenant_id = v_tenant and client_request_id = md5('payment:' || p_client_request_id::text)::uuid;
+      if found then
+        v_result := v_result || jsonb_build_object('payment', app.payment_json(v_payment, true));
+      end if;
     end if;
     return v_result;
   end if;

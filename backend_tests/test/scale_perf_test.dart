@@ -249,19 +249,19 @@ void main() {
     );
     plan(
       'Customer Hisaab (latest 50)',
-      'select * from public.ledger_entries where tenant_id = @t::uuid and customer_id = @c::uuid '
+      'select id, kind, amount_paise, balance_after_paise, created_at from public.ledger_entries where tenant_id = @t::uuid and customer_id = @c::uuid '
           'order by created_at desc, id desc limit 50',
       params: () => {'t': a.tenantId, 'c': sampleCustomer},
     );
     plan(
       'Customer orders (latest 20)',
-      'select * from public.orders where tenant_id = @t::uuid and customer_id = @c::uuid '
+      'select id, order_no, status, total_qty, total_paise, created_at from public.orders where tenant_id = @t::uuid and customer_id = @c::uuid '
           'order by created_at desc, id desc limit 20',
       params: () => {'t': a.tenantId, 'c': sampleCustomer},
     );
     plan(
       'Pending orders',
-      "select * from public.orders where tenant_id = @t::uuid and status in ('confirmed','processing','ready') "
+      "select id, order_no, customer_id, status, total_paise, created_at from public.orders where tenant_id = @t::uuid and status in ('confirmed','processing','ready') "
           'order by created_at desc limit 30',
       params: () => {'t': a.tenantId},
     );

@@ -254,6 +254,18 @@ create policy ledger_select on public.ledger_entries for select to authenticated
 
 revoke all on public.orders, public.order_items, public.payments, public.ledger_entries, public.bills
   from anon, authenticated;
-grant select on public.orders, public.order_items, public.payments, public.ledger_entries, public.bills
-  to authenticated;
+-- Idempotency keys (client_request_id) are server-internal: they are never
+-- readable by clients, so nobody can replay another member's request.
+-- Consequence: clients must select explicit columns (PostgREST `select=*`
+-- on these tables is denied) — which the API contract requires anyway.
+grant select on public.order_items, public.bills to authenticated;
+grant select (id, tenant_id, order_no, customer_id, status, total_qty, total_paise, total_weight_mg, note,
+  reorder_of, cancel_reason, created_at, created_by, updated_at, updated_by)
+  on public.orders to authenticated;
+grant select (id, tenant_id, payment_no, customer_id, order_id, amount_paise, mode, reference, note,
+  balance_before_paise, balance_after_paise, received_at, created_by)
+  on public.payments to authenticated;
+grant select (id, tenant_id, customer_id, kind, amount_paise, balance_after_paise, order_id, payment_id,
+  reverses_entry_id, note, created_at, created_by)
+  on public.ledger_entries to authenticated;
 revoke all on app.order_transitions from public;

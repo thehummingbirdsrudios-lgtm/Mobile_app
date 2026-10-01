@@ -269,6 +269,49 @@ void main() {
       expect(ok['order_no'], isNotNull);
     });
 
+    test('idempotency keys are not readable by any member', () async {
+      for (final table in ['orders', 'payments', 'ledger_entries']) {
+        await expectLater(
+          () => owner.query('select client_request_id from public.$table limit 1'),
+          throwsDbError(insufficientPrivilege),
+          reason: table,
+        );
+      }
+      expect(await staffMin.count('select id, order_no from public.orders'), greaterThan(0));
+    });
+
+    test('replaying an order never reveals its payment to a caller without payment access', () async {
+      final requestId = TestDb.newId();
+      await owner.json('select public.create_order(@c::uuid, @items::jsonb, @r::uuid, null, null, @pay::jsonb)', {
+        'c': a.suresh,
+        'items': orderItems([(a.jhumka, 2)]),
+        'r': requestId,
+        'pay': '{"amount_paise": 20000, "mode": "cash"}',
+      });
+      final orderOnly = TestDb.newId();
+      await db.admin.execute('insert into auth.users (id) values (\$1)', parameters: [orderOnly]);
+      await db.admin.execute(
+        Sql.named(
+          "select public.admin_add_member(@t::uuid, @u::uuid, 'staff_replay_a', 'Replay Staff', 'staff', '{orders.create}')",
+        ),
+        parameters: {'t': a.tenantId, 'u': orderOnly},
+      );
+      final staff = await db.actor(orderOnly);
+      final replay = await staff.json('select public.create_order(@c::uuid, @items::jsonb, @r::uuid)', {
+        'c': '00000000-0000-0000-0000-000000000000',
+        'items': '[]',
+        'r': requestId,
+      });
+      expect(replay['replayed'], isTrue);
+      expect(replay.containsKey('payment'), isFalse);
+      final ownerReplay = await owner.json('select public.create_order(@c::uuid, @items::jsonb, @r::uuid)', {
+        'c': a.suresh,
+        'items': '[]',
+        'r': requestId,
+      });
+      expect(ownerReplay['payment']['amount_paise'], 20000);
+    });
+
     test('bill PDFs in storage need bills.issue or hisaab.view', () async {
       await db.admin.execute(
         "insert into storage.objects (bucket_id, name) values ('bills', \$1)",
