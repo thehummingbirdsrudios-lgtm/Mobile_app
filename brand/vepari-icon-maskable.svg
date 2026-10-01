@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full-bleed (maskable) icon for web/PWA: ink background, mark within the 80% safe zone. -->
+  <rect width="512" height="512" fill="#1B1A17"/>
+  <g transform="translate(256 256) scale(0.9) translate(-256 -236)">
+    <polygon points="128,160 208,160 256,296 256,384" fill="#D7B46A"/>
+    <polygon points="304,160 384,160 256,384 256,296" fill="#A57C2C"/>
+    <polygon points="256,88 276,118 256,148 236,118" fill="#F4EBD9"/>
+  </g>
+</svg>

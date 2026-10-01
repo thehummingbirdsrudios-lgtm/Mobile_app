@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vepari">
+  <!-- Variant for dark backgrounds: ivory tile, same facets. -->
+  <rect width="512" height="512" rx="112" fill="#FAF7F2"/>
+  <polygon points="128,160 208,160 256,296 256,384" fill="#C49A45"/>
+  <polygon points="304,160 384,160 256,384 256,296" fill="#7A5A1C"/>
+  <polygon points="256,88 276,118 256,148 236,118" fill="#1B1A17"/>
+</svg>

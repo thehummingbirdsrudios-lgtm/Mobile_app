@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vepari">
+  <!-- Single-colour mark (inherits currentColor): stamps, watermarks, notification icon. -->
+  <g fill="currentColor">
+    <polygon points="128,160 208,160 256,296 256,384"/>
+    <polygon points="304,160 384,160 256,384 256,296" opacity="0.72"/>
+    <polygon points="256,88 276,118 256,148 236,118"/>
+  </g>
+</svg>

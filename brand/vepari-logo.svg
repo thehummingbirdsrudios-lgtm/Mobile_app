@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vepari">
+  <!-- Vepari mark: faceted-gem "V" on an ink tile. Geometry mirrors app/lib/core/widgets/brand_mark.dart. -->
+  <rect width="512" height="512" rx="112" fill="#1B1A17"/>
+  <polygon points="128,160 208,160 256,296 256,384" fill="#D7B46A"/>
+  <polygon points="304,160 384,160 256,384 256,296" fill="#A57C2C"/>
+  <polygon points="256,88 276,118 256,148 236,118" fill="#F4EBD9"/>
+</svg>
