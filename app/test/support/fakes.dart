@@ -7,6 +7,7 @@ import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/catalogue/domain/catalogue.dart'
     show CatalogueCursor, PhotoUpload, ProductDraft, ProductPrivate;
 import 'package:vepari/features/dashboard/dashboard.dart';
+import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
 
 const ownerSession = UserSession(
@@ -287,3 +288,50 @@ class RecordingNavigator implements AppNavigator {
     '${invocation.positionalArguments.isEmpty ? '' : ':${invocation.positionalArguments.join(',')}'}',
   );
 }
+
+// ---------------------------------------------------------------------------
+// Search
+// ---------------------------------------------------------------------------
+class FakeSearchRepository implements SearchRepository {
+  FakeSearchRepository({List<SearchHit>? hits}) : hits = hits ?? sampleHits;
+
+  final List<SearchHit> hits;
+  final recentByScope = <String, List<String>>{};
+  final queries = <String>[];
+
+  /// Queries that wait until their completer is completed.
+  final gates = <String, Completer<void>>{};
+  AppFailure? error;
+
+  @override
+  Future<SearchResults> search(String query, {int limitPerGroup = 8}) async {
+    queries.add(query);
+    final gate = gates[query];
+    if (gate != null) await gate.future;
+    if (error != null) throw error!;
+    final q = query.toLowerCase();
+    return SearchResults.fromHits(
+      query,
+      hits.where((h) => h.title.toLowerCase().contains(q) || (h.subtitle ?? '').toLowerCase().contains(q)),
+    );
+  }
+
+  @override
+  List<String> recent(String scope) => recentByScope[scope] ?? const [];
+
+  @override
+  Future<void> remember(String scope, String query) async =>
+      recentByScope[scope] = [query, ...recent(scope).where((q) => q != query)];
+
+  @override
+  Future<void> clearRecent(String scope) async => recentByScope.remove(scope);
+}
+
+const customerPatelId = '00000000-0000-4000-8000-00000000c001';
+const orderFirstId = '00000000-0000-4000-8000-00000000a001';
+
+const sampleHits = [
+  SearchHit(kind: SearchKind.product, id: productKundanId, title: '1024', subtitle: 'Kundan Set'),
+  SearchHit(kind: SearchKind.customer, id: customerPatelId, title: 'Patel Kundan Stores', subtitle: 'Rajkot'),
+  SearchHit(kind: SearchKind.order, id: orderFirstId, title: '1045', subtitle: 'Patel Kundan Stores'),
+];

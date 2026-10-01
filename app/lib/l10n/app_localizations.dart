@@ -854,6 +854,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New category'**
   String get categoryNew;
+
+  /// Header above recent search queries
+  ///
+  /// In en, this message translates to:
+  /// **'Recent searches'**
+  String get searchRecent;
+
+  /// Clears recent searches
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get searchClearRecent;
+
+  /// Shown before the user types a search
+  ///
+  /// In en, this message translates to:
+  /// **'Search by design no., customer name or mobile, or order no.'**
+  String get searchStartHint;
+
+  /// Search returned nothing
+  ///
+  /// In en, this message translates to:
+  /// **'No match for “{query}”'**
+  String searchNoMatch(String query);
+
+  /// Help under no-match
+  ///
+  /// In en, this message translates to:
+  /// **'Check the spelling, or try a design number or mobile number.'**
+  String get searchNoMatchBody;
+
+  /// Search result group header
+  ///
+  /// In en, this message translates to:
+  /// **'Designs'**
+  String get searchSectionDesigns;
+
+  /// Search result group header
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get searchSectionCustomers;
+
+  /// Search result group header
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get searchSectionOrders;
+
+  /// Order title with its number
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNo}'**
+  String orderNumberTitle(String orderNo);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

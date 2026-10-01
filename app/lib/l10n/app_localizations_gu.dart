@@ -406,4 +406,35 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get categoryNew => 'નવી કેટેગરી';
+
+  @override
+  String get searchRecent => 'તાજેતરની શોધ';
+
+  @override
+  String get searchClearRecent => 'સાફ કરો';
+
+  @override
+  String get searchStartHint => 'ડિઝાઇન નંબર, ગ્રાહકનું નામ કે મોબાઇલ, અથવા ઓર્ડર નંબરથી શોધો';
+
+  @override
+  String searchNoMatch(String query) {
+    return '“$query” માટે કંઈ મળ્યું નથી';
+  }
+
+  @override
+  String get searchNoMatchBody => 'સ્પેલિંગ તપાસો, અથવા ડિઝાઇન નંબર કે મોબાઇલ નંબરથી શોધો.';
+
+  @override
+  String get searchSectionDesigns => 'ડિઝાઇન';
+
+  @override
+  String get searchSectionCustomers => 'ગ્રાહકો';
+
+  @override
+  String get searchSectionOrders => 'ઓર્ડર';
+
+  @override
+  String orderNumberTitle(String orderNo) {
+    return 'ઓર્ડર #$orderNo';
+  }
 }

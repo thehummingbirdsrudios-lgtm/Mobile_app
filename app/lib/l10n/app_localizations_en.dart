@@ -406,4 +406,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryNew => 'New category';
+
+  @override
+  String get searchRecent => 'Recent searches';
+
+  @override
+  String get searchClearRecent => 'Clear';
+
+  @override
+  String get searchStartHint => 'Search by design no., customer name or mobile, or order no.';
+
+  @override
+  String searchNoMatch(String query) {
+    return 'No match for “$query”';
+  }
+
+  @override
+  String get searchNoMatchBody => 'Check the spelling, or try a design number or mobile number.';
+
+  @override
+  String get searchSectionDesigns => 'Designs';
+
+  @override
+  String get searchSectionCustomers => 'Customers';
+
+  @override
+  String get searchSectionOrders => 'Orders';
+
+  @override
+  String orderNumberTitle(String orderNo) {
+    return 'Order #$orderNo';
+  }
 }

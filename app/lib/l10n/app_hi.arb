@@ -126,5 +126,14 @@
   "unarchiveDesign": "माल में वापस लाएँ",
   "rateNeedsPermission": "रेट बदलने की अनुमति वाले ही रेट बदल सकते हैं।",
   "catalogueAll": "सब",
-  "categoryNew": "नई कैटेगरी"
+  "categoryNew": "नई कैटेगरी",
+  "searchRecent": "हाल की खोज",
+  "searchClearRecent": "साफ़ करें",
+  "searchStartHint": "डिज़ाइन नंबर, ग्राहक का नाम या मोबाइल, या ऑर्डर नंबर से खोजें",
+  "searchNoMatch": "“{query}” के लिए कुछ नहीं मिला",
+  "searchNoMatchBody": "स्पेलिंग जाँचें, या डिज़ाइन नंबर या मोबाइल नंबर से खोजें।",
+  "searchSectionDesigns": "डिज़ाइन",
+  "searchSectionCustomers": "ग्राहक",
+  "searchSectionOrders": "ऑर्डर",
+  "orderNumberTitle": "ऑर्डर #{orderNo}"
 }

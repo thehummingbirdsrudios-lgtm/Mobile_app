@@ -534,5 +534,51 @@
   "categoryNew": "New category",
   "@categoryNew": {
     "description": "Create category"
+  },
+  "searchRecent": "Recent searches",
+  "@searchRecent": {
+    "description": "Header above recent search queries"
+  },
+  "searchClearRecent": "Clear",
+  "@searchClearRecent": {
+    "description": "Clears recent searches"
+  },
+  "searchStartHint": "Search by design no., customer name or mobile, or order no.",
+  "@searchStartHint": {
+    "description": "Shown before the user types a search"
+  },
+  "searchNoMatch": "No match for “{query}”",
+  "@searchNoMatch": {
+    "description": "Search returned nothing",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "searchNoMatchBody": "Check the spelling, or try a design number or mobile number.",
+  "@searchNoMatchBody": {
+    "description": "Help under no-match"
+  },
+  "searchSectionDesigns": "Designs",
+  "@searchSectionDesigns": {
+    "description": "Search result group header"
+  },
+  "searchSectionCustomers": "Customers",
+  "@searchSectionCustomers": {
+    "description": "Search result group header"
+  },
+  "searchSectionOrders": "Orders",
+  "@searchSectionOrders": {
+    "description": "Search result group header"
+  },
+  "orderNumberTitle": "Order #{orderNo}",
+  "@orderNumberTitle": {
+    "description": "Order title with its number",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      }
+    }
   }
 }

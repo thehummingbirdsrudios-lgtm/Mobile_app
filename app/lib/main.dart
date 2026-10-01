@@ -12,6 +12,8 @@ import 'features/catalogue/catalogue.dart';
 import 'features/catalogue/catalogue_adapters.dart';
 import 'features/dashboard/dashboard.dart';
 import 'features/dashboard/dashboard_adapters.dart';
+import 'features/search/search.dart';
+import 'features/search/search_adapters.dart';
 import 'features/settings/settings.dart';
 import 'features/settings/settings_adapters.dart';
 
@@ -47,6 +49,7 @@ Future<void> main() async {
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),
       dashboardRepositoryProvider.overrideWithValue(DashboardRepositoryImpl(DashboardApi(api))),
+      searchRepositoryProvider.overrideWithValue(SearchRepositoryImpl(SearchApi(api), RecentSearchStore(preferences))),
     ]);
   } else {
     overrides.add(authRepositoryProvider.overrideWithValue(const UnconfiguredAuthRepository()));

@@ -126,5 +126,14 @@
   "unarchiveDesign": "માલમાં પાછી લાવો",
   "rateNeedsPermission": "રેટ બદલવાની પરમિશન વાળા જ રેટ બદલી શકે.",
   "catalogueAll": "બધું",
-  "categoryNew": "નવી કેટેગરી"
+  "categoryNew": "નવી કેટેગરી",
+  "searchRecent": "તાજેતરની શોધ",
+  "searchClearRecent": "સાફ કરો",
+  "searchStartHint": "ડિઝાઇન નંબર, ગ્રાહકનું નામ કે મોબાઇલ, અથવા ઓર્ડર નંબરથી શોધો",
+  "searchNoMatch": "“{query}” માટે કંઈ મળ્યું નથી",
+  "searchNoMatchBody": "સ્પેલિંગ તપાસો, અથવા ડિઝાઇન નંબર કે મોબાઇલ નંબરથી શોધો.",
+  "searchSectionDesigns": "ડિઝાઇન",
+  "searchSectionCustomers": "ગ્રાહકો",
+  "searchSectionOrders": "ઓર્ડર",
+  "orderNumberTitle": "ઓર્ડર #{orderNo}"
 }

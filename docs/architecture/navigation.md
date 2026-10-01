@@ -15,7 +15,27 @@ flowchart LR
     more[/more/] --> legal[/more/legal/:doc/]
   end
   more -->|logout| login
+  subgraph Full["Full-screen routes (root navigator, above the tabs)"]
+    search[/search/]
+    navo[/navo-maal/]
+    product[/product/:id · /product/new · /product/:id/edit/]
+    cust[/customers/:id · /customers/new · …/edit · …/rates/]
+    orders[/orders · /orders/:id · /cart · /quick-order/]
+    ledger[/ledger/:customerId · …/pay/]
+    settings[/settings/business · staff · audit · export · notifications/]
+  end
+  Shell --> Full
 ```
+
+## Where routes live
+Tabs hold only their list screens. Detail, editor and flow screens are
+full-screen routes on the root navigator, so they can be opened from any tab,
+from search or from a deep link with one `push`, and Back always returns to
+where the user came from. (Pushing a tab's sub-route from a root route
+duplicates page keys in go_router; found in testing and avoided by design.)
+Modules never import screens of other modules: they call the `AppNavigator`
+port (`core/navigation`), implemented by `GoRouterNavigator` with paths from
+`AppRoutes`.
 
 ## Guards
 `redirectFor(session, location)` in `app/lib/app/router.dart`:
@@ -23,9 +43,11 @@ flowchart LR
 - **Signed out** → `/login` for every route, deep links included.
 - **Signed in** → `/splash` and `/login` redirect to `/home`; deep links are kept.
 
-Malformed deep links (e.g. `/more/legal/unknown`) redirect to `/more`; they
-never crash. Ids in future deep links (orders, customers) are re-authorised by
-the server (RLS) when the screen loads — routes never trust ids.
+Malformed deep links (e.g. `/more/legal/unknown`, `/product/not-a-uuid`)
+redirect to a safe screen; unknown paths show "This page does not exist".
+They never crash. Ids in deep links are re-authorised by the server (RLS)
+when the screen loads — routes never trust ids; another business's id simply
+reads as "not found".
 
 ## Back behaviour
 1. Keyboard open → Back closes the keyboard (platform).

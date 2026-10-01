@@ -38,6 +38,9 @@ final _editorList = find.descendant(of: find.byType(ProductEditScreen), matching
 /// Form screens are lazy lists: scroll the target into view, then tap it.
 Future<void> _tapText(WidgetTester tester, String text) async {
   await tester.scrollUntilVisible(find.text(text), 200, scrollable: _editorList);
+  // Built inside the cache extent is not the same as on screen.
+  await tester.ensureVisible(find.text(text));
+  await tester.pumpAndSettle();
   await tester.tap(find.text(text));
   await tester.pumpAndSettle();
 }

@@ -9,6 +9,7 @@ import '../features/customers/customers.dart';
 import '../features/dashboard/dashboard.dart';
 import '../features/hisaab/hisaab.dart';
 import '../features/orders/orders.dart';
+import '../features/search/search.dart';
 import '../features/settings/settings.dart';
 import 'not_found_screen.dart';
 import 'shell.dart';
@@ -16,6 +17,7 @@ import 'shell.dart';
 /// Route paths — the only place they are defined. Ids in paths are always
 /// re-authorised by the server (RLS) when the screen loads.
 abstract final class AppRoutes {
+  // Tabs (inside the shell).
   static const splash = '/splash';
   static const login = '/login';
   static const home = '/home';
@@ -24,11 +26,36 @@ abstract final class AppRoutes {
   static const customer = '/customer';
   static const hisaab = '/hisaab';
   static const more = '/more';
-  static const search = '/search';
 
-  static String product(String id) => '$maal/product/$id';
-  static String editProduct([String? id]) => id == null ? '$maal/edit' : '$maal/edit/$id';
-  static const navoMaal = '$maal/navo';
+  // Full-screen routes above the tabs. Detail and editor screens live here
+  // so they can be opened from any tab, from search or from a deep link.
+  static const search = '/search';
+  static const navoMaal = '/navo-maal';
+  static const newProduct = '/product/new';
+  static String product(String id) => '/product/$id';
+  static String editProduct([String? id]) => id == null ? newProduct : '/product/$id/edit';
+
+  static const newCustomer = '/customers/new';
+  static String customerDetail(String id) => '/customers/$id';
+  static String editCustomer([String? id]) => id == null ? newCustomer : '/customers/$id/edit';
+  static String customerRates(String id) => '/customers/$id/rates';
+
+  static const quickOrder = '/quick-order';
+  static String cart({String? customerId}) => customerId == null ? '/cart' : '/cart?customer=$customerId';
+  static String orderDetail(String id) => '/orders/$id';
+  static String orders({String? customerId, bool pendingOnly = false}) {
+    final query = [if (customerId != null) 'customer=$customerId', if (pendingOnly) 'pending=1'].join('&');
+    return query.isEmpty ? '/orders' : '/orders?$query';
+  }
+
+  static String ledger(String customerId) => '/ledger/$customerId';
+  static String payment(String customerId) => '/ledger/$customerId/pay';
+
+  static const businessProfile = '/settings/business';
+  static const staff = '/settings/staff';
+  static const audit = '/settings/audit';
+  static const export = '/settings/export';
+  static const notifications = '/settings/notifications';
 
   static String legalPath(LegalDocument doc) => '$more/legal/${doc.name}';
 }
@@ -76,6 +103,19 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: AppRoutes.splash, builder: (_, _) => const SplashScreen()),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
+      GoRoute(path: AppRoutes.search, builder: (_, _) => const SearchScreen()),
+      GoRoute(path: AppRoutes.newProduct, builder: (_, _) => const ProductEditScreen()),
+      GoRoute(
+        path: '/product/:id',
+        redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.maal),
+        builder: (_, s) => ProductDetailScreen(productId: s.pathParameters['id']!),
+        routes: [
+          GoRoute(
+            path: 'edit',
+            builder: (_, s) => ProductEditScreen(productId: s.pathParameters['id']),
+          ),
+        ],
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) => AppShell(navigationShell: navigationShell),
         branches: [
@@ -88,25 +128,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.maal,
-                builder: (_, _) => const CatalogueScreen(),
-                routes: [
-                  GoRoute(
-                    path: 'product/:id',
-                    redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.maal),
-                    builder: (_, s) => ProductDetailScreen(productId: s.pathParameters['id']!),
-                  ),
-                  GoRoute(path: 'edit', builder: (_, _) => const ProductEditScreen()),
-                  GoRoute(
-                    path: 'edit/:id',
-                    redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.maal),
-                    builder: (_, s) => ProductEditScreen(productId: s.pathParameters['id']),
-                  ),
-                ],
-              ),
-            ],
+            routes: [GoRoute(path: AppRoutes.maal, builder: (_, _) => const CatalogueScreen())],
           ),
           StatefulShellBranch(
             routes: [GoRoute(path: AppRoutes.order, builder: (_, _) => const OrdersScreen())],
@@ -159,41 +181,37 @@ class GoRouterNavigator implements AppNavigator {
   void openNavoMaal() => _push(AppRoutes.navoMaal);
 
   @override
-  void openCustomer(String customerId) => _push('${AppRoutes.customer}/$customerId');
+  void openCustomer(String customerId) => _push(AppRoutes.customerDetail(customerId));
   @override
-  void editCustomer([String? customerId]) =>
-      _push(customerId == null ? '${AppRoutes.customer}/new' : '${AppRoutes.customer}/$customerId/edit');
+  void editCustomer([String? customerId]) => _push(AppRoutes.editCustomer(customerId));
   @override
-  void openCustomerRates(String customerId) => _push('${AppRoutes.customer}/$customerId/rates');
+  void openCustomerRates(String customerId) => _push(AppRoutes.customerRates(customerId));
 
   @override
-  void openCart({String? customerId}) =>
-      _push(customerId == null ? '${AppRoutes.order}/cart' : '${AppRoutes.order}/cart?customer=$customerId');
+  void openCart({String? customerId}) => _push(AppRoutes.cart(customerId: customerId));
   @override
-  void openQuickOrder() => _push('${AppRoutes.order}/quick');
+  void openQuickOrder() => _push(AppRoutes.quickOrder);
   @override
-  void openOrder(String orderId) => _push('${AppRoutes.order}/$orderId');
+  void openOrder(String orderId) => _push(AppRoutes.orderDetail(orderId));
   @override
-  void openOrders({String? customerId, bool pendingOnly = false}) {
-    final query = [if (customerId != null) 'customer=$customerId', if (pendingOnly) 'pending=1'].join('&');
-    _push(query.isEmpty ? '${AppRoutes.order}/list' : '${AppRoutes.order}/list?$query');
-  }
+  void openOrders({String? customerId, bool pendingOnly = false}) =>
+      _push(AppRoutes.orders(customerId: customerId, pendingOnly: pendingOnly));
 
   @override
-  void openHisaab(String customerId) => _push('${AppRoutes.hisaab}/$customerId');
+  void openHisaab(String customerId) => _push(AppRoutes.ledger(customerId));
   @override
-  void openPayment(String customerId) => _push('${AppRoutes.hisaab}/$customerId/pay');
+  void openPayment(String customerId) => _push(AppRoutes.payment(customerId));
 
   @override
-  void openBusinessProfile() => _push('${AppRoutes.more}/business');
+  void openBusinessProfile() => _push(AppRoutes.businessProfile);
   @override
-  void openStaff() => _push('${AppRoutes.more}/staff');
+  void openStaff() => _push(AppRoutes.staff);
   @override
-  void openAudit() => _push('${AppRoutes.more}/audit');
+  void openAudit() => _push(AppRoutes.audit);
   @override
-  void openExport() => _push('${AppRoutes.more}/export');
+  void openExport() => _push(AppRoutes.export);
   @override
-  void openNotifications() => _push('${AppRoutes.more}/notifications');
+  void openNotifications() => _push(AppRoutes.notifications);
 
   @override
   void back() {
