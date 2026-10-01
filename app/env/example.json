@@ -1,0 +1,7 @@
+{
+  "APP_ENV": "development",
+  "SUPABASE_URL": "https://YOUR-PROJECT-REF.supabase.co",
+  "SUPABASE_PUBLISHABLE_KEY": "YOUR-PUBLISHABLE-ANON-KEY",
+  "LOGIN_DOMAIN": "login.vepari.invalid",
+  "APP_VERSION": "0.1.0"
+}
