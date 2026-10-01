@@ -21,6 +21,7 @@ abstract interface class AppNavigator {
 
   void openHisaab(String customerId);
   void openPayment(String customerId);
+  void openReceipt(String paymentId);
 
   void openBusinessProfile();
   void openStaff();

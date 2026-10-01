@@ -49,6 +49,7 @@ void main() {
     await pumpVepari(tester, auth: FakeAuthRepository(restored: ownerSession));
     await tester.tap(find.widgetWithText(InkWell, 'Hisaab').first);
     await tester.pumpAndSettle();
-    expect(find.text('This section is being built'), findsOneWidget);
+    expect(find.text('Patel Kundan Stores'), findsOneWidget); // Baki list
+    expect(find.text('₹48,200'), findsOneWidget);
   });
 }

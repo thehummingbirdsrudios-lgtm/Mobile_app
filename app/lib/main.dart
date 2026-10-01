@@ -14,6 +14,8 @@ import 'features/customers/customers.dart';
 import 'features/customers/customers_adapters.dart';
 import 'features/dashboard/dashboard.dart';
 import 'features/dashboard/dashboard_adapters.dart';
+import 'features/hisaab/hisaab.dart';
+import 'features/hisaab/hisaab_adapters.dart';
 import 'features/orders/orders.dart';
 import 'features/orders/orders_adapters.dart';
 import 'features/search/search.dart';
@@ -52,6 +54,7 @@ Future<void> main() async {
       catalogueRepositoryProvider.overrideWithValue(CatalogueRepositoryImpl(CatalogueApi(client, api, storage))),
       customerRepositoryProvider.overrideWithValue(CustomerRepositoryImpl(CustomersApi(client, api))),
       ordersRepositoryProvider.overrideWithValue(OrdersRepositoryImpl(OrdersApi(api))),
+      hisaabRepositoryProvider.overrideWithValue(HisaabRepositoryImpl(HisaabApi(api))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

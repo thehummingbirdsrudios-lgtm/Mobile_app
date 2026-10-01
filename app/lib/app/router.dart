@@ -50,6 +50,7 @@ abstract final class AppRoutes {
 
   static String ledger(String customerId) => '/ledger/$customerId';
   static String payment(String customerId) => '/ledger/$customerId/pay';
+  static String receipt(String paymentId) => '/receipts/$paymentId';
 
   static const businessProfile = '/settings/business';
   static const staff = '/settings/staff';
@@ -111,6 +112,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/cart',
         builder: (_, s) => CartScreen(customerId: _uuidOrNull(s.uri.queryParameters['customer'])),
+      ),
+      GoRoute(
+        path: '/ledger/:id',
+        redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.hisaab),
+        builder: (_, s) => LedgerScreen(customerId: s.pathParameters['id']!),
+        routes: [
+          GoRoute(
+            path: 'pay',
+            builder: (_, s) => PaymentScreen(customerId: s.pathParameters['id']!),
+          ),
+        ],
+      ),
+      GoRoute(
+        path: '/receipts/:id',
+        redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.hisaab),
+        builder: (_, s) => ReceiptScreen(paymentId: s.pathParameters['id']!),
       ),
       GoRoute(path: AppRoutes.quickOrder, builder: (_, _) => const CartScreen(quickEntry: true)),
       GoRoute(
@@ -241,6 +258,8 @@ class GoRouterNavigator implements AppNavigator {
   void openHisaab(String customerId) => _push(AppRoutes.ledger(customerId));
   @override
   void openPayment(String customerId) => _push(AppRoutes.payment(customerId));
+  @override
+  void openReceipt(String paymentId) => _push(AppRoutes.receipt(paymentId));
 
   @override
   void openBusinessProfile() => _push(AppRoutes.businessProfile);

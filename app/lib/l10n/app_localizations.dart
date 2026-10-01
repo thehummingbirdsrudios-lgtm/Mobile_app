@@ -1532,6 +1532,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear order'**
   String get cartClear;
+
+  /// Hisaab tab without permission
+  ///
+  /// In en, this message translates to:
+  /// **'You don\'t have access to Hisaab. Ask the owner.'**
+  String get hisaabNoPermission;
+
+  /// Sum of all customer Baki
+  ///
+  /// In en, this message translates to:
+  /// **'Total Baki'**
+  String get hisaabTotalBaki;
+
+  /// Empty Baki list
+  ///
+  /// In en, this message translates to:
+  /// **'No Baki. Everyone has paid.'**
+  String get hisaabAllClear;
+
+  /// Customer has paid more than owed
+  ///
+  /// In en, this message translates to:
+  /// **'Advance'**
+  String get advanceLabel;
+
+  /// Ledger entry
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Baki'**
+  String get ledgerOpening;
+
+  /// Ledger entry
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNo}'**
+  String ledgerOrder(String orderNo);
+
+  /// Ledger entry
+  ///
+  /// In en, this message translates to:
+  /// **'Payment · {mode}'**
+  String ledgerPayment(String mode);
+
+  /// Ledger entry
+  ///
+  /// In en, this message translates to:
+  /// **'Adjustment'**
+  String get ledgerAdjustment;
+
+  /// Ledger entry
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNo} cancelled'**
+  String ledgerReversal(String orderNo);
+
+  /// Ledger reversal without order no
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get ledgerReversalPlain;
+
+  /// Empty ledger
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet.'**
+  String get ledgerEmpty;
+
+  /// Running balance
+  ///
+  /// In en, this message translates to:
+  /// **'Baki {amount}'**
+  String balanceAfter(String amount);
+
+  /// Screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Record payment'**
+  String get paymentRecord;
+
+  /// Quick amount chip
+  ///
+  /// In en, this message translates to:
+  /// **'Full Baki {amount}'**
+  String paymentFullBaki(String amount);
+
+  /// Live preview
+  ///
+  /// In en, this message translates to:
+  /// **'Baki after this: {amount}'**
+  String paymentBakiAfter(String amount);
+
+  /// Live preview when overpaid
+  ///
+  /// In en, this message translates to:
+  /// **'Advance after this: {amount}'**
+  String paymentAdvanceAfter(String amount);
+
+  /// Button
+  ///
+  /// In en, this message translates to:
+  /// **'Save payment'**
+  String get paymentSave;
+
+  /// Receipt screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt #{paymentNo}'**
+  String receiptTitle(String paymentNo);
+
+  /// Receipt label
+  ///
+  /// In en, this message translates to:
+  /// **'Received from'**
+  String get receiptReceivedFrom;
+
+  /// Receipt label
+  ///
+  /// In en, this message translates to:
+  /// **'Mode'**
+  String get receiptMode;
+
+  /// Receipt label
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get receiptReference;
+
+  /// Receipt label
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get receiptDate;
+
+  /// Receipt label
+  ///
+  /// In en, this message translates to:
+  /// **'Baki before'**
+  String get receiptBakiBefore;
+
+  /// Receipt label
+  ///
+  /// In en, this message translates to:
+  /// **'Baki now'**
+  String get receiptBakiNow;
+
+  /// Button
+  ///
+  /// In en, this message translates to:
+  /// **'Send on WhatsApp'**
+  String get receiptSend;
+
+  /// WhatsApp receipt text
+  ///
+  /// In en, this message translates to:
+  /// **'Received {amount} by {mode} on {date}. Receipt #{paymentNo}. Baki now {baki}. — {business}'**
+  String receiptMessage(String amount, String mode, String date, String paymentNo, String baki, String business);
+
+  /// WhatsApp Hisaab text
+  ///
+  /// In en, this message translates to:
+  /// **'Namaste {name}, your Baki with {business} is {baki} as of {date}.'**
+  String hisaabMessage(String name, String business, String baki, String date);
+
+  /// Button
+  ///
+  /// In en, this message translates to:
+  /// **'Send Hisaab'**
+  String get hisaabSend;
+
+  /// Button: correct the ledger
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust'**
+  String get adjustAction;
+
+  /// Dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust Baki'**
+  String get adjustTitle;
+
+  /// Adjustment direction
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Baki'**
+  String get adjustAdd;
+
+  /// Adjustment direction
+  ///
+  /// In en, this message translates to:
+  /// **'Reduce Baki'**
+  String get adjustReduce;
+
+  /// Note field
+  ///
+  /// In en, this message translates to:
+  /// **'Write why (shown in Hisaab)'**
+  String get adjustNoteRequired;
+
+  /// Error
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Baki is already set for this customer.'**
+  String get openingAlreadySet;
+
+  /// Button
+  ///
+  /// In en, this message translates to:
+  /// **'Set opening Baki'**
+  String get openingSet;
+
+  /// Idempotent replay
+  ///
+  /// In en, this message translates to:
+  /// **'This payment was already saved — nothing was added twice.'**
+  String get paymentAlreadySaved;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -11,7 +11,6 @@ import '../../customers/customers.dart';
 import '../application/cart_controller.dart';
 import '../domain/orders.dart';
 import 'customer_picker.dart';
-import 'order_labels.dart';
 
 /// Build and place an order: customer, designs (from Maal, Regular Maal or
 /// typed design numbers), quantities, optional payment, one button.
@@ -666,7 +665,7 @@ class _PaymentFields extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           TextField(
             controller: reference,
-            maxLength: 100,
+            maxLength: 60, // server limit
             decoration: InputDecoration(labelText: l10n.fieldReference),
           ),
         ],

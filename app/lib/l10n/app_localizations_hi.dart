@@ -794,4 +794,132 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get cartClear => 'ऑर्डर खाली करें';
+
+  @override
+  String get hisaabNoPermission => 'आपको हिसाब देखने की अनुमति नहीं है। मालिक से पूछें।';
+
+  @override
+  String get hisaabTotalBaki => 'कुल बाकी';
+
+  @override
+  String get hisaabAllClear => 'कोई बाकी नहीं। सबने चुका दिया।';
+
+  @override
+  String get advanceLabel => 'एडवांस';
+
+  @override
+  String get ledgerOpening => 'शुरुआती बाकी';
+
+  @override
+  String ledgerOrder(String orderNo) {
+    return 'ऑर्डर #$orderNo';
+  }
+
+  @override
+  String ledgerPayment(String mode) {
+    return 'पेमेंट · $mode';
+  }
+
+  @override
+  String get ledgerAdjustment => 'सुधार';
+
+  @override
+  String ledgerReversal(String orderNo) {
+    return 'ऑर्डर #$orderNo रद्द';
+  }
+
+  @override
+  String get ledgerReversalPlain => 'रद्द';
+
+  @override
+  String get ledgerEmpty => 'अभी कोई एंट्री नहीं।';
+
+  @override
+  String balanceAfter(String amount) {
+    return 'बाकी $amount';
+  }
+
+  @override
+  String get paymentRecord => 'पेमेंट दर्ज करें';
+
+  @override
+  String paymentFullBaki(String amount) {
+    return 'पूरी बाकी $amount';
+  }
+
+  @override
+  String paymentBakiAfter(String amount) {
+    return 'इसके बाद बाकी: $amount';
+  }
+
+  @override
+  String paymentAdvanceAfter(String amount) {
+    return 'इसके बाद एडवांस: $amount';
+  }
+
+  @override
+  String get paymentSave => 'पेमेंट सेव करें';
+
+  @override
+  String receiptTitle(String paymentNo) {
+    return 'रसीद #$paymentNo';
+  }
+
+  @override
+  String get receiptReceivedFrom => 'इनसे मिले';
+
+  @override
+  String get receiptMode => 'तरीका';
+
+  @override
+  String get receiptReference => 'रेफ़रेंस';
+
+  @override
+  String get receiptDate => 'तारीख';
+
+  @override
+  String get receiptBakiBefore => 'पहले की बाकी';
+
+  @override
+  String get receiptBakiNow => 'अब की बाकी';
+
+  @override
+  String get receiptSend => 'व्हाट्सऐप पर भेजें';
+
+  @override
+  String receiptMessage(String amount, String mode, String date, String paymentNo, String baki, String business) {
+    return '$date को $mode से $amount मिले। रसीद #$paymentNo। अब बाकी $baki। — $business';
+  }
+
+  @override
+  String hisaabMessage(String name, String business, String baki, String date) {
+    return 'नमस्ते $name, $business में $date तक आपकी बाकी $baki है।';
+  }
+
+  @override
+  String get hisaabSend => 'हिसाब भेजें';
+
+  @override
+  String get adjustAction => 'सुधार';
+
+  @override
+  String get adjustTitle => 'बाकी सुधारें';
+
+  @override
+  String get adjustAdd => 'बाकी में जोड़ें';
+
+  @override
+  String get adjustReduce => 'बाकी कम करें';
+
+  @override
+  String get adjustNoteRequired => 'कारण लिखें (हिसाब में दिखेगा)';
+
+  @override
+  String get openingAlreadySet => 'इस ग्राहक की शुरुआती बाकी पहले से है।';
+
+  @override
+  String get openingSet => 'शुरुआती बाकी डालें';
+
+  @override
+  String get paymentAlreadySaved => 'यह पेमेंट पहले से सेव था — कुछ दो बार नहीं जुड़ा।';
 }

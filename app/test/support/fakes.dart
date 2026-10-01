@@ -9,6 +9,8 @@ import 'package:vepari/features/catalogue/domain/catalogue.dart'
 import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/customers/domain/customers.dart' show CustomerCursor, CustomerDraft;
 import 'package:vepari/features/dashboard/dashboard.dart';
+import 'package:vepari/features/hisaab/domain/hisaab.dart' show LedgerCursor;
+import 'package:vepari/features/hisaab/hisaab.dart';
 import 'package:vepari/features/orders/domain/orders.dart'
     show OrderCursor, OrderLine, OrderCustomer, OrderRequestLine, PaymentInput, PlacedOrder, ReorderLine;
 import 'package:vepari/features/orders/orders.dart';
@@ -751,3 +753,130 @@ class MemoryCartStore implements CartDraftStore {
   @override
   Future<void> write(String scope, CartDraft? draft) async => drafts[scope] = draft;
 }
+
+// ---------------------------------------------------------------------------
+// Hisaab
+// ---------------------------------------------------------------------------
+const paymentFirstId = '00000000-0000-4000-8000-00000000b001';
+
+class PaymentCall {
+  PaymentCall(this.customerId, this.amount, this.mode, this.requestId, this.reference, this.note);
+
+  final String customerId;
+  final Money amount;
+  final PaymentMode mode;
+  final String requestId;
+  final String? reference;
+  final String? note;
+}
+
+class FakeHisaabRepository implements HisaabRepository {
+  FakeHisaabRepository({Map<String, List<LedgerEntry>>? ledgers})
+    : ledgers = ledgers ?? {customerPatelId: sampleLedger()};
+
+  final Map<String, List<LedgerEntry>> ledgers;
+  final payments = <PaymentCall>[];
+  final adjustments = <(String, Money, bool, String?, String)>[];
+  final receipts = <String, PaymentReceipt>{paymentFirstId: sampleReceipt};
+  final paymentErrors = <AppFailure>[];
+  AppFailure? adjustmentError;
+  int _nextNo = 8;
+
+  @override
+  Future<PageResult<LedgerEntry, LedgerCursor>> ledger(
+    String customerId, {
+    LedgerCursor? before,
+    int limit = 50,
+  }) async => PageResult(ledgers[customerId] ?? const []);
+
+  @override
+  Future<RecordedPayment> recordPayment({
+    required String customerId,
+    required Money amount,
+    required PaymentMode mode,
+    required String requestId,
+    String? reference,
+    String? note,
+  }) async {
+    payments.add(PaymentCall(customerId, amount, mode, requestId, reference, note));
+    if (paymentErrors.isNotEmpty) throw paymentErrors.removeAt(0);
+    final id = '00000000-0000-4000-8000-${(0xb000 + _nextNo).toString().padLeft(12, '0')}';
+    final before = sampleCustomers().firstWhere((c) => c.id == customerId).baki!;
+    receipts[id] = PaymentReceipt(
+      paymentNo: _nextNo,
+      amount: amount,
+      mode: mode,
+      reference: reference,
+      receivedAt: DateTime.utc(2026, 10, 1, 10),
+      balanceBefore: before,
+      balanceAfter: before - amount,
+      customerName: 'Patel Kundan Stores',
+      customerPhone: '9825012345',
+      businessName: 'Shree Jewels',
+    );
+    return RecordedPayment(
+      paymentId: id,
+      paymentNo: _nextNo++,
+      amount: amount,
+      balanceAfter: before - amount,
+      replayed: false,
+    );
+  }
+
+  @override
+  Future<void> recordAdjustment({
+    required String customerId,
+    required Money amount,
+    required String requestId,
+    required bool opening,
+    String? note,
+  }) async {
+    if (adjustmentError != null) throw adjustmentError!;
+    adjustments.add((customerId, amount, opening, note, requestId));
+  }
+
+  @override
+  Future<PaymentReceipt?> receipt(String paymentId) async => receipts[paymentId];
+}
+
+List<LedgerEntry> sampleLedger() => [
+  LedgerEntry(
+    id: 'l3',
+    kind: LedgerKind.payment,
+    amount: const Money.paise(-500000),
+    balanceAfter: const Money.paise(4820000),
+    createdAt: DateTime.utc(2026, 9, 30, 12),
+    paymentId: paymentFirstId,
+    paymentMode: PaymentMode.upi,
+  ),
+  LedgerEntry(
+    id: 'l2',
+    kind: LedgerKind.order,
+    amount: const Money.paise(744000),
+    balanceAfter: const Money.paise(5320000),
+    createdAt: DateTime.utc(2026, 9, 30, 11),
+    orderId: orderFirstId,
+    orderNo: 1045,
+  ),
+  LedgerEntry(
+    id: 'l1',
+    kind: LedgerKind.opening,
+    amount: const Money.paise(4576000),
+    balanceAfter: const Money.paise(4576000),
+    createdAt: DateTime.utc(2026, 9, 1),
+  ),
+];
+
+final sampleReceipt = PaymentReceipt(
+  paymentNo: 7,
+  amount: const Money.paise(500000),
+  mode: PaymentMode.upi,
+  reference: 'UPI-881',
+  receivedAt: DateTime.utc(2026, 9, 30, 12),
+  balanceBefore: const Money.paise(5320000),
+  balanceAfter: const Money.paise(4820000),
+  customerName: 'Patel Kundan Stores',
+  customerPhone: '9825012345',
+  businessName: 'Shree Jewels',
+  businessAddress: 'Soni Bazar, Rajkot',
+);

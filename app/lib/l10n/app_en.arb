@@ -1097,5 +1097,223 @@
   "cartClear": "Clear order",
   "@cartClear": {
     "description": "Remove all lines"
+  },
+  "hisaabNoPermission": "You don't have access to Hisaab. Ask the owner.",
+  "@hisaabNoPermission": {
+    "description": "Hisaab tab without permission"
+  },
+  "hisaabTotalBaki": "Total Baki",
+  "@hisaabTotalBaki": {
+    "description": "Sum of all customer Baki"
+  },
+  "hisaabAllClear": "No Baki. Everyone has paid.",
+  "@hisaabAllClear": {
+    "description": "Empty Baki list"
+  },
+  "advanceLabel": "Advance",
+  "@advanceLabel": {
+    "description": "Customer has paid more than owed"
+  },
+  "ledgerOpening": "Opening Baki",
+  "@ledgerOpening": {
+    "description": "Ledger entry"
+  },
+  "ledgerOrder": "Order #{orderNo}",
+  "@ledgerOrder": {
+    "description": "Ledger entry",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerPayment": "Payment · {mode}",
+  "@ledgerPayment": {
+    "description": "Ledger entry",
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerAdjustment": "Adjustment",
+  "@ledgerAdjustment": {
+    "description": "Ledger entry"
+  },
+  "ledgerReversal": "Order #{orderNo} cancelled",
+  "@ledgerReversal": {
+    "description": "Ledger entry",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      }
+    }
+  },
+  "ledgerReversalPlain": "Cancelled",
+  "@ledgerReversalPlain": {
+    "description": "Ledger reversal without order no"
+  },
+  "ledgerEmpty": "No entries yet.",
+  "@ledgerEmpty": {
+    "description": "Empty ledger"
+  },
+  "balanceAfter": "Baki {amount}",
+  "@balanceAfter": {
+    "description": "Running balance",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentRecord": "Record payment",
+  "@paymentRecord": {
+    "description": "Screen title"
+  },
+  "paymentFullBaki": "Full Baki {amount}",
+  "@paymentFullBaki": {
+    "description": "Quick amount chip",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentBakiAfter": "Baki after this: {amount}",
+  "@paymentBakiAfter": {
+    "description": "Live preview",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentAdvanceAfter": "Advance after this: {amount}",
+  "@paymentAdvanceAfter": {
+    "description": "Live preview when overpaid",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentSave": "Save payment",
+  "@paymentSave": {
+    "description": "Button"
+  },
+  "receiptTitle": "Receipt #{paymentNo}",
+  "@receiptTitle": {
+    "description": "Receipt screen title",
+    "placeholders": {
+      "paymentNo": {
+        "type": "String"
+      }
+    }
+  },
+  "receiptReceivedFrom": "Received from",
+  "@receiptReceivedFrom": {
+    "description": "Receipt label"
+  },
+  "receiptMode": "Mode",
+  "@receiptMode": {
+    "description": "Receipt label"
+  },
+  "receiptReference": "Reference",
+  "@receiptReference": {
+    "description": "Receipt label"
+  },
+  "receiptDate": "Date",
+  "@receiptDate": {
+    "description": "Receipt label"
+  },
+  "receiptBakiBefore": "Baki before",
+  "@receiptBakiBefore": {
+    "description": "Receipt label"
+  },
+  "receiptBakiNow": "Baki now",
+  "@receiptBakiNow": {
+    "description": "Receipt label"
+  },
+  "receiptSend": "Send on WhatsApp",
+  "@receiptSend": {
+    "description": "Button"
+  },
+  "receiptMessage": "Received {amount} by {mode} on {date}. Receipt #{paymentNo}. Baki now {baki}. — {business}",
+  "@receiptMessage": {
+    "description": "WhatsApp receipt text",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "mode": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      },
+      "paymentNo": {
+        "type": "String"
+      },
+      "baki": {
+        "type": "String"
+      },
+      "business": {
+        "type": "String"
+      }
+    }
+  },
+  "hisaabMessage": "Namaste {name}, your Baki with {business} is {baki} as of {date}.",
+  "@hisaabMessage": {
+    "description": "WhatsApp Hisaab text",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "business": {
+        "type": "String"
+      },
+      "baki": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hisaabSend": "Send Hisaab",
+  "@hisaabSend": {
+    "description": "Button"
+  },
+  "adjustAction": "Adjust",
+  "@adjustAction": {
+    "description": "Button: correct the ledger"
+  },
+  "adjustTitle": "Adjust Baki",
+  "@adjustTitle": {
+    "description": "Dialog title"
+  },
+  "adjustAdd": "Add to Baki",
+  "@adjustAdd": {
+    "description": "Adjustment direction"
+  },
+  "adjustReduce": "Reduce Baki",
+  "@adjustReduce": {
+    "description": "Adjustment direction"
+  },
+  "adjustNoteRequired": "Write why (shown in Hisaab)",
+  "@adjustNoteRequired": {
+    "description": "Note field"
+  },
+  "openingAlreadySet": "Opening Baki is already set for this customer.",
+  "@openingAlreadySet": {
+    "description": "Error"
+  },
+  "openingSet": "Set opening Baki",
+  "@openingSet": {
+    "description": "Button"
+  },
+  "paymentAlreadySaved": "This payment was already saved — nothing was added twice.",
+  "@paymentAlreadySaved": {
+    "description": "Idempotent replay"
   }
 }

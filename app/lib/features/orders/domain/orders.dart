@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 
 import '../../../core/money/money.dart';
+import '../../../core/money/payment_mode.dart';
 import '../../../core/state/paged.dart';
 
 enum OrderStatus {
@@ -25,16 +26,6 @@ enum OrderStatus {
 
   static OrderStatus parse(String value) =>
       values.firstWhere((s) => s.name == value, orElse: () => throw FormatException('unknown status', value));
-}
-
-enum PaymentMode {
-  cash,
-  upi,
-  bank,
-  cheque;
-
-  static PaymentMode parse(String value) =>
-      values.firstWhere((m) => m.name == value, orElse: () => throw FormatException('unknown mode', value));
 }
 
 @immutable

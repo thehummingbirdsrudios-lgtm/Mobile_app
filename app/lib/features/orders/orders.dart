@@ -14,9 +14,8 @@ export 'domain/orders.dart'
         OrderStatus,
         OrderSummary,
         OrdersRepository,
-        PaymentMode,
         QuotedProduct;
 export 'presentation/cart_screen.dart' show CartScreen;
 export 'presentation/order_detail_screen.dart' show OrderActions, OrderDetailScreen, orderActionsProvider;
-export 'presentation/order_labels.dart' show orderStatusLabel, paymentModeLabel;
+export 'presentation/order_labels.dart' show orderStatusLabel;
 export 'presentation/orders_screen.dart' show CustomerOrdersScreen, OrdersScreen;

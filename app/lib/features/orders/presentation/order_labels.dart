@@ -16,10 +16,3 @@ StatusTone orderStatusTone(OrderStatus s) => switch (s) {
   OrderStatus.completed => StatusTone.success,
   OrderStatus.cancelled => StatusTone.neutral,
 };
-
-String paymentModeLabel(AppLocalizations l10n, PaymentMode m) => switch (m) {
-  PaymentMode.cash => l10n.paymentModeCash,
-  PaymentMode.upi => l10n.paymentModeUpi,
-  PaymentMode.bank => l10n.paymentModeBank,
-  PaymentMode.cheque => l10n.paymentModeCheque,
-};

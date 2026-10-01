@@ -797,4 +797,132 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartClear => 'Clear order';
+
+  @override
+  String get hisaabNoPermission => 'You don\'t have access to Hisaab. Ask the owner.';
+
+  @override
+  String get hisaabTotalBaki => 'Total Baki';
+
+  @override
+  String get hisaabAllClear => 'No Baki. Everyone has paid.';
+
+  @override
+  String get advanceLabel => 'Advance';
+
+  @override
+  String get ledgerOpening => 'Opening Baki';
+
+  @override
+  String ledgerOrder(String orderNo) {
+    return 'Order #$orderNo';
+  }
+
+  @override
+  String ledgerPayment(String mode) {
+    return 'Payment · $mode';
+  }
+
+  @override
+  String get ledgerAdjustment => 'Adjustment';
+
+  @override
+  String ledgerReversal(String orderNo) {
+    return 'Order #$orderNo cancelled';
+  }
+
+  @override
+  String get ledgerReversalPlain => 'Cancelled';
+
+  @override
+  String get ledgerEmpty => 'No entries yet.';
+
+  @override
+  String balanceAfter(String amount) {
+    return 'Baki $amount';
+  }
+
+  @override
+  String get paymentRecord => 'Record payment';
+
+  @override
+  String paymentFullBaki(String amount) {
+    return 'Full Baki $amount';
+  }
+
+  @override
+  String paymentBakiAfter(String amount) {
+    return 'Baki after this: $amount';
+  }
+
+  @override
+  String paymentAdvanceAfter(String amount) {
+    return 'Advance after this: $amount';
+  }
+
+  @override
+  String get paymentSave => 'Save payment';
+
+  @override
+  String receiptTitle(String paymentNo) {
+    return 'Receipt #$paymentNo';
+  }
+
+  @override
+  String get receiptReceivedFrom => 'Received from';
+
+  @override
+  String get receiptMode => 'Mode';
+
+  @override
+  String get receiptReference => 'Reference';
+
+  @override
+  String get receiptDate => 'Date';
+
+  @override
+  String get receiptBakiBefore => 'Baki before';
+
+  @override
+  String get receiptBakiNow => 'Baki now';
+
+  @override
+  String get receiptSend => 'Send on WhatsApp';
+
+  @override
+  String receiptMessage(String amount, String mode, String date, String paymentNo, String baki, String business) {
+    return 'Received $amount by $mode on $date. Receipt #$paymentNo. Baki now $baki. — $business';
+  }
+
+  @override
+  String hisaabMessage(String name, String business, String baki, String date) {
+    return 'Namaste $name, your Baki with $business is $baki as of $date.';
+  }
+
+  @override
+  String get hisaabSend => 'Send Hisaab';
+
+  @override
+  String get adjustAction => 'Adjust';
+
+  @override
+  String get adjustTitle => 'Adjust Baki';
+
+  @override
+  String get adjustAdd => 'Add to Baki';
+
+  @override
+  String get adjustReduce => 'Reduce Baki';
+
+  @override
+  String get adjustNoteRequired => 'Write why (shown in Hisaab)';
+
+  @override
+  String get openingAlreadySet => 'Opening Baki is already set for this customer.';
+
+  @override
+  String get openingSet => 'Set opening Baki';
+
+  @override
+  String get paymentAlreadySaved => 'This payment was already saved — nothing was added twice.';
 }
