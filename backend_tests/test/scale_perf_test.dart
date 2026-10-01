@@ -25,6 +25,10 @@ const _bigTables = {
 
 void main() {
   final enabled = Platform.environment['VEPARI_SCALE'] == '1';
+  // Latency budgets are calibrated on a 4-vCPU dev container; shared CI
+  // runners set VEPARI_PERF_BUDGET_FACTOR (e.g. 4). Plan shape (no seq scans)
+  // is asserted strictly everywhere.
+  final budgetFactor = double.tryParse(Platform.environment['VEPARI_PERF_BUDGET_FACTOR'] ?? '') ?? 1;
   late TestDb db;
   late TenantFixture a;
   late Actor owner;
@@ -213,7 +217,7 @@ void main() {
         '| $name | EXPLAIN ANALYZE | ${ms.toStringAsFixed(2)} | ${seq.isEmpty ? 'none' : seq.join(', ')} |',
       );
       expect(seq, isEmpty, reason: 'sequential scan on large table');
-      expect(ms, lessThan(budgetMs));
+      expect(ms, lessThan(budgetMs * budgetFactor));
     }, skip: enabled ? false : 'set VEPARI_SCALE=1 (tool/db_test.sh --scale)');
   }
 
@@ -221,7 +225,7 @@ void main() {
     test(name, () async {
       final ms = await medianMs(call);
       report.writeln('| $name | median of 7 RPC calls (client wall time) | ${ms.toStringAsFixed(2)} | n/a |');
-      expect(ms, lessThan(budgetMs));
+      expect(ms, lessThan(budgetMs * budgetFactor));
     }, skip: enabled ? false : 'set VEPARI_SCALE=1 (tool/db_test.sh --scale)');
   }
 
