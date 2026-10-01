@@ -3,6 +3,7 @@
 // stability and exact balance reconciliation.
 import 'dart:math';
 
+import 'package:postgres/postgres.dart';
 import 'package:test/test.dart';
 
 import 'support/fixtures.dart';
@@ -245,6 +246,49 @@ void main() {
       expect(befores.contains(before), isTrue);
       expect(afters.contains(before - 8000), isTrue);
       expect(befores.difference({before}), afters.difference({before - 8000}));
+    });
+  });
+
+  group('review regressions', () {
+    test('a replayed order returns the payment taken with it', () async {
+      final requestId = TestDb.newId();
+      const pay = '{"amount_paise": 100000, "mode": "cash"}';
+      final first = await createOrder(owner, a.suresh, orderItems([(a.jhumka, 5)]), requestId: requestId, payment: pay);
+      final retry = await createOrder(owner, a.suresh, orderItems([(a.jhumka, 5)]), requestId: requestId, payment: pay);
+      expect(retry['replayed'], isTrue);
+      expect(retry['payment']['payment_id'], first['payment']['payment_id']);
+      expect(retry['payment']['replayed'], isTrue);
+    });
+
+    test('order lines always sum to the order total and its ledger entry', () async {
+      final drift = await db.admin.execute('''
+        select o.id from public.orders o
+          join public.ledger_entries l on l.order_id = o.id and l.kind = 'order'
+         where o.total_paise <> (select sum(i.amount_paise) from public.order_items i where i.order_id = o.id)
+            or l.amount_paise <> o.total_paise''');
+      expect(drift, isEmpty);
+    });
+
+    test('concurrent opening balances: exactly one wins, the other gets opening_exists', () async {
+      final row = await db.admin.execute(
+        "insert into public.customers (tenant_id, name) values (\$1, 'Opening Race') returning id",
+        parameters: [a.tenantId],
+      );
+      final customer = row.first.first! as String;
+      final actors = [for (var i = 0; i < 5; i++) await db.actor(a.ownerId)];
+      final outcomes = await Future.wait(
+        actors.map(
+          (x) => x
+              .query("select public.record_adjustment(@c::uuid, 'opening', 10000, @r::uuid)", {
+                'c': customer,
+                'r': TestDb.newId(),
+              })
+              .then((_) => 'ok', onError: (Object e) => e is ServerException ? e.message : '$e'),
+        ),
+      );
+      expect(outcomes.where((o) => o == 'ok'), hasLength(1));
+      expect(outcomes.where((o) => o != 'ok'), everyElement('opening_exists'));
+      expect(await balance(customer), 10000);
     });
   });
 

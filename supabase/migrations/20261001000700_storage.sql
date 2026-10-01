@@ -26,11 +26,15 @@ as $$
 $$;
 grant execute on function app.object_in_my_tenant(text) to authenticated;
 
--- Read: any active member, own tenant only.
+-- Read: own tenant only. Bill PDFs carry customer Baki, so they need the
+-- same permission as the bills table (bills.issue or hisaab.view).
 create policy vepari_objects_select on storage.objects for select to authenticated
   using (
-    bucket_id in ('product-media', 'remarks', 'bills', 'share', 'branding')
-    and app.object_in_my_tenant(name)
+    app.object_in_my_tenant(name)
+    and (
+      bucket_id in ('product-media', 'remarks', 'share', 'branding')
+      or (bucket_id = 'bills' and (app.has_permission('bills.issue') or app.has_permission('hisaab.view')))
+    )
   );
 
 -- Write rules per bucket.
@@ -47,6 +51,8 @@ create policy vepari_objects_insert on storage.objects for insert to authenticat
   );
 
 -- Overwrites only for regenerable derivatives; originals are write-once.
+-- WITH CHECK repeats the bucket rules so an update can never MOVE an object
+-- into another bucket (e.g. share → bills) and bypass its insert rules.
 create policy vepari_objects_update on storage.objects for update to authenticated
   using (
     app.object_in_my_tenant(name)
@@ -56,7 +62,14 @@ create policy vepari_objects_update on storage.objects for update to authenticat
       or (bucket_id = 'branding' and app.is_owner())
     )
   )
-  with check (app.object_in_my_tenant(name));
+  with check (
+    app.object_in_my_tenant(name)
+    and (
+      (bucket_id = 'bills' and app.has_permission('bills.issue'))
+      or bucket_id = 'share'
+      or (bucket_id = 'branding' and app.is_owner())
+    )
+  );
 
 -- Deletes: temporary share files (cleanup) and the owner's own branding.
 create policy vepari_objects_delete on storage.objects for delete to authenticated

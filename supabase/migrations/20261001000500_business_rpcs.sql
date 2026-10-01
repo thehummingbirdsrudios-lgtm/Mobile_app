@@ -163,7 +163,20 @@ begin
   select * into v_order from public.orders
    where tenant_id = v_tenant and client_request_id = p_client_request_id;
   if found then
-    return app.order_json(v_order, true);
+    -- A retry must see exactly what the first call did, including any
+    -- payment taken with the order, so the client never re-records it.
+    v_result := app.order_json(v_order, true);
+    select * into v_payment from public.payments
+     where tenant_id = v_tenant and client_request_id = md5('payment:' || p_client_request_id::text)::uuid;
+    if found then
+      v_result := v_result || jsonb_build_object('payment', app.payment_json(v_payment, true));
+    end if;
+    return v_result;
+  end if;
+
+  -- (1) Taking money with an order needs the payment permission too.
+  if p_payment is not null and p_payment <> 'null'::jsonb and not app.has_permission('payments.record') then
+    perform app.fail('permission_denied');
   end if;
 
   if p_items is null or jsonb_typeof(p_items) <> 'array' or jsonb_array_length(p_items) = 0 then
@@ -229,21 +242,27 @@ begin
     perform app.fail('product_unavailable', v_problem);
   end if;
 
-  select jsonb_agg(jsonb_build_object('product_id', l.product_id,
-                                      'rate_paise', app.resolve_rate(v_tenant, p_customer_id, l.product_id)))
+  -- Resolve each line's effective rate exactly once. The rate check, the
+  -- order total, the ledger entry and the line snapshots all use this value,
+  -- so a concurrent rate change can never make them disagree.
+  select jsonb_agg(l.line || jsonb_build_object('rate', app.resolve_rate(v_tenant, p_customer_id, (l.line ->> 'product_id')::uuid)))
+    into v_lines
+    from jsonb_array_elements(v_lines) as l(line);
+
+  select jsonb_agg(jsonb_build_object('product_id', l.product_id, 'rate_paise', l.rate))
     into v_problem
-    from jsonb_to_recordset(v_lines) as l(product_id uuid, expected_rate_paise bigint)
+    from jsonb_to_recordset(v_lines) as l(product_id uuid, expected_rate_paise bigint, rate bigint)
    where l.expected_rate_paise is not null
-     and l.expected_rate_paise <> app.resolve_rate(v_tenant, p_customer_id, l.product_id);
+     and l.expected_rate_paise <> l.rate;
   if v_problem is not null then
     perform app.fail('rate_changed', v_problem);
   end if;
 
   select sum(l.qty),
-         sum(app.resolve_rate(v_tenant, p_customer_id, l.product_id) * l.qty),
+         sum(l.rate * l.qty),
          sum(p.weight_mg::bigint * l.qty)
     into v_total_qty, v_total, v_weight
-    from jsonb_to_recordset(v_lines) as l(product_id uuid, qty integer)
+    from jsonb_to_recordset(v_lines) as l(product_id uuid, qty integer, rate bigint)
     join public.products p on p.tenant_id = v_tenant and p.id = l.product_id;
 
   if v_total > 10000000000000 or v_total_qty > 2000000000 then
@@ -261,10 +280,15 @@ begin
   select v_tenant, v_order.id, p_customer_id,
          row_number() over (order by l.seq),
          p.id, p.design_no, p.name, app.primary_thumb(v_tenant, p.id),
-         r.rate, l.qty, r.rate * l.qty, p.weight_mg
-    from jsonb_to_recordset(v_lines) as l(seq integer, product_id uuid, qty integer)
-    join public.products p on p.tenant_id = v_tenant and p.id = l.product_id
-    cross join lateral (select app.resolve_rate(v_tenant, p_customer_id, l.product_id) as rate) r;
+         l.rate, l.qty, l.rate * l.qty, p.weight_mg
+    from jsonb_to_recordset(v_lines) as l(seq integer, product_id uuid, qty integer, rate bigint)
+    join public.products p on p.tenant_id = v_tenant and p.id = l.product_id;
+
+  -- Invariant: the ledger amount is exactly the sum of the line snapshots.
+  if (select sum(i.amount_paise) from public.order_items i
+       where i.tenant_id = v_tenant and i.order_id = v_order.id) <> v_total then
+    perform app.fail('internal_consistency');
+  end if;
 
   perform app.post_ledger(v_tenant, p_customer_id, 'order', v_total, p_order => v_order.id);
   perform app.audit(v_tenant, 'order.created', 'orders', v_order.id,
@@ -372,7 +396,10 @@ begin
   if p_kind = 'adjustment' and (p_note is null or length(btrim(p_note)) = 0) then
     perform app.fail('note_required');
   end if;
-  if not exists (select 1 from public.customers where tenant_id = v_tenant and id = p_customer_id) then
+  -- Serialise per customer before checking for an existing opening balance.
+  perform 1 from public.customer_balances
+   where tenant_id = v_tenant and customer_id = p_customer_id for update;
+  if not found then
     perform app.fail('customer_not_found');
   end if;
   if p_kind = 'opening' and exists (
@@ -380,9 +407,6 @@ begin
      where tenant_id = v_tenant and customer_id = p_customer_id and kind = 'opening') then
     perform app.fail('opening_exists');
   end if;
-
-  perform 1 from public.customer_balances
-   where tenant_id = v_tenant and customer_id = p_customer_id for update;
 
   v_entry := app.post_ledger(v_tenant, p_customer_id, p_kind, p_amount_paise,
     p_note => nullif(btrim(p_note), ''), p_request => p_client_request_id);

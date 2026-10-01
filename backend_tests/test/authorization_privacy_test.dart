@@ -240,6 +240,57 @@ void main() {
     });
   });
 
+  group('review regressions', () {
+    test('taking a payment with an order needs payments.record too', () async {
+      final orderOnly = TestDb.newId();
+      await db.admin.execute('insert into auth.users (id) values (\$1)', parameters: [orderOnly]);
+      await db.admin.execute(
+        Sql.named(
+          "select public.admin_add_member(@t::uuid, @u::uuid, 'staff_order_a', 'Order Staff', 'staff', '{orders.create}')",
+        ),
+        parameters: {'t': a.tenantId, 'u': orderOnly},
+      );
+      final staff = await db.actor(orderOnly);
+      await expectLater(
+        () => staff.query('select public.create_order(@c::uuid, @items::jsonb, @r::uuid, null, null, @pay::jsonb)', {
+          'c': a.rajesh,
+          'items': orderItems([(a.jhumka, 1)]),
+          'r': TestDb.newId(),
+          'pay': '{"amount_paise": 500000, "mode": "cash"}',
+        }),
+        throwsDbError('permission_denied'),
+      );
+      // Without a payment the same staff can still order.
+      final ok = await staff.json('select public.create_order(@c::uuid, @items::jsonb, @r::uuid)', {
+        'c': a.rajesh,
+        'items': orderItems([(a.jhumka, 1)]),
+        'r': TestDb.newId(),
+      });
+      expect(ok['order_no'], isNotNull);
+    });
+
+    test('bill PDFs in storage need bills.issue or hisaab.view', () async {
+      await db.admin.execute(
+        "insert into storage.objects (bucket_id, name) values ('bills', \$1)",
+        parameters: ['${a.tenantId}/bills/1/bill.pdf'],
+      );
+      expect(await staffMin.count("select 1 from storage.objects where bucket_id = 'bills'"), 0);
+      expect(await staffFull.count("select 1 from storage.objects where bucket_id = 'bills'"), 1);
+    });
+
+    test('a share file cannot be moved into the bills bucket without bills.issue', () async {
+      final name = '${a.tenantId}/share/forged.pdf';
+      await staffMin.query("insert into storage.objects (bucket_id, name) values ('share', @n)", {'n': name});
+      await expectLater(
+        () => staffMin.query(
+          "update storage.objects set bucket_id = 'bills', name = @to where bucket_id = 'share' and name = @n",
+          {'n': name, 'to': '${a.tenantId}/bills/9/bill.pdf'},
+        ),
+        throwsDbError(insufficientPrivilege),
+      );
+    });
+  });
+
   group('safe share', () {
     const allowedProductKeys = {
       'design_no',
