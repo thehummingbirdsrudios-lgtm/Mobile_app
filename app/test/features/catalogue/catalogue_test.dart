@@ -196,6 +196,23 @@ void main() {
       await _scrollBackTo(tester, 'This design number already exists.');
     });
 
+    testWidgets('a new category can be created from the editor', (tester) async {
+      final catalogue = FakeCatalogueRepository();
+      await pumpVepari(
+        tester,
+        auth: FakeAuthRepository(restored: ownerSession),
+        catalogue: catalogue,
+      );
+      await _go(tester, AppRoutes.editProduct());
+      await tester.tap(find.byTooltip('New category'));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.widgetWithText(TextField, 'Name').last, 'Bangles');
+      await tester.tap(find.widgetWithText(FilledButton, 'Add'));
+      await tester.pumpAndSettle();
+      expect(catalogue.categoriesList.map((c) => c.name), contains('Bangles'));
+      expect(find.text('Bangles'), findsOneWidget); // selected in the dropdown
+    });
+
     testWidgets('rate is locked for staff without rate permission', (tester) async {
       final catalogue = FakeCatalogueRepository(products: [_withoutPrivate(sampleProducts().first)]);
       await pumpVepari(

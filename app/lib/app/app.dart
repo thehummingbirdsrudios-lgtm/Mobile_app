@@ -6,11 +6,16 @@ import '../core/core.dart';
 import '../features/auth/auth.dart';
 import '../features/settings/settings.dart';
 import '../l10n/app_localizations.dart';
+import 'composition.dart';
 import 'router.dart';
 
 /// App-layer providers that wire the [AppNavigator] port to go_router.
 /// Used by main.dart and by widget tests so both run the same composition.
-final appLayerOverrides = [appNavigatorProvider.overrideWith((ref) => GoRouterNavigator(ref.watch(routerProvider)))];
+final appLayerOverrides = [navigatorOverride, ...crossModuleOverrides()];
+
+/// The [AppNavigator] port bound to go_router (tests that replace the
+/// cross-module actions use this alone).
+final navigatorOverride = appNavigatorProvider.overrideWith((ref) => GoRouterNavigator(ref.watch(routerProvider)));
 
 class VepariApp extends ConsumerWidget {
   const VepariApp({super.key});

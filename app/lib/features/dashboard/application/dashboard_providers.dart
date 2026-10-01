@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/state/revision.dart';
 import '../../auth/auth.dart';
 import '../domain/dashboard.dart';
 
@@ -13,6 +14,7 @@ final dashboardRepositoryProvider = Provider<DashboardRepository>(
 /// one tenant's numbers can never survive into another session.
 final dashboardSummaryProvider = FutureProvider.autoDispose<DashboardSummary?>((ref) async {
   final session = ref.watch(currentSessionProvider);
+  ref.watch(businessRevisionProvider); // orders and payments change today's numbers
   if (session == null || !session.can(Permission.reportsView)) return null;
   return ref.watch(dashboardRepositoryProvider).fetchSummary();
 });

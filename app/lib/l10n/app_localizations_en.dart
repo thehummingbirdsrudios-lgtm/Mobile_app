@@ -595,4 +595,206 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get neverLabel => '—';
+
+  @override
+  String get orderNew => 'New order';
+
+  @override
+  String get quickOrder => 'Quick order';
+
+  @override
+  String get ordersPending => 'Pending';
+
+  @override
+  String get ordersAll => 'All';
+
+  @override
+  String get ordersEmpty => 'No orders yet.';
+
+  @override
+  String get ordersPendingEmpty => 'No pending orders. All caught up!';
+
+  @override
+  String piecesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count pcs', one: '1 pc');
+    return '$_temp0';
+  }
+
+  @override
+  String get cartChooseCustomer => 'Choose customer';
+
+  @override
+  String get cartChangeCustomer => 'Change';
+
+  @override
+  String get cartEmpty => 'Add designs from Maal, Regular Maal or by design number.';
+
+  @override
+  String get quickAddQty => 'Qty';
+
+  @override
+  String quickAddNotFound(String designNo) {
+    return 'No design $designNo';
+  }
+
+  @override
+  String quickAddUnavailable(String designNo) {
+    return '$designNo is not available';
+  }
+
+  @override
+  String quickAddAdded(String designNo) {
+    return '$designNo added';
+  }
+
+  @override
+  String get cartTotal => 'Total';
+
+  @override
+  String get fieldOrderNote => 'Note for this order';
+
+  @override
+  String get paymentNow => 'Payment received now';
+
+  @override
+  String get fieldAmount => 'Amount';
+
+  @override
+  String get paymentModeCash => 'Cash';
+
+  @override
+  String get paymentModeUpi => 'UPI';
+
+  @override
+  String get paymentModeBank => 'Bank';
+
+  @override
+  String get paymentModeCheque => 'Cheque';
+
+  @override
+  String get fieldReference => 'Reference (UPI / cheque no.)';
+
+  @override
+  String get placeOrder => 'Place order';
+
+  @override
+  String orderPlacedTitle(String orderNo) {
+    return 'Order #$orderNo placed';
+  }
+
+  @override
+  String get orderAlreadyPlaced => 'This order was already placed — nothing was added twice.';
+
+  @override
+  String get viewOrder => 'View order';
+
+  @override
+  String get ratesChangedTitle => 'Rates changed';
+
+  @override
+  String get ratesChangedBody =>
+      'Some rates changed since you added them. The cart now shows today\'s rates — check and place the order again.';
+
+  @override
+  String get unavailableInCart => 'Some designs are not available now. Remove them to place the order.';
+
+  @override
+  String get cartNeedsCustomer => 'Choose a customer first.';
+
+  @override
+  String get specialRateBadge => 'Special rate';
+
+  @override
+  String get statusConfirmed => 'Confirmed';
+
+  @override
+  String get statusProcessing => 'In process';
+
+  @override
+  String get statusReady => 'Ready';
+
+  @override
+  String get statusCompleted => 'Completed';
+
+  @override
+  String get statusCancelled => 'Cancelled';
+
+  @override
+  String markAs(String status) {
+    return 'Mark $status';
+  }
+
+  @override
+  String get cancelOrder => 'Cancel order';
+
+  @override
+  String get cancelOrderBody =>
+      'The order amount will be removed from Baki. Payments already received stay as the customer\'s credit.';
+
+  @override
+  String get cancelReason => 'Reason (optional)';
+
+  @override
+  String get keepOrder => 'Keep order';
+
+  @override
+  String orderCreatedBy(String name) {
+    return 'By $name';
+  }
+
+  @override
+  String get orderPayments => 'Payments';
+
+  @override
+  String receiptNumber(String paymentNo) {
+    return 'Receipt #$paymentNo';
+  }
+
+  @override
+  String orderCancelledReason(String reason) {
+    return 'Cancelled: $reason';
+  }
+
+  @override
+  String get reorderAction => 'Fari Order';
+
+  @override
+  String billNumber(String billNo) {
+    return 'Bill #$billNo';
+  }
+
+  @override
+  String get customerPickerTitle => 'Choose customer';
+
+  @override
+  String get addedToCart => 'Added to order';
+
+  @override
+  String get goToCart => 'Open order';
+
+  @override
+  String get fieldPaymentMode => 'Mode';
+
+  @override
+  String get qtyLess => 'One less';
+
+  @override
+  String get qtyMore => 'One more';
+
+  @override
+  String get cartOtherCustomerTitle => 'Unfinished order';
+
+  @override
+  String cartOtherCustomerBody(String name, int count) {
+    return 'There is an unfinished order for $name with $count designs. Start a new order instead?';
+  }
+
+  @override
+  String get cartKeepOld => 'Keep it';
+
+  @override
+  String get cartStartNew => 'Start new';
+
+  @override
+  String get cartClear => 'Clear order';
 }

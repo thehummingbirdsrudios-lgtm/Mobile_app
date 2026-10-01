@@ -8,6 +8,7 @@ import 'package:vepari/features/auth/auth.dart';
 import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/dashboard/dashboard.dart';
+import 'package:vepari/features/orders/orders.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
 
@@ -40,11 +41,16 @@ Future<ProviderContainer> pumpVepari(
   FakeSearchRepository? search,
   FakeCustomerRepository? customers,
   FakeContactLauncher? contacts,
+  FakeOrdersRepository? orders,
+  MemoryCartStore? carts,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
   bool settle = true,
   List<Override> extraOverrides = const [],
+
+  /// False when [extraOverrides] supplies its own product/customer actions.
+  bool crossModule = true,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -53,7 +59,7 @@ Future<ProviderContainer> pumpVepari(
   final prefs = MemoryPreferenceStore()..values['locale'] = locale.languageCode;
   final container = ProviderContainer(
     overrides: [
-      ...appLayerOverrides,
+      if (crossModule) ...appLayerOverrides else navigatorOverride,
       storageClientProvider.overrideWithValue(FakeStorage()),
       networkImageBuilderProvider.overrideWithValue(testImageBuilder),
       catalogueRepositoryProvider.overrideWithValue(catalogue ?? FakeCatalogueRepository()),
@@ -61,6 +67,8 @@ Future<ProviderContainer> pumpVepari(
       searchRepositoryProvider.overrideWithValue(search ?? FakeSearchRepository()),
       customerRepositoryProvider.overrideWithValue(customers ?? FakeCustomerRepository()),
       contactLauncherProvider.overrideWithValue(contacts ?? FakeContactLauncher()),
+      ordersRepositoryProvider.overrideWithValue(orders ?? FakeOrdersRepository()),
+      cartStoreProvider.overrideWithValue(carts ?? MemoryCartStore()),
       imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),

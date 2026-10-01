@@ -1178,6 +1178,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'—'**
   String get neverLabel;
+
+  /// Start an order
+  ///
+  /// In en, this message translates to:
+  /// **'New order'**
+  String get orderNew;
+
+  /// Order by typing design numbers
+  ///
+  /// In en, this message translates to:
+  /// **'Quick order'**
+  String get quickOrder;
+
+  /// Filter: open orders
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get ordersPending;
+
+  /// Filter: all orders
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get ordersAll;
+
+  /// Empty orders
+  ///
+  /// In en, this message translates to:
+  /// **'No orders yet.'**
+  String get ordersEmpty;
+
+  /// Empty pending orders
+  ///
+  /// In en, this message translates to:
+  /// **'No pending orders. All caught up!'**
+  String get ordersPendingEmpty;
+
+  /// Number of pieces
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pc} other{{count} pcs}}'**
+  String piecesCount(int count);
+
+  /// Cart: pick customer
+  ///
+  /// In en, this message translates to:
+  /// **'Choose customer'**
+  String get cartChooseCustomer;
+
+  /// Cart: change customer
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get cartChangeCustomer;
+
+  /// Empty cart
+  ///
+  /// In en, this message translates to:
+  /// **'Add designs from Maal, Regular Maal or by design number.'**
+  String get cartEmpty;
+
+  /// Quantity field
+  ///
+  /// In en, this message translates to:
+  /// **'Qty'**
+  String get quickAddQty;
+
+  /// Quick add: unknown design
+  ///
+  /// In en, this message translates to:
+  /// **'No design {designNo}'**
+  String quickAddNotFound(String designNo);
+
+  /// Quick add: unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'{designNo} is not available'**
+  String quickAddUnavailable(String designNo);
+
+  /// Quick add: done
+  ///
+  /// In en, this message translates to:
+  /// **'{designNo} added'**
+  String quickAddAdded(String designNo);
+
+  /// Order total label
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get cartTotal;
+
+  /// Order note
+  ///
+  /// In en, this message translates to:
+  /// **'Note for this order'**
+  String get fieldOrderNote;
+
+  /// Take payment with order
+  ///
+  /// In en, this message translates to:
+  /// **'Payment received now'**
+  String get paymentNow;
+
+  /// Amount field
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get fieldAmount;
+
+  /// Payment mode
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get paymentModeCash;
+
+  /// Payment mode
+  ///
+  /// In en, this message translates to:
+  /// **'UPI'**
+  String get paymentModeUpi;
+
+  /// Payment mode
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get paymentModeBank;
+
+  /// Payment mode
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque'**
+  String get paymentModeCheque;
+
+  /// Payment reference
+  ///
+  /// In en, this message translates to:
+  /// **'Reference (UPI / cheque no.)'**
+  String get fieldReference;
+
+  /// Submit order
+  ///
+  /// In en, this message translates to:
+  /// **'Place order'**
+  String get placeOrder;
+
+  /// Success
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNo} placed'**
+  String orderPlacedTitle(String orderNo);
+
+  /// Idempotent replay message
+  ///
+  /// In en, this message translates to:
+  /// **'This order was already placed — nothing was added twice.'**
+  String get orderAlreadyPlaced;
+
+  /// Action
+  ///
+  /// In en, this message translates to:
+  /// **'View order'**
+  String get viewOrder;
+
+  /// Dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Rates changed'**
+  String get ratesChangedTitle;
+
+  /// Dialog body
+  ///
+  /// In en, this message translates to:
+  /// **'Some rates changed since you added them. The cart now shows today\'s rates — check and place the order again.'**
+  String get ratesChangedBody;
+
+  /// Cart warning
+  ///
+  /// In en, this message translates to:
+  /// **'Some designs are not available now. Remove them to place the order.'**
+  String get unavailableInCart;
+
+  /// Cart validation
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a customer first.'**
+  String get cartNeedsCustomer;
+
+  /// Badge on a line with a customer rate
+  ///
+  /// In en, this message translates to:
+  /// **'Special rate'**
+  String get specialRateBadge;
+
+  /// Order status
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get statusConfirmed;
+
+  /// Order status
+  ///
+  /// In en, this message translates to:
+  /// **'In process'**
+  String get statusProcessing;
+
+  /// Order status
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get statusReady;
+
+  /// Order status
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get statusCompleted;
+
+  /// Order status
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
+  /// Change order status
+  ///
+  /// In en, this message translates to:
+  /// **'Mark {status}'**
+  String markAs(String status);
+
+  /// Action
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel order'**
+  String get cancelOrder;
+
+  /// Cancel confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'The order amount will be removed from Baki. Payments already received stay as the customer\'s credit.'**
+  String get cancelOrderBody;
+
+  /// Field
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get cancelReason;
+
+  /// Dismiss cancel dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Keep order'**
+  String get keepOrder;
+
+  /// Who placed the order
+  ///
+  /// In en, this message translates to:
+  /// **'By {name}'**
+  String orderCreatedBy(String name);
+
+  /// Section header
+  ///
+  /// In en, this message translates to:
+  /// **'Payments'**
+  String get orderPayments;
+
+  /// Payment receipt number
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt #{paymentNo}'**
+  String receiptNumber(String paymentNo);
+
+  /// Cancel reason
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled: {reason}'**
+  String orderCancelledReason(String reason);
+
+  /// Repeat an earlier order
+  ///
+  /// In en, this message translates to:
+  /// **'Fari Order'**
+  String get reorderAction;
+
+  /// Bill number
+  ///
+  /// In en, this message translates to:
+  /// **'Bill #{billNo}'**
+  String billNumber(String billNo);
+
+  /// Sheet title
+  ///
+  /// In en, this message translates to:
+  /// **'Choose customer'**
+  String get customerPickerTitle;
+
+  /// Feedback after +
+  ///
+  /// In en, this message translates to:
+  /// **'Added to order'**
+  String get addedToCart;
+
+  /// Snackbar action
+  ///
+  /// In en, this message translates to:
+  /// **'Open order'**
+  String get goToCart;
+
+  /// Payment mode label
+  ///
+  /// In en, this message translates to:
+  /// **'Mode'**
+  String get fieldPaymentMode;
+
+  /// Stepper decrease
+  ///
+  /// In en, this message translates to:
+  /// **'One less'**
+  String get qtyLess;
+
+  /// Stepper increase
+  ///
+  /// In en, this message translates to:
+  /// **'One more'**
+  String get qtyMore;
+
+  /// Dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Unfinished order'**
+  String get cartOtherCustomerTitle;
+
+  /// Dialog body
+  ///
+  /// In en, this message translates to:
+  /// **'There is an unfinished order for {name} with {count} designs. Start a new order instead?'**
+  String cartOtherCustomerBody(String name, int count);
+
+  /// Keep unfinished order
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get cartKeepOld;
+
+  /// Discard and start new
+  ///
+  /// In en, this message translates to:
+  /// **'Start new'**
+  String get cartStartNew;
+
+  /// Remove all lines
+  ///
+  /// In en, this message translates to:
+  /// **'Clear order'**
+  String get cartClear;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -14,6 +14,8 @@ import 'features/customers/customers.dart';
 import 'features/customers/customers_adapters.dart';
 import 'features/dashboard/dashboard.dart';
 import 'features/dashboard/dashboard_adapters.dart';
+import 'features/orders/orders.dart';
+import 'features/orders/orders_adapters.dart';
 import 'features/search/search.dart';
 import 'features/search/search_adapters.dart';
 import 'features/settings/settings.dart';
@@ -32,6 +34,7 @@ Future<void> main() async {
     ...appLayerOverrides,
     appConfigProvider.overrideWithValue(config),
     preferenceStoreProvider.overrideWithValue(preferences),
+    cartStoreProvider.overrideWithValue(PreferencesCartStore(preferences)),
   ];
 
   if (config.isConfigured) {
@@ -48,6 +51,7 @@ Future<void> main() async {
       storageClientProvider.overrideWithValue(storage),
       catalogueRepositoryProvider.overrideWithValue(CatalogueRepositoryImpl(CatalogueApi(client, api, storage))),
       customerRepositoryProvider.overrideWithValue(CustomerRepositoryImpl(CustomersApi(client, api))),
+      ordersRepositoryProvider.overrideWithValue(OrdersRepositoryImpl(OrdersApi(api))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

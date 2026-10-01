@@ -81,6 +81,8 @@ final _uuid = RegExp(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]
 String? _requireUuid(GoRouterState state, String param, String fallback) =>
     _uuid.hasMatch(state.pathParameters[param] ?? '') ? null : fallback;
 
+String? _uuidOrNull(String? value) => value != null && _uuid.hasMatch(value) ? value : null;
+
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -106,6 +108,27 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.search, builder: (_, _) => const SearchScreen()),
       GoRoute(path: AppRoutes.navoMaal, builder: (_, _) => const NavoMaalScreen()),
       GoRoute(path: AppRoutes.newCustomer, builder: (_, _) => const CustomerEditScreen()),
+      GoRoute(
+        path: '/cart',
+        builder: (_, s) => CartScreen(customerId: _uuidOrNull(s.uri.queryParameters['customer'])),
+      ),
+      GoRoute(path: AppRoutes.quickOrder, builder: (_, _) => const CartScreen(quickEntry: true)),
+      GoRoute(
+        path: '/orders',
+        builder: (_, s) => CustomerOrdersScreen(
+          query: OrderQuery(
+            customerId: _uuidOrNull(s.uri.queryParameters['customer']),
+            pendingOnly: s.uri.queryParameters['pending'] == '1',
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: ':id',
+            redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.order),
+            builder: (_, s) => OrderDetailScreen(orderId: s.pathParameters['id']!),
+          ),
+        ],
+      ),
       GoRoute(
         path: '/customers/:id',
         redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.customer),

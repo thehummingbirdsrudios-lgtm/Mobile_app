@@ -182,7 +182,13 @@ enum FeedbackTone { success, warning, error, info }
 /// Short, truthful confirmations. Only call `success` after the server has
 /// committed the operation.
 abstract final class AppFeedback {
-  static void show(BuildContext context, String message, {FeedbackTone tone = FeedbackTone.success}) {
+  static void show(
+    BuildContext context,
+    String message, {
+    FeedbackTone tone = FeedbackTone.success,
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) {
     final (icon, color) = switch (tone) {
       FeedbackTone.success => (Icons.check_circle_rounded, const Color(0xFF7CD39C)),
       FeedbackTone.warning => (Icons.warning_amber_rounded, const Color(0xFFF2C46B)),
@@ -192,7 +198,10 @@ abstract final class AppFeedback {
     final messenger = ScaffoldMessenger.of(context)..hideCurrentSnackBar();
     messenger.showSnackBar(
       SnackBar(
-        duration: const Duration(milliseconds: 2600),
+        duration: Duration(milliseconds: actionLabel == null ? 2600 : 4000),
+        action: actionLabel == null || onAction == null
+            ? null
+            : SnackBarAction(label: actionLabel, onPressed: onAction),
         content: Semantics(
           liveRegion: true,
           child: Row(

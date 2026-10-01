@@ -49,6 +49,7 @@ void main() {
       tester,
       auth: FakeAuthRepository(restored: ownerSession),
       catalogue: FakeCatalogueRepository(products: [_recent(1), _recent(2), _recent(3)]),
+      crossModule: false,
       extraOverrides: [
         productActionsProvider.overrideWithValue(
           ProductActions(onShareMany: (products) async => shared.add([for (final p in products) p.designNo])),
@@ -77,6 +78,7 @@ void main() {
       auth: FakeAuthRepository(restored: ownerSession),
       size: const Size(1200, 2400),
       catalogue: FakeCatalogueRepository(products: [for (var i = 1; i <= 11; i++) _recent(i)]),
+      crossModule: false,
       extraOverrides: [productActionsProvider.overrideWithValue(ProductActions(onShareMany: (_) async {}))],
     );
     await _openFromHome(tester);

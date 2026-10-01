@@ -595,4 +595,203 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get neverLabel => '—';
+
+  @override
+  String get orderNew => 'નવો ઓર્ડર';
+
+  @override
+  String get quickOrder => 'ઝડપી ઓર્ડર';
+
+  @override
+  String get ordersPending => 'બાકી';
+
+  @override
+  String get ordersAll => 'બધા';
+
+  @override
+  String get ordersEmpty => 'હજી કોઈ ઓર્ડર નથી.';
+
+  @override
+  String get ordersPendingEmpty => 'કોઈ બાકી ઓર્ડર નથી. બધું પૂરું!';
+
+  @override
+  String piecesCount(int count) {
+    return '$count નંગ';
+  }
+
+  @override
+  String get cartChooseCustomer => 'ગ્રાહક પસંદ કરો';
+
+  @override
+  String get cartChangeCustomer => 'બદલો';
+
+  @override
+  String get cartEmpty => 'માલ, રેગ્યુલર માલ કે ડિઝાઇન નંબરથી ડિઝાઇન ઉમેરો.';
+
+  @override
+  String get quickAddQty => 'નંગ';
+
+  @override
+  String quickAddNotFound(String designNo) {
+    return '$designNo નંબરની ડિઝાઇન નથી';
+  }
+
+  @override
+  String quickAddUnavailable(String designNo) {
+    return '$designNo હાલ મળતી નથી';
+  }
+
+  @override
+  String quickAddAdded(String designNo) {
+    return '$designNo ઉમેરાઈ';
+  }
+
+  @override
+  String get cartTotal => 'કુલ';
+
+  @override
+  String get fieldOrderNote => 'આ ઓર્ડર માટે નોંધ';
+
+  @override
+  String get paymentNow => 'હમણાં પેમેન્ટ મળ્યું';
+
+  @override
+  String get fieldAmount => 'રકમ';
+
+  @override
+  String get paymentModeCash => 'રોકડ';
+
+  @override
+  String get paymentModeUpi => 'UPI';
+
+  @override
+  String get paymentModeBank => 'બેંક';
+
+  @override
+  String get paymentModeCheque => 'ચેક';
+
+  @override
+  String get fieldReference => 'રેફરન્સ (UPI / ચેક નંબર)';
+
+  @override
+  String get placeOrder => 'ઓર્ડર કરો';
+
+  @override
+  String orderPlacedTitle(String orderNo) {
+    return 'ઓર્ડર #$orderNo થઈ ગયો';
+  }
+
+  @override
+  String get orderAlreadyPlaced => 'આ ઓર્ડર પહેલેથી થઈ ગયો હતો — કંઈ બે વાર ઉમેરાયું નથી.';
+
+  @override
+  String get viewOrder => 'ઓર્ડર જુઓ';
+
+  @override
+  String get ratesChangedTitle => 'ભાવ બદલાયા';
+
+  @override
+  String get ratesChangedBody => 'તમે ઉમેર્યા પછી કેટલાક ભાવ બદલાયા છે. કાર્ટમાં આજના ભાવ છે — તપાસીને ફરી ઓર્ડર કરો.';
+
+  @override
+  String get unavailableInCart => 'કેટલીક ડિઝાઇન હાલ મળતી નથી. ઓર્ડર માટે તેને કાઢો.';
+
+  @override
+  String get cartNeedsCustomer => 'પહેલા ગ્રાહક પસંદ કરો.';
+
+  @override
+  String get specialRateBadge => 'ખાસ ભાવ';
+
+  @override
+  String get statusConfirmed => 'કન્ફર્મ';
+
+  @override
+  String get statusProcessing => 'બની રહ્યો છે';
+
+  @override
+  String get statusReady => 'તૈયાર';
+
+  @override
+  String get statusCompleted => 'પૂરો';
+
+  @override
+  String get statusCancelled => 'રદ';
+
+  @override
+  String markAs(String status) {
+    return '$status કરો';
+  }
+
+  @override
+  String get cancelOrder => 'ઓર્ડર રદ કરો';
+
+  @override
+  String get cancelOrderBody => 'ઓર્ડરની રકમ બાકીમાંથી ઓછી થશે. મળેલું પેમેન્ટ ગ્રાહકની જમા રહેશે.';
+
+  @override
+  String get cancelReason => 'કારણ (વૈકલ્પિક)';
+
+  @override
+  String get keepOrder => 'ઓર્ડર રાખો';
+
+  @override
+  String orderCreatedBy(String name) {
+    return '$name દ્વારા';
+  }
+
+  @override
+  String get orderPayments => 'પેમેન્ટ';
+
+  @override
+  String receiptNumber(String paymentNo) {
+    return 'રસીદ #$paymentNo';
+  }
+
+  @override
+  String orderCancelledReason(String reason) {
+    return 'રદ: $reason';
+  }
+
+  @override
+  String get reorderAction => 'ફરી ઓર્ડર';
+
+  @override
+  String billNumber(String billNo) {
+    return 'બિલ #$billNo';
+  }
+
+  @override
+  String get customerPickerTitle => 'ગ્રાહક પસંદ કરો';
+
+  @override
+  String get addedToCart => 'ઓર્ડરમાં ઉમેર્યું';
+
+  @override
+  String get goToCart => 'ઓર્ડર ખોલો';
+
+  @override
+  String get fieldPaymentMode => 'રીત';
+
+  @override
+  String get qtyLess => 'એક ઓછું';
+
+  @override
+  String get qtyMore => 'એક વધારે';
+
+  @override
+  String get cartOtherCustomerTitle => 'અધૂરો ઓર્ડર';
+
+  @override
+  String cartOtherCustomerBody(String name, int count) {
+    return '$name નો $count ડિઝાઇનનો અધૂરો ઓર્ડર છે. તેના બદલે નવો ઓર્ડર શરૂ કરવો છે?';
+  }
+
+  @override
+  String get cartKeepOld => 'એ રાખો';
+
+  @override
+  String get cartStartNew => 'નવો શરૂ કરો';
+
+  @override
+  String get cartClear => 'ઓર્ડર ખાલી કરો';
 }

@@ -803,5 +803,299 @@
   "neverLabel": "—",
   "@neverLabel": {
     "description": "Placeholder when there is no date"
+  },
+  "orderNew": "New order",
+  "@orderNew": {
+    "description": "Start an order"
+  },
+  "quickOrder": "Quick order",
+  "@quickOrder": {
+    "description": "Order by typing design numbers"
+  },
+  "ordersPending": "Pending",
+  "@ordersPending": {
+    "description": "Filter: open orders"
+  },
+  "ordersAll": "All",
+  "@ordersAll": {
+    "description": "Filter: all orders"
+  },
+  "ordersEmpty": "No orders yet.",
+  "@ordersEmpty": {
+    "description": "Empty orders"
+  },
+  "ordersPendingEmpty": "No pending orders. All caught up!",
+  "@ordersPendingEmpty": {
+    "description": "Empty pending orders"
+  },
+  "piecesCount": "{count, plural, =1{1 pc} other{{count} pcs}}",
+  "@piecesCount": {
+    "description": "Number of pieces",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartChooseCustomer": "Choose customer",
+  "@cartChooseCustomer": {
+    "description": "Cart: pick customer"
+  },
+  "cartChangeCustomer": "Change",
+  "@cartChangeCustomer": {
+    "description": "Cart: change customer"
+  },
+  "cartEmpty": "Add designs from Maal, Regular Maal or by design number.",
+  "@cartEmpty": {
+    "description": "Empty cart"
+  },
+  "quickAddQty": "Qty",
+  "@quickAddQty": {
+    "description": "Quantity field"
+  },
+  "quickAddNotFound": "No design {designNo}",
+  "@quickAddNotFound": {
+    "description": "Quick add: unknown design",
+    "placeholders": {
+      "designNo": {
+        "type": "String"
+      }
+    }
+  },
+  "quickAddUnavailable": "{designNo} is not available",
+  "@quickAddUnavailable": {
+    "description": "Quick add: unavailable",
+    "placeholders": {
+      "designNo": {
+        "type": "String"
+      }
+    }
+  },
+  "quickAddAdded": "{designNo} added",
+  "@quickAddAdded": {
+    "description": "Quick add: done",
+    "placeholders": {
+      "designNo": {
+        "type": "String"
+      }
+    }
+  },
+  "cartTotal": "Total",
+  "@cartTotal": {
+    "description": "Order total label"
+  },
+  "fieldOrderNote": "Note for this order",
+  "@fieldOrderNote": {
+    "description": "Order note"
+  },
+  "paymentNow": "Payment received now",
+  "@paymentNow": {
+    "description": "Take payment with order"
+  },
+  "fieldAmount": "Amount",
+  "@fieldAmount": {
+    "description": "Amount field"
+  },
+  "paymentModeCash": "Cash",
+  "@paymentModeCash": {
+    "description": "Payment mode"
+  },
+  "paymentModeUpi": "UPI",
+  "@paymentModeUpi": {
+    "description": "Payment mode"
+  },
+  "paymentModeBank": "Bank",
+  "@paymentModeBank": {
+    "description": "Payment mode"
+  },
+  "paymentModeCheque": "Cheque",
+  "@paymentModeCheque": {
+    "description": "Payment mode"
+  },
+  "fieldReference": "Reference (UPI / cheque no.)",
+  "@fieldReference": {
+    "description": "Payment reference"
+  },
+  "placeOrder": "Place order",
+  "@placeOrder": {
+    "description": "Submit order"
+  },
+  "orderPlacedTitle": "Order #{orderNo} placed",
+  "@orderPlacedTitle": {
+    "description": "Success",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      }
+    }
+  },
+  "orderAlreadyPlaced": "This order was already placed — nothing was added twice.",
+  "@orderAlreadyPlaced": {
+    "description": "Idempotent replay message"
+  },
+  "viewOrder": "View order",
+  "@viewOrder": {
+    "description": "Action"
+  },
+  "ratesChangedTitle": "Rates changed",
+  "@ratesChangedTitle": {
+    "description": "Dialog title"
+  },
+  "ratesChangedBody": "Some rates changed since you added them. The cart now shows today's rates — check and place the order again.",
+  "@ratesChangedBody": {
+    "description": "Dialog body"
+  },
+  "unavailableInCart": "Some designs are not available now. Remove them to place the order.",
+  "@unavailableInCart": {
+    "description": "Cart warning"
+  },
+  "cartNeedsCustomer": "Choose a customer first.",
+  "@cartNeedsCustomer": {
+    "description": "Cart validation"
+  },
+  "specialRateBadge": "Special rate",
+  "@specialRateBadge": {
+    "description": "Badge on a line with a customer rate"
+  },
+  "statusConfirmed": "Confirmed",
+  "@statusConfirmed": {
+    "description": "Order status"
+  },
+  "statusProcessing": "In process",
+  "@statusProcessing": {
+    "description": "Order status"
+  },
+  "statusReady": "Ready",
+  "@statusReady": {
+    "description": "Order status"
+  },
+  "statusCompleted": "Completed",
+  "@statusCompleted": {
+    "description": "Order status"
+  },
+  "statusCancelled": "Cancelled",
+  "@statusCancelled": {
+    "description": "Order status"
+  },
+  "markAs": "Mark {status}",
+  "@markAs": {
+    "description": "Change order status",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelOrder": "Cancel order",
+  "@cancelOrder": {
+    "description": "Action"
+  },
+  "cancelOrderBody": "The order amount will be removed from Baki. Payments already received stay as the customer's credit.",
+  "@cancelOrderBody": {
+    "description": "Cancel confirmation"
+  },
+  "cancelReason": "Reason (optional)",
+  "@cancelReason": {
+    "description": "Field"
+  },
+  "keepOrder": "Keep order",
+  "@keepOrder": {
+    "description": "Dismiss cancel dialog"
+  },
+  "orderCreatedBy": "By {name}",
+  "@orderCreatedBy": {
+    "description": "Who placed the order",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "orderPayments": "Payments",
+  "@orderPayments": {
+    "description": "Section header"
+  },
+  "receiptNumber": "Receipt #{paymentNo}",
+  "@receiptNumber": {
+    "description": "Payment receipt number",
+    "placeholders": {
+      "paymentNo": {
+        "type": "String"
+      }
+    }
+  },
+  "orderCancelledReason": "Cancelled: {reason}",
+  "@orderCancelledReason": {
+    "description": "Cancel reason",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "reorderAction": "Fari Order",
+  "@reorderAction": {
+    "description": "Repeat an earlier order"
+  },
+  "billNumber": "Bill #{billNo}",
+  "@billNumber": {
+    "description": "Bill number",
+    "placeholders": {
+      "billNo": {
+        "type": "String"
+      }
+    }
+  },
+  "customerPickerTitle": "Choose customer",
+  "@customerPickerTitle": {
+    "description": "Sheet title"
+  },
+  "addedToCart": "Added to order",
+  "@addedToCart": {
+    "description": "Feedback after +"
+  },
+  "goToCart": "Open order",
+  "@goToCart": {
+    "description": "Snackbar action"
+  },
+  "fieldPaymentMode": "Mode",
+  "@fieldPaymentMode": {
+    "description": "Payment mode label"
+  },
+  "qtyLess": "One less",
+  "@qtyLess": {
+    "description": "Stepper decrease"
+  },
+  "qtyMore": "One more",
+  "@qtyMore": {
+    "description": "Stepper increase"
+  },
+  "cartOtherCustomerTitle": "Unfinished order",
+  "@cartOtherCustomerTitle": {
+    "description": "Dialog title"
+  },
+  "cartOtherCustomerBody": "There is an unfinished order for {name} with {count} designs. Start a new order instead?",
+  "@cartOtherCustomerBody": {
+    "description": "Dialog body",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartKeepOld": "Keep it",
+  "@cartKeepOld": {
+    "description": "Keep unfinished order"
+  },
+  "cartStartNew": "Start new",
+  "@cartStartNew": {
+    "description": "Discard and start new"
+  },
+  "cartClear": "Clear order",
+  "@cartClear": {
+    "description": "Remove all lines"
   }
 }

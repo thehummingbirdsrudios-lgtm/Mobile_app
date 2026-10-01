@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -145,24 +147,14 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
 
   Future<void> _newCategory() async {
     final l10n = AppLocalizations.of(context);
-    final controller = TextEditingController();
-    final name = await showDialog<String>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(l10n.categoryNew),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          maxLength: 60,
-          decoration: InputDecoration(labelText: l10n.fieldName),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.commonCancel)),
-          FilledButton(onPressed: () => Navigator.of(context).pop(controller.text), child: Text(l10n.commonAdd)),
-        ],
-      ),
+    final name = await showTextInputDialog(
+      context,
+      title: l10n.categoryNew,
+      label: l10n.fieldName,
+      confirmLabel: l10n.commonAdd,
+      maxLength: 60,
+      requireValue: true,
     );
-    controller.dispose();
     if (name == null || name.trim().isEmpty) return;
     try {
       final category = await ref.read(productEditorProvider).createCategory(name);
@@ -368,7 +360,7 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
                       label: detail.isArchived ? l10n.unarchiveDesign : l10n.archiveDesign,
                       icon: detail.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
                       variant: AppButtonVariant.quiet,
-                      onPressed: () => _toggleArchive(detail),
+                      onPressed: () => unawaited(_toggleArchive(detail)),
                     ),
                   ],
                   const SizedBox(height: AppSpacing.huge),

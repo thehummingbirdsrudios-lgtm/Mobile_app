@@ -155,6 +155,7 @@ void main() {
         tester,
         auth: FakeAuthRepository(restored: ownerSession),
         customers: customers,
+        crossModule: false,
         extraOverrides: [
           customerActionsProvider.overrideWithValue(
             CustomerActions(onAddRegular: (customerId, item) => added.add('$customerId:${item.designNo}')),

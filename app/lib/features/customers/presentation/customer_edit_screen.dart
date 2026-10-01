@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -281,7 +283,7 @@ class _CustomerEditScreenState extends ConsumerState<CustomerEditScreen> {
                       label: existing.isArchived ? l10n.unarchiveCustomer : l10n.archiveCustomer,
                       icon: existing.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
                       variant: AppButtonVariant.quiet,
-                      onPressed: () => _toggleArchive(existing!),
+                      onPressed: () => unawaited(_toggleArchive(existing!)),
                     ),
                   ],
                   const SizedBox(height: AppSpacing.huge),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io' show SocketException;
 
 import 'package:flutter/foundation.dart';
@@ -31,7 +32,7 @@ enum FailureKind {
 
 @immutable
 class AppFailure implements Exception {
-  const AppFailure(this.kind, {this.code, this.diagnostic});
+  const AppFailure(this.kind, {this.code, this.diagnostic, this.details});
 
   final FailureKind kind;
 
@@ -40,6 +41,12 @@ class AppFailure implements Exception {
 
   /// Developer-facing detail. Never shown to users; never contains secrets.
   final String? diagnostic;
+
+  /// Structured data the server attached to a business error, e.g. for
+  /// `rate_changed` the list of `{product_id, rate_paise}` now in force.
+  /// Decoded JSON; read only through typed helpers in the feature that
+  /// expects it.
+  final Object? details;
 
   /// Whether retrying the same request can reasonably succeed.
   bool get isRetryable => switch (kind) {
@@ -109,11 +116,28 @@ class AppFailure implements Exception {
 
   static final _httpStatus = RegExp(r'^\d{3}$');
 
+  static Object? _decodeDetails(Object? raw) {
+    if (raw is! String) return raw;
+    if (raw.isEmpty) return null;
+    try {
+      return jsonDecode(raw);
+    } on FormatException {
+      return null;
+    }
+  }
+
   /// PostgREST puts a SQLSTATE (5 chars) or a `PGRST…` code in [PostgrestException.code],
   /// and the HTTP status (3 digits) only when the response body was not JSON.
   static AppFailure _fromPostgrest(PostgrestException e) {
     final byMessage = _serverCodes[e.message];
-    if (byMessage != null) return AppFailure(byMessage, code: e.message, diagnostic: 'postgrest:${e.code}');
+    if (byMessage != null) {
+      return AppFailure(
+        byMessage,
+        code: e.message,
+        diagnostic: 'postgrest:${e.code}',
+        details: _decodeDetails(e.details),
+      );
+    }
     final code = e.code ?? '';
     final kind = _httpStatus.hasMatch(code) ? _fromHttpStatus(int.parse(code)) : _fromSqlState(code);
     return AppFailure(kind, diagnostic: 'postgrest:$code');

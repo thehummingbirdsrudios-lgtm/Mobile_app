@@ -25,7 +25,9 @@ class CustomerList extends Notifier<CustomerListState> {
 
   @override
   CustomerListState build() {
-    ref.watch(currentSessionProvider.select((s) => s?.tenantId));
+    ref
+      ..watch(currentSessionProvider.select((s) => s?.tenantId))
+      ..watch(businessRevisionProvider); // Baki and activity change with orders/payments
     final paginator = Paginator<CustomerSummary, CustomerCursor>(
       (cursor) => ref.read(customerRepositoryProvider).page(query, after: cursor),
       (s) {
@@ -43,12 +45,16 @@ class CustomerList extends Notifier<CustomerListState> {
 }
 
 final customerDetailProvider = FutureProvider.autoDispose.family<CustomerDetail?, String>((ref, id) {
-  ref.watch(currentSessionProvider.select((s) => s?.tenantId));
+  ref
+    ..watch(currentSessionProvider.select((s) => s?.tenantId))
+    ..watch(businessRevisionProvider);
   return ref.watch(customerRepositoryProvider).detail(id);
 });
 
 final regularMaalProvider = FutureProvider.autoDispose.family<List<RegularMaalItem>, String>((ref, id) {
-  ref.watch(currentSessionProvider.select((s) => s?.tenantId));
+  ref
+    ..watch(currentSessionProvider.select((s) => s?.tenantId))
+    ..watch(businessRevisionProvider);
   return ref.watch(customerRepositoryProvider).regularMaal(id);
 });
 

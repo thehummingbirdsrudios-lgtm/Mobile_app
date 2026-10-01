@@ -9,6 +9,9 @@ import 'package:vepari/features/catalogue/domain/catalogue.dart'
 import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/customers/domain/customers.dart' show CustomerCursor, CustomerDraft;
 import 'package:vepari/features/dashboard/dashboard.dart';
+import 'package:vepari/features/orders/domain/orders.dart'
+    show OrderCursor, OrderLine, OrderCustomer, OrderRequestLine, PaymentInput, PlacedOrder, ReorderLine;
+import 'package:vepari/features/orders/orders.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
 
@@ -521,4 +524,230 @@ class FakeContactLauncher implements ContactLauncher {
     launched.add('wa:$phone');
     return available;
   }
+}
+
+// ---------------------------------------------------------------------------
+// Orders
+// ---------------------------------------------------------------------------
+class PlaceCall {
+  PlaceCall(this.customerId, this.lines, this.requestId, this.note, this.reorderOf, this.payment);
+
+  final String customerId;
+  final List<OrderRequestLine> lines;
+  final String requestId;
+  final String? note;
+  final String? reorderOf;
+  final PaymentInput? payment;
+}
+
+class FakeOrdersRepository implements OrdersRepository {
+  FakeOrdersRepository({List<OrderDetail>? orders}) : orders = orders ?? sampleOrders();
+
+  final List<OrderDetail> orders;
+  final placeCalls = <PlaceCall>[];
+  final transitions = <(String, OrderStatus)>[];
+  final cancels = <(String, String?)>[];
+
+  /// Thrown (once each, in order) by the next place() calls.
+  final placeErrors = <AppFailure>[];
+
+  /// Special rates: customerId → productId → paise.
+  final special = <String, Map<String, int>>{};
+
+  /// Designs that are no longer orderable.
+  final unavailable = <String>{};
+  final _requests = <String, PlacedOrder>{};
+  int _nextNo = 1046;
+
+  static final _catalogue = {for (final p in sampleProducts()) p.id: p};
+
+  @override
+  Future<PageResult<OrderSummary, OrderCursor>> page(OrderQuery query, {OrderCursor? after, int limit = 30}) async {
+    final rows = orders
+        .where((o) => query.customerId == null || o.customer.id == query.customerId)
+        .where((o) => !query.pendingOnly || o.status.isOpen)
+        .map(
+          (o) => OrderSummary(
+            id: o.id,
+            orderNo: o.orderNo,
+            customerId: o.customer.id,
+            customerName: o.customer.name,
+            status: o.status,
+            totalQty: o.totalQty,
+            total: o.total,
+            createdAt: o.createdAt,
+          ),
+        )
+        .toList();
+    return PageResult(rows);
+  }
+
+  @override
+  Future<OrderDetail?> detail(String orderId) async => orders.where((o) => o.id == orderId).firstOrNull;
+
+  QuotedProduct _quote(String? customerId, ProductDetail p) => QuotedProduct(
+    productId: p.id,
+    designNo: p.designNo,
+    name: p.name,
+    rate: Money.paise(special[customerId]?[p.id] ?? p.rate.paise),
+    defaultRate: p.rate,
+    isOrderable: p.isAvailable && !unavailable.contains(p.id),
+    weightMg: p.weightMg,
+    thumbPath: p.photos.isEmpty ? null : p.photos.first.thumbPath,
+  );
+
+  @override
+  Future<List<QuotedProduct>> quote(
+    String? customerId, {
+    List<String> productIds = const [],
+    List<String> designNos = const [],
+  }) async => [
+    for (final id in productIds)
+      if (_catalogue[id] case final p?) _quote(customerId, p),
+    for (final no in designNos)
+      for (final p in _catalogue.values)
+        if (p.designNo.toUpperCase() == no.trim().toUpperCase()) _quote(customerId, p),
+  ];
+
+  @override
+  Future<PlacedOrder> place({
+    required String customerId,
+    required List<OrderRequestLine> lines,
+    required String requestId,
+    String? note,
+    String? reorderOf,
+    PaymentInput? payment,
+  }) async {
+    placeCalls.add(PlaceCall(customerId, lines, requestId, note, reorderOf, payment));
+    if (placeErrors.isNotEmpty) throw placeErrors.removeAt(0);
+    final replay = _requests[requestId];
+    if (replay != null) {
+      return PlacedOrder(
+        orderId: replay.orderId,
+        orderNo: replay.orderNo,
+        customerId: replay.customerId,
+        totalQty: replay.totalQty,
+        total: replay.total,
+        replayed: true,
+      );
+    }
+    final id = '00000000-0000-4000-8000-${(0xa000 + _nextNo).toString().padLeft(12, '0')}';
+    final items = [
+      for (final l in lines)
+        OrderLine(
+          productId: l.productId,
+          designNo: _catalogue[l.productId]!.designNo,
+          name: _catalogue[l.productId]!.name,
+          rate: l.expectedRate,
+          qty: l.qty,
+          amount: l.expectedRate.times(l.qty),
+        ),
+    ];
+    final total = items.fold(Money.zero, (sum, i) => sum + i.amount);
+    final qty = items.fold(0, (sum, i) => sum + i.qty);
+    final customer = sampleCustomers().firstWhere((c) => c.id == customerId);
+    orders.insert(
+      0,
+      OrderDetail(
+        id: id,
+        orderNo: _nextNo,
+        status: OrderStatus.confirmed,
+        totalQty: qty,
+        total: total,
+        createdAt: DateTime.now().toUtc(),
+        customer: OrderCustomer(id: customer.id, name: customer.name, city: customer.city),
+        items: items,
+        note: note,
+        reorderOf: reorderOf,
+      ),
+    );
+    final placed = PlacedOrder(
+      orderId: id,
+      orderNo: _nextNo++,
+      customerId: customerId,
+      totalQty: qty,
+      total: total,
+      replayed: false,
+    );
+    _requests[requestId] = placed;
+    return placed;
+  }
+
+  @override
+  Future<void> transition(String orderId, OrderStatus to) async {
+    transitions.add((orderId, to));
+    _replaceStatus(orderId, to);
+  }
+
+  @override
+  Future<void> cancel(String orderId, {String? reason}) async {
+    cancels.add((orderId, reason));
+    _replaceStatus(orderId, OrderStatus.cancelled, reason: reason);
+  }
+
+  void _replaceStatus(String id, OrderStatus status, {String? reason}) {
+    final i = orders.indexWhere((o) => o.id == id);
+    final o = orders[i];
+    orders[i] = OrderDetail(
+      id: o.id,
+      orderNo: o.orderNo,
+      status: status,
+      totalQty: o.totalQty,
+      total: o.total,
+      createdAt: o.createdAt,
+      customer: o.customer,
+      items: o.items,
+      cancelReason: reason,
+    );
+  }
+
+  @override
+  Future<List<ReorderLine>> reorderPreview(String orderId) async {
+    final o = orders.firstWhere((o) => o.id == orderId);
+    return [
+      for (final l in o.items)
+        ReorderLine(
+          productId: l.productId,
+          designNo: l.designNo,
+          name: l.name,
+          qty: l.qty,
+          oldRate: l.rate,
+          rate: Money.paise(special[o.customer.id]?[l.productId] ?? _catalogue[l.productId]!.rate.paise),
+          isOrderable: !unavailable.contains(l.productId) && _catalogue[l.productId]!.isAvailable,
+        ),
+    ];
+  }
+}
+
+List<OrderDetail> sampleOrders() => [
+  OrderDetail(
+    id: orderFirstId,
+    orderNo: 1045,
+    status: OrderStatus.confirmed,
+    totalQty: 12,
+    total: const Money.paise(744000),
+    createdAt: DateTime.utc(2026, 9, 30, 11),
+    createdByName: 'Maheshbhai',
+    customer: const OrderCustomer(id: customerPatelId, name: 'Patel Kundan Stores', city: 'Rajkot'),
+    items: const [
+      OrderLine(
+        productId: productKundanId,
+        designNo: '1024',
+        name: 'Kundan Set',
+        rate: Money.paise(62000),
+        qty: 12,
+        amount: Money.paise(744000),
+      ),
+    ],
+  ),
+];
+
+class MemoryCartStore implements CartDraftStore {
+  final drafts = <String, CartDraft?>{};
+
+  @override
+  CartDraft? read(String scope) => drafts[scope];
+
+  @override
+  Future<void> write(String scope, CartDraft? draft) async => drafts[scope] = draft;
 }
