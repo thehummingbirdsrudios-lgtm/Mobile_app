@@ -1922,6 +1922,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Order #{orderNo} · {date}'**
   String orderShareHeader(String orderNo, String date);
+
+  /// Remark composer hint
+  ///
+  /// In en, this message translates to:
+  /// **'Write a note…'**
+  String get vaatHint;
+
+  /// Empty remarks
+  ///
+  /// In en, this message translates to:
+  /// **'No Vaat yet. Add a note, voice or photo.'**
+  String get vaatEmpty;
+
+  /// Send remark
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get vaatSend;
+
+  /// Mic button
+  ///
+  /// In en, this message translates to:
+  /// **'Record voice'**
+  String get vaatRecord;
+
+  /// While recording
+  ///
+  /// In en, this message translates to:
+  /// **'Recording {time}'**
+  String vaatRecording(String time);
+
+  /// Voice note too short
+  ///
+  /// In en, this message translates to:
+  /// **'Too short. Speak a little longer.'**
+  String get vaatTooShort;
+
+  /// Permission denied
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the microphone to record voice notes.'**
+  String get vaatMicDenied;
+
+  /// Photo remark button
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get vaatAddPhoto;
+
+  /// Author is the current user
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get vaatYou;
+
+  /// Play voice note
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get vaatPlay;
+
+  /// Stop voice note
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get vaatStop;
+
+  /// Archive remark
+  ///
+  /// In en, this message translates to:
+  /// **'Remove note'**
+  String get vaatRemove;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

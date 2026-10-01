@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Online-first app: all business data lives on the server (TLS only). -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Vaat voice notes (asked only when the user taps the mic). -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <application
         android:label="Vepari"
         android:allowBackup="false"

@@ -15,6 +15,7 @@ import 'package:vepari/features/hisaab/hisaab.dart';
 import 'package:vepari/features/orders/domain/orders.dart'
     show OrderCursor, OrderLine, OrderCustomer, OrderRequestLine, PaymentInput, PlacedOrder, ReorderLine;
 import 'package:vepari/features/orders/orders.dart';
+import 'package:vepari/features/remarks/remarks.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
 import 'package:vepari/features/sharing/sharing.dart';
@@ -964,4 +965,105 @@ class FakeSharingRepository implements SharingRepository {
 
   @override
   Future<List<int>> photo(String sharePath) async => [0xFF, 0xD8, 0xFF, 0xD9];
+}
+
+// ---------------------------------------------------------------------------
+// Vaat (remarks), voice
+// ---------------------------------------------------------------------------
+class FakeRemarksRepository implements RemarksRepository {
+  final byTarget = <RemarkTarget, List<Remark>>{};
+  final archived = <String>[];
+  final uploads = <(String kind, String tenantId, int bytes, Duration? duration)>[];
+  AppFailure? addError;
+  int _n = 0;
+
+  void _add(RemarkTarget target, Remark r) => byTarget[target] = [r, ...?byTarget[target]];
+
+  Remark _make(RemarkKind kind, {String? text, String? path, Duration? duration}) => Remark(
+    id: 'r${++_n}',
+    kind: kind,
+    createdAt: DateTime.utc(2026, 10, 1, 10, _n),
+    text: text,
+    mediaPath: path,
+    duration: duration,
+    authorId: 'u-owner',
+    authorName: 'Rajeshbhai',
+  );
+
+  @override
+  Future<List<Remark>> list(RemarkTarget target, {int limit = 50}) async => byTarget[target] ?? const [];
+
+  @override
+  Future<void> addText(RemarkTarget target, String text) async {
+    if (addError != null) throw addError!;
+    _add(target, _make(RemarkKind.text, text: text));
+  }
+
+  @override
+  Future<void> addVoice(
+    RemarkTarget target, {
+    required String tenantId,
+    required Uint8List audio,
+    required String mimeType,
+    required Duration duration,
+  }) async {
+    uploads.add(('voice', tenantId, audio.length, duration));
+    _add(target, _make(RemarkKind.voice, path: '$tenantId/remarks/v.m4a', duration: duration));
+  }
+
+  @override
+  Future<void> addPhoto(RemarkTarget target, {required String tenantId, required Uint8List jpeg}) async {
+    uploads.add(('photo', tenantId, jpeg.length, null));
+    _add(target, _make(RemarkKind.photo, path: '$tenantId/remarks/p.jpg'));
+  }
+
+  @override
+  Future<void> archive(String remarkId) async {
+    archived.add(remarkId);
+    for (final list in byTarget.values) {
+      list.removeWhere((r) => r.id == remarkId);
+    }
+  }
+}
+
+class FakeVoiceRecorder implements VoiceRecorder {
+  bool permission = true;
+  bool recording = false;
+  Duration next = const Duration(seconds: 4);
+  int cancels = 0;
+
+  @override
+  Future<bool> ensurePermission() async => permission;
+
+  @override
+  Future<void> start() async => recording = true;
+
+  @override
+  Future<RecordedAudio?> stop() async {
+    recording = false;
+    return RecordedAudio(bytes: Uint8List.fromList(List.filled(32, 1)), mimeType: 'audio/mp4', duration: next);
+  }
+
+  @override
+  Future<void> cancel() async {
+    recording = false;
+    cancels++;
+  }
+}
+
+class FakeVoicePlayer implements VoicePlayer {
+  final played = <String>[];
+  final _now = StreamController<String?>.broadcast();
+
+  @override
+  Stream<String?> get nowPlaying => _now.stream;
+
+  @override
+  Future<void> play(String id, String url) async {
+    played.add(url);
+    _now.add(id);
+  }
+
+  @override
+  Future<void> stop() async => _now.add(null);
 }

@@ -304,5 +304,17 @@
   "shareContactLine": "વોટ્સએપ {phone}",
   "shareNoPhotos": "આ ડિઝાઇનના ફોટા નથી; ફક્ત લખાણ મોકલાશે.",
   "receiptSharePhoto": "રસીદનો ફોટો મોકલો",
-  "orderShareHeader": "ઓર્ડર #{orderNo} · {date}"
+  "orderShareHeader": "ઓર્ડર #{orderNo} · {date}",
+  "vaatHint": "નોંધ લખો…",
+  "vaatEmpty": "હજી કોઈ વાત નથી. નોંધ, અવાજ કે ફોટો ઉમેરો.",
+  "vaatSend": "મોકલો",
+  "vaatRecord": "અવાજ રેકોર્ડ કરો",
+  "vaatRecording": "રેકોર્ડિંગ {time}",
+  "vaatTooShort": "બહુ ટૂંકું. થોડું વધુ બોલો.",
+  "vaatMicDenied": "અવાજ રેકોર્ડ કરવા માઇક્રોફોનની પરવાનગી આપો.",
+  "vaatAddPhoto": "ફોટો ઉમેરો",
+  "vaatYou": "તમે",
+  "vaatPlay": "વગાડો",
+  "vaatStop": "બંધ કરો",
+  "vaatRemove": "નોંધ કાઢો"
 }

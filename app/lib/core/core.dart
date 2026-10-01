@@ -13,6 +13,7 @@ export 'media/capture.dart';
 export 'media/image_pipeline.dart';
 export 'media/photo_picker.dart';
 export 'media/share_image.dart';
+export 'media/voice.dart';
 export 'money/money.dart';
 export 'money/payment_mode.dart';
 export 'motion/motion.dart';

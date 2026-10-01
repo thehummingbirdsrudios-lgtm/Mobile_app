@@ -1467,5 +1467,58 @@
         "type": "String"
       }
     }
+  },
+  "vaatHint": "Write a note…",
+  "@vaatHint": {
+    "description": "Remark composer hint"
+  },
+  "vaatEmpty": "No Vaat yet. Add a note, voice or photo.",
+  "@vaatEmpty": {
+    "description": "Empty remarks"
+  },
+  "vaatSend": "Send",
+  "@vaatSend": {
+    "description": "Send remark"
+  },
+  "vaatRecord": "Record voice",
+  "@vaatRecord": {
+    "description": "Mic button"
+  },
+  "vaatRecording": "Recording {time}",
+  "@vaatRecording": {
+    "description": "While recording",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "vaatTooShort": "Too short. Speak a little longer.",
+  "@vaatTooShort": {
+    "description": "Voice note too short"
+  },
+  "vaatMicDenied": "Allow the microphone to record voice notes.",
+  "@vaatMicDenied": {
+    "description": "Permission denied"
+  },
+  "vaatAddPhoto": "Add photo",
+  "@vaatAddPhoto": {
+    "description": "Photo remark button"
+  },
+  "vaatYou": "You",
+  "@vaatYou": {
+    "description": "Author is the current user"
+  },
+  "vaatPlay": "Play",
+  "@vaatPlay": {
+    "description": "Play voice note"
+  },
+  "vaatStop": "Stop",
+  "@vaatStop": {
+    "description": "Stop voice note"
+  },
+  "vaatRemove": "Remove note",
+  "@vaatRemove": {
+    "description": "Archive remark"
   }
 }

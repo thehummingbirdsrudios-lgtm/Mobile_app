@@ -215,6 +215,9 @@ void main() {
       await tester.tap(find.text('Mark Ready'));
       await tester.pumpAndSettle();
       expect(orders.transitions.single, (orderFirstId, OrderStatus.ready));
+      expect(find.text('Mark Completed'), findsOneWidget);
+      await tester.drag(find.byType(ListView).first, const Offset(0, 3000)); // back to the top
+      await tester.pumpAndSettle();
       expect(find.text('Ready'), findsOneWidget);
       expect(find.text('Mark Completed'), findsOneWidget);
     });

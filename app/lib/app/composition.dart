@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart' show Widget;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 
@@ -7,6 +8,7 @@ import '../features/bills/bills.dart';
 import '../features/catalogue/catalogue.dart';
 import '../features/customers/customers.dart';
 import '../features/orders/orders.dart';
+import '../features/remarks/remarks.dart';
 import '../features/sharing/sharing.dart';
 import '../l10n/app_localizations.dart';
 import 'router.dart';
@@ -18,6 +20,7 @@ List<Override> crossModuleOverrides() => [
   orderActionsProvider.overrideWithValue(
     OrderActions(
       billSection: (order) => BillSection(orderId: order.id, billId: order.bill?.id, billNo: order.bill?.billNo),
+      vaatBuilder: (orderId) => VaatSection(target: RemarkTarget.order(orderId)),
     ),
   ),
   productActionsProvider.overrideWith((ref) {
@@ -28,10 +31,16 @@ List<Override> crossModuleOverrides() => [
       await shareDesigns(context, ref.read(productSharerProvider), ids);
     }
 
+    Widget vaat(ProductDetail p) => VaatSection(target: RemarkTarget.product(p.id));
     if (!canOrder) {
-      return ProductActions(onShare: (p) => share([p.id]), onShareMany: (ps) => share([for (final p in ps) p.id]));
+      return ProductActions(
+        onShare: (p) => share([p.id]),
+        onShareMany: (ps) => share([for (final p in ps) p.id]),
+        vaatBuilder: vaat,
+      );
     }
     return ProductActions(
+      vaatBuilder: vaat,
       onShare: (p) => share([p.id]),
       onShareMany: (ps) => share([for (final p in ps) p.id]),
       onAdd: (p) => _addToCart(ref, () => ref.read(cartProvider.notifier).addProduct(p.id)),
@@ -43,8 +52,10 @@ List<Override> crossModuleOverrides() => [
   }),
   customerActionsProvider.overrideWith((ref) {
     final canOrder = ref.watch(currentSessionProvider)?.can(Permission.ordersCreate) ?? false;
-    if (!canOrder) return const CustomerActions();
+    Widget vaat(String customerId) => VaatSection(target: RemarkTarget.customer(customerId));
+    if (!canOrder) return CustomerActions(vaatBuilder: vaat);
     return CustomerActions(
+      vaatBuilder: vaat,
       onAddRegular: (customerId, item) => _addToCart(ref, () async {
         final cart = ref.read(cartProvider.notifier);
         final draft = ref.read(cartProvider);

@@ -14,6 +14,7 @@ import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/dashboard/dashboard.dart';
 import 'package:vepari/features/hisaab/hisaab.dart';
 import 'package:vepari/features/orders/orders.dart';
+import 'package:vepari/features/remarks/remarks.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
 import 'package:vepari/features/sharing/sharing.dart';
@@ -65,6 +66,9 @@ Future<ProviderContainer> pumpVepari(
   FakeBillsRepository? bills,
   FakeFileSharer? sharer,
   FakeSharingRepository? sharing,
+  FakeRemarksRepository? remarks,
+  FakeVoiceRecorder? recorder,
+  FakeVoicePlayer? player,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
@@ -98,6 +102,9 @@ Future<ProviderContainer> pumpVepari(
       pdfBuilderProvider.overrideWithValue(renderImagePdf),
       sharingRepositoryProvider.overrideWithValue(sharing ?? FakeSharingRepository()),
       shareImageComposerProvider.overrideWithValue(fakeComposer),
+      remarksRepositoryProvider.overrideWithValue(remarks ?? FakeRemarksRepository()),
+      voiceRecorderProvider.overrideWithValue(recorder ?? FakeVoiceRecorder()),
+      voicePlayerProvider.overrideWithValue(player ?? FakeVoicePlayer()),
       imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),

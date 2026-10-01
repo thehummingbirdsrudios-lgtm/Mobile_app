@@ -1025,4 +1025,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String orderShareHeader(String orderNo, String date) {
     return 'Order #$orderNo · $date';
   }
+
+  @override
+  String get vaatHint => 'Write a note…';
+
+  @override
+  String get vaatEmpty => 'No Vaat yet. Add a note, voice or photo.';
+
+  @override
+  String get vaatSend => 'Send';
+
+  @override
+  String get vaatRecord => 'Record voice';
+
+  @override
+  String vaatRecording(String time) {
+    return 'Recording $time';
+  }
+
+  @override
+  String get vaatTooShort => 'Too short. Speak a little longer.';
+
+  @override
+  String get vaatMicDenied => 'Allow the microphone to record voice notes.';
+
+  @override
+  String get vaatAddPhoto => 'Add photo';
+
+  @override
+  String get vaatYou => 'You';
+
+  @override
+  String get vaatPlay => 'Play';
+
+  @override
+  String get vaatStop => 'Stop';
+
+  @override
+  String get vaatRemove => 'Remove note';
 }

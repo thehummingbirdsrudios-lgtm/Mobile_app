@@ -304,5 +304,17 @@
   "shareContactLine": "व्हाट्सऐप {phone}",
   "shareNoPhotos": "इन डिज़ाइनों की फ़ोटो नहीं हैं; केवल लिखा हुआ भेजा जाएगा।",
   "receiptSharePhoto": "रसीद की फ़ोटो भेजें",
-  "orderShareHeader": "ऑर्डर #{orderNo} · {date}"
+  "orderShareHeader": "ऑर्डर #{orderNo} · {date}",
+  "vaatHint": "नोट लिखें…",
+  "vaatEmpty": "अभी कोई बात नहीं। नोट, आवाज़ या फ़ोटो जोड़ें।",
+  "vaatSend": "भेजें",
+  "vaatRecord": "आवाज़ रिकॉर्ड करें",
+  "vaatRecording": "रिकॉर्डिंग {time}",
+  "vaatTooShort": "बहुत छोटा। थोड़ा और बोलें।",
+  "vaatMicDenied": "आवाज़ रिकॉर्ड करने के लिए माइक्रोफ़ोन की अनुमति दें।",
+  "vaatAddPhoto": "फ़ोटो जोड़ें",
+  "vaatYou": "आप",
+  "vaatPlay": "चलाएँ",
+  "vaatStop": "रोकें",
+  "vaatRemove": "नोट हटाएँ"
 }

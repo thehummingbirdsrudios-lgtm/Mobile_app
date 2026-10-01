@@ -1021,4 +1021,42 @@ class AppLocalizationsHi extends AppLocalizations {
   String orderShareHeader(String orderNo, String date) {
     return 'ऑर्डर #$orderNo · $date';
   }
+
+  @override
+  String get vaatHint => 'नोट लिखें…';
+
+  @override
+  String get vaatEmpty => 'अभी कोई बात नहीं। नोट, आवाज़ या फ़ोटो जोड़ें।';
+
+  @override
+  String get vaatSend => 'भेजें';
+
+  @override
+  String get vaatRecord => 'आवाज़ रिकॉर्ड करें';
+
+  @override
+  String vaatRecording(String time) {
+    return 'रिकॉर्डिंग $time';
+  }
+
+  @override
+  String get vaatTooShort => 'बहुत छोटा। थोड़ा और बोलें।';
+
+  @override
+  String get vaatMicDenied => 'आवाज़ रिकॉर्ड करने के लिए माइक्रोफ़ोन की अनुमति दें।';
+
+  @override
+  String get vaatAddPhoto => 'फ़ोटो जोड़ें';
+
+  @override
+  String get vaatYou => 'आप';
+
+  @override
+  String get vaatPlay => 'चलाएँ';
+
+  @override
+  String get vaatStop => 'रोकें';
+
+  @override
+  String get vaatRemove => 'नोट हटाएँ';
 }

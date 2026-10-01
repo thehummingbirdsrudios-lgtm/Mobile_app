@@ -1021,4 +1021,42 @@ class AppLocalizationsGu extends AppLocalizations {
   String orderShareHeader(String orderNo, String date) {
     return 'ઓર્ડર #$orderNo · $date';
   }
+
+  @override
+  String get vaatHint => 'નોંધ લખો…';
+
+  @override
+  String get vaatEmpty => 'હજી કોઈ વાત નથી. નોંધ, અવાજ કે ફોટો ઉમેરો.';
+
+  @override
+  String get vaatSend => 'મોકલો';
+
+  @override
+  String get vaatRecord => 'અવાજ રેકોર્ડ કરો';
+
+  @override
+  String vaatRecording(String time) {
+    return 'રેકોર્ડિંગ $time';
+  }
+
+  @override
+  String get vaatTooShort => 'બહુ ટૂંકું. થોડું વધુ બોલો.';
+
+  @override
+  String get vaatMicDenied => 'અવાજ રેકોર્ડ કરવા માઇક્રોફોનની પરવાનગી આપો.';
+
+  @override
+  String get vaatAddPhoto => 'ફોટો ઉમેરો';
+
+  @override
+  String get vaatYou => 'તમે';
+
+  @override
+  String get vaatPlay => 'વગાડો';
+
+  @override
+  String get vaatStop => 'બંધ કરો';
+
+  @override
+  String get vaatRemove => 'નોંધ કાઢો';
 }
