@@ -7,22 +7,37 @@ import '../application/hisaab_providers.dart';
 import '../domain/hisaab.dart';
 import 'ledger_screen.dart' show bakiText;
 
-/// Optional extras supplied by other modules (e.g. send as an image/PDF).
-class ReceiptActions {
-  const ReceiptActions({this.onShareFile});
-
-  final Future<void> Function(PaymentReceipt receipt)? onShareFile;
-}
-
-final receiptActionsProvider = Provider<ReceiptActions>((ref) => const ReceiptActions());
-
 /// Payment receipt from `payment_receipt` (share-safe fields only).
-class ReceiptScreen extends ConsumerWidget {
+class ReceiptScreen extends ConsumerStatefulWidget {
   const ReceiptScreen({super.key, required this.paymentId});
 
   final String paymentId;
 
-  Future<void> _send(BuildContext context, WidgetRef ref, PaymentReceipt r) async {
+  @override
+  ConsumerState<ReceiptScreen> createState() => _ReceiptScreenState();
+}
+
+class _ReceiptScreenState extends ConsumerState<ReceiptScreen> {
+  final _boundary = GlobalKey();
+
+  String get paymentId => widget.paymentId;
+
+  Future<void> _sharePhoto(PaymentReceipt r) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      final png = await ref.read(widgetCapturerProvider)(_boundary, pixelRatio: 3);
+      final ok = await ref
+          .read(fileSharerProvider)
+          .share(
+            files: [ShareFile(bytes: png, name: 'receipt-${r.paymentNo}.png', mimeType: 'image/png')],
+          );
+      if (!ok && mounted) AppFeedback.show(context, l10n.shareFailed, tone: FeedbackTone.error);
+    } on Object {
+      if (mounted) AppFeedback.show(context, l10n.shareFailed, tone: FeedbackTone.error);
+    }
+  }
+
+  Future<void> _send(PaymentReceipt r) async {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context).toLanguageTag();
     final message = l10n.receiptMessage(
@@ -34,14 +49,13 @@ class ReceiptScreen extends ConsumerWidget {
       r.businessName,
     );
     final ok = await ref.read(contactLauncherProvider).whatsapp(r.customerPhone!, text: message);
-    if (!ok && context.mounted) AppFeedback.show(context, l10n.whatsappUnavailable, tone: FeedbackTone.error);
+    if (!ok && mounted) AppFeedback.show(context, l10n.whatsappUnavailable, tone: FeedbackTone.error);
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final receipt = ref.watch(paymentReceiptProvider(paymentId));
-    final actions = ref.watch(receiptActionsProvider);
     return switch (receipt) {
       AsyncData(:final value?) => Scaffold(
         appBar: AppBar(title: Text(l10n.receiptTitle('${value.paymentNo}'))),
@@ -52,23 +66,20 @@ class ReceiptScreen extends ConsumerWidget {
             child: ListView(
               padding: const EdgeInsets.all(AppSpacing.gutter),
               children: [
-                ReceiptCard(receipt: value),
+                RepaintBoundary(
+                  key: _boundary,
+                  child: ReceiptCard(receipt: value),
+                ),
                 const SizedBox(height: AppSpacing.lg),
                 if (value.customerPhone != null)
-                  AppButton(
-                    label: l10n.receiptSend,
-                    icon: Icons.chat_outlined,
-                    onPressed: () => _send(context, ref, value),
-                  ),
-                if (actions.onShareFile != null) ...[
-                  const SizedBox(height: AppSpacing.sm),
-                  AppButton(
-                    label: l10n.commonShare,
-                    icon: Icons.share_rounded,
-                    variant: AppButtonVariant.secondary,
-                    onPressed: () => actions.onShareFile!(value),
-                  ),
-                ],
+                  AppButton(label: l10n.receiptSend, icon: Icons.chat_outlined, onPressed: () => _send(value)),
+                const SizedBox(height: AppSpacing.sm),
+                AppButton(
+                  label: l10n.receiptSharePhoto,
+                  icon: Icons.image_outlined,
+                  variant: AppButtonVariant.secondary,
+                  onPressed: () => _sharePhoto(value),
+                ),
               ],
             ),
           ),

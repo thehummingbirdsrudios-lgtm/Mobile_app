@@ -1408,5 +1408,64 @@
   "shareFailed": "Could not open sharing on this phone.",
   "@shareFailed": {
     "description": "Error"
+  },
+  "shareDesignsTitle": "Share designs",
+  "@shareDesignsTitle": {
+    "description": "Share sheet title"
+  },
+  "shareShowRate": "Show rate",
+  "@shareShowRate": {
+    "description": "Include rate in caption"
+  },
+  "shareAddWatermark": "Business name on photos",
+  "@shareAddWatermark": {
+    "description": "Watermark toggle"
+  },
+  "sharePreparing": "Preparing {count, plural, =1{photo} other{{count} photos}}…",
+  "@sharePreparing": {
+    "description": "Progress",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shareRateLine": "{rate} per piece",
+  "@shareRateLine": {
+    "description": "Caption rate",
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "shareContactLine": "WhatsApp {phone}",
+  "@shareContactLine": {
+    "description": "Caption contact",
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "shareNoPhotos": "These designs have no photos yet; sending text only.",
+  "@shareNoPhotos": {
+    "description": "Warning"
+  },
+  "receiptSharePhoto": "Share receipt photo",
+  "@receiptSharePhoto": {
+    "description": "Button"
+  },
+  "orderShareHeader": "Order #{orderNo} · {date}",
+  "@orderShareHeader": {
+    "description": "Shared order text header",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -24,6 +24,8 @@ import 'features/search/search.dart';
 import 'features/search/search_adapters.dart';
 import 'features/settings/settings.dart';
 import 'features/settings/settings_adapters.dart';
+import 'features/sharing/sharing.dart';
+import 'features/sharing/sharing_adapters.dart';
 
 /// Composition root: the only place concrete adapters (Supabase) are wired
 /// to module ports. Everything else depends on interfaces.
@@ -58,6 +60,7 @@ Future<void> main() async {
       ordersRepositoryProvider.overrideWithValue(OrdersRepositoryImpl(OrdersApi(api))),
       hisaabRepositoryProvider.overrideWithValue(HisaabRepositoryImpl(HisaabApi(api))),
       billsRepositoryProvider.overrideWithValue(BillsRepositoryImpl(BillsApi(api))),
+      sharingRepositoryProvider.overrideWithValue(SharingRepositoryImpl(SharingApi(api, storage))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

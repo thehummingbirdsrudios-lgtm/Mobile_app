@@ -38,7 +38,8 @@ void main() {
   });
 
   testWidgets('without a share action there is no selection mode', (tester) async {
-    await pumpVepari(tester, auth: FakeAuthRepository(restored: ownerSession));
+    // Catalogue on its own (no sharing module composed in).
+    await pumpVepari(tester, auth: FakeAuthRepository(restored: ownerSession), crossModule: false);
     await _openFromHome(tester);
     expect(find.text('Select to share'), findsNothing);
   });

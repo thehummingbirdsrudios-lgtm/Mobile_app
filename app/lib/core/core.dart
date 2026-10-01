@@ -12,6 +12,7 @@ export 'logging/app_logger.dart';
 export 'media/capture.dart';
 export 'media/image_pipeline.dart';
 export 'media/photo_picker.dart';
+export 'media/share_image.dart';
 export 'money/money.dart';
 export 'money/payment_mode.dart';
 export 'motion/motion.dart';

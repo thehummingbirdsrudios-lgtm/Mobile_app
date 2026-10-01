@@ -986,4 +986,39 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get shareFailed => 'इस फ़ोन पर शेयर नहीं खुला।';
+
+  @override
+  String get shareDesignsTitle => 'डिज़ाइन भेजें';
+
+  @override
+  String get shareShowRate => 'भाव दिखाएँ';
+
+  @override
+  String get shareAddWatermark => 'फ़ोटो पर दुकान का नाम';
+
+  @override
+  String sharePreparing(int count) {
+    return '$count फ़ोटो तैयार हो रही हैं…';
+  }
+
+  @override
+  String shareRateLine(String rate) {
+    return '$rate प्रति पीस';
+  }
+
+  @override
+  String shareContactLine(String phone) {
+    return 'व्हाट्सऐप $phone';
+  }
+
+  @override
+  String get shareNoPhotos => 'इन डिज़ाइनों की फ़ोटो नहीं हैं; केवल लिखा हुआ भेजा जाएगा।';
+
+  @override
+  String get receiptSharePhoto => 'रसीद की फ़ोटो भेजें';
+
+  @override
+  String orderShareHeader(String orderNo, String date) {
+    return 'ऑर्डर #$orderNo · $date';
+  }
 }

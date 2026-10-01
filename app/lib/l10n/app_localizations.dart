@@ -1868,6 +1868,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not open sharing on this phone.'**
   String get shareFailed;
+
+  /// Share sheet title
+  ///
+  /// In en, this message translates to:
+  /// **'Share designs'**
+  String get shareDesignsTitle;
+
+  /// Include rate in caption
+  ///
+  /// In en, this message translates to:
+  /// **'Show rate'**
+  String get shareShowRate;
+
+  /// Watermark toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Business name on photos'**
+  String get shareAddWatermark;
+
+  /// Progress
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing {count, plural, =1{photo} other{{count} photos}}…'**
+  String sharePreparing(int count);
+
+  /// Caption rate
+  ///
+  /// In en, this message translates to:
+  /// **'{rate} per piece'**
+  String shareRateLine(String rate);
+
+  /// Caption contact
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp {phone}'**
+  String shareContactLine(String phone);
+
+  /// Warning
+  ///
+  /// In en, this message translates to:
+  /// **'These designs have no photos yet; sending text only.'**
+  String get shareNoPhotos;
+
+  /// Button
+  ///
+  /// In en, this message translates to:
+  /// **'Share receipt photo'**
+  String get receiptSharePhoto;
+
+  /// Shared order text header
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNo} · {date}'**
+  String orderShareHeader(String orderNo, String date);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

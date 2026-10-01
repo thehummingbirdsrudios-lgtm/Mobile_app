@@ -17,6 +17,7 @@ import 'package:vepari/features/orders/domain/orders.dart'
 import 'package:vepari/features/orders/orders.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
+import 'package:vepari/features/sharing/sharing.dart';
 
 const ownerSession = UserSession(
   userId: 'u-owner',
@@ -936,4 +937,31 @@ class FakeFileSharer implements FileSharer {
     shared.add((files, text));
     return available;
   }
+}
+
+class FakeSharingRepository implements SharingRepository {
+  final requested = <(String, String?)>[];
+  bool watermarkEnabled = true;
+
+  @override
+  Future<ShareableProduct> product(String productId, {String? customerId}) async {
+    requested.add((productId, customerId));
+    final p = sampleProducts().firstWhere(
+      (p) => p.id == productId,
+      orElse: () => throw const AppFailure(FailureKind.notFound),
+    );
+    return ShareableProduct(
+      designNo: p.designNo,
+      name: p.name,
+      rate: p.rate,
+      weightMg: p.weightMg,
+      sharePath: p.photos.isEmpty ? null : 't-a/products/${p.id}/m/share.jpg',
+      businessName: 'Shree Jewels',
+      whatsappPhone: '9825000000',
+      watermark: watermarkEnabled,
+    );
+  }
+
+  @override
+  Future<List<int>> photo(String sharePath) async => [0xFF, 0xD8, 0xFF, 0xD9];
 }

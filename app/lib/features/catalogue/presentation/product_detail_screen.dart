@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -205,7 +207,8 @@ class _DetailBodyState extends ConsumerState<_DetailBody> {
                           label: l10n.commonShare,
                           icon: Icons.share_rounded,
                           variant: AppButtonVariant.secondary,
-                          onPressed: p.isArchived ? null : () => actions.onShare!(p),
+                          // Opens a sheet: the button must not stay busy behind it.
+                          onPressed: p.isArchived ? null : () => unawaited(actions.onShare!(p)),
                         ),
                       ],
                       if (actions.vaatBuilder != null) ...[

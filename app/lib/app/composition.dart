@@ -7,6 +7,7 @@ import '../features/bills/bills.dart';
 import '../features/catalogue/catalogue.dart';
 import '../features/customers/customers.dart';
 import '../features/orders/orders.dart';
+import '../features/sharing/sharing.dart';
 import '../l10n/app_localizations.dart';
 import 'router.dart';
 
@@ -21,8 +22,18 @@ List<Override> crossModuleOverrides() => [
   ),
   productActionsProvider.overrideWith((ref) {
     final canOrder = ref.watch(currentSessionProvider)?.can(Permission.ordersCreate) ?? false;
-    if (!canOrder) return const ProductActions();
+    Future<void> share(List<String> ids) async {
+      final context = rootNavigatorKey.currentContext;
+      if (context == null || !context.mounted) return;
+      await shareDesigns(context, ref.read(productSharerProvider), ids);
+    }
+
+    if (!canOrder) {
+      return ProductActions(onShare: (p) => share([p.id]), onShareMany: (ps) => share([for (final p in ps) p.id]));
+    }
     return ProductActions(
+      onShare: (p) => share([p.id]),
+      onShareMany: (ps) => share([for (final p in ps) p.id]),
       onAdd: (p) => _addToCart(ref, () => ref.read(cartProvider.notifier).addProduct(p.id)),
       onOrder: (p) async {
         final added = await _addToCart(ref, () => ref.read(cartProvider.notifier).addProduct(p.id), quiet: true);

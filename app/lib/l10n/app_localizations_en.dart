@@ -989,4 +989,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareFailed => 'Could not open sharing on this phone.';
+
+  @override
+  String get shareDesignsTitle => 'Share designs';
+
+  @override
+  String get shareShowRate => 'Show rate';
+
+  @override
+  String get shareAddWatermark => 'Business name on photos';
+
+  @override
+  String sharePreparing(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count photos', one: 'photo');
+    return 'Preparing $_temp0…';
+  }
+
+  @override
+  String shareRateLine(String rate) {
+    return '$rate per piece';
+  }
+
+  @override
+  String shareContactLine(String phone) {
+    return 'WhatsApp $phone';
+  }
+
+  @override
+  String get shareNoPhotos => 'These designs have no photos yet; sending text only.';
+
+  @override
+  String get receiptSharePhoto => 'Share receipt photo';
+
+  @override
+  String orderShareHeader(String orderNo, String date) {
+    return 'Order #$orderNo · $date';
+  }
 }

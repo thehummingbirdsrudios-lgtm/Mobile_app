@@ -295,5 +295,14 @@
   "billWeight": "કુલ વજન",
   "billShareText": "{business} તરફથી બિલ #{billNo}",
   "billCancelledOrder": "રદ ઓર્ડરનું બિલ ન બને.",
-  "shareFailed": "આ ફોનમાં શેર ખૂલ્યું નહીં."
+  "shareFailed": "આ ફોનમાં શેર ખૂલ્યું નહીં.",
+  "shareDesignsTitle": "ડિઝાઇન મોકલો",
+  "shareShowRate": "ભાવ બતાવો",
+  "shareAddWatermark": "ફોટા પર દુકાનનું નામ",
+  "sharePreparing": "{count} ફોટા તૈયાર થાય છે…",
+  "shareRateLine": "{rate} પ્રતિ નંગ",
+  "shareContactLine": "વોટ્સએપ {phone}",
+  "shareNoPhotos": "આ ડિઝાઇનના ફોટા નથી; ફક્ત લખાણ મોકલાશે.",
+  "receiptSharePhoto": "રસીદનો ફોટો મોકલો",
+  "orderShareHeader": "ઓર્ડર #{orderNo} · {date}"
 }

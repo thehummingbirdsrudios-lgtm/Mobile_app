@@ -16,6 +16,7 @@ import 'package:vepari/features/hisaab/hisaab.dart';
 import 'package:vepari/features/orders/orders.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
+import 'package:vepari/features/sharing/sharing.dart';
 
 import 'fakes.dart';
 
@@ -40,6 +41,14 @@ Widget testImageBuilder({
 Future<Uint8List> fakeCapture(GlobalKey key, {double pixelRatio = 1}) async =>
     img.encodePng(img.Image(width: 2, height: 3));
 
+/// Records watermark requests instead of rasterising (fake time).
+final composedWatermarks = <String?>[];
+
+Future<Uint8List> fakeComposer(Uint8List jpeg, {String? watermark}) async {
+  composedWatermarks.add(watermark);
+  return jpeg;
+}
+
 /// Pumps the full app with fakes at a given screen size and language.
 Future<ProviderContainer> pumpVepari(
   WidgetTester tester, {
@@ -55,6 +64,7 @@ Future<ProviderContainer> pumpVepari(
   FakeHisaabRepository? hisaab,
   FakeBillsRepository? bills,
   FakeFileSharer? sharer,
+  FakeSharingRepository? sharing,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
@@ -86,6 +96,8 @@ Future<ProviderContainer> pumpVepari(
       fileSharerProvider.overrideWithValue(sharer ?? FakeFileSharer()),
       widgetCapturerProvider.overrideWithValue(fakeCapture),
       pdfBuilderProvider.overrideWithValue(renderImagePdf),
+      sharingRepositoryProvider.overrideWithValue(sharing ?? FakeSharingRepository()),
+      shareImageComposerProvider.overrideWithValue(fakeComposer),
       imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),

@@ -986,4 +986,39 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get shareFailed => 'આ ફોનમાં શેર ખૂલ્યું નહીં.';
+
+  @override
+  String get shareDesignsTitle => 'ડિઝાઇન મોકલો';
+
+  @override
+  String get shareShowRate => 'ભાવ બતાવો';
+
+  @override
+  String get shareAddWatermark => 'ફોટા પર દુકાનનું નામ';
+
+  @override
+  String sharePreparing(int count) {
+    return '$count ફોટા તૈયાર થાય છે…';
+  }
+
+  @override
+  String shareRateLine(String rate) {
+    return '$rate પ્રતિ નંગ';
+  }
+
+  @override
+  String shareContactLine(String phone) {
+    return 'વોટ્સએપ $phone';
+  }
+
+  @override
+  String get shareNoPhotos => 'આ ડિઝાઇનના ફોટા નથી; ફક્ત લખાણ મોકલાશે.';
+
+  @override
+  String get receiptSharePhoto => 'રસીદનો ફોટો મોકલો';
+
+  @override
+  String orderShareHeader(String orderNo, String date) {
+    return 'ઓર્ડર #$orderNo · $date';
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -101,7 +103,7 @@ class _NavoMaalScreenState extends ConsumerState<NavoMaalScreen> {
                       ? AppButton(
                           label: l10n.shareSelected(_selected.length),
                           icon: Icons.share_rounded,
-                          onPressed: _selected.isEmpty ? null : () => _share(actions),
+                          onPressed: _selected.isEmpty ? null : () => unawaited(_share(actions)),
                         )
                       : AppButton(
                           label: l10n.selectToShare,

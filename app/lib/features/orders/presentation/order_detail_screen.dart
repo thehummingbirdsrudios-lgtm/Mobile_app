@@ -13,12 +13,23 @@ import 'order_labels.dart';
 
 /// Sections supplied by other modules (bill, share, vaat) via the app layer.
 class OrderActions {
-  const OrderActions({this.billSection, this.onShare, this.vaatBuilder});
+  const OrderActions({this.billSection, this.vaatBuilder});
 
   final Widget Function(OrderDetail order)? billSection;
-  final Future<void> Function(OrderDetail order)? onShare;
   final Widget Function(String orderId)? vaatBuilder;
 }
+
+/// Order summary for the customer: lines, quantities, rates and total. The
+/// internal order note and who placed it are never included.
+String orderShareText(AppLocalizations l10n, OrderDetail o, String locale, String businessName) => [
+  l10n.orderShareHeader('${o.orderNo}', AppFormat.fullDate(o.createdAt, locale)),
+  o.customer.name,
+  '',
+  for (final l in o.items) '${l.designNo} · ${l.name} — ${l.qty} × ${l.rate.format()} = ${l.amount.format()}',
+  '',
+  '${l10n.piecesCount(o.totalQty)} · ${l10n.cartTotal} ${o.total.format()}',
+  if (businessName.isNotEmpty) '— $businessName',
+].join('\n');
 
 final orderActionsProvider = Provider<OrderActions>((ref) => const OrderActions());
 
@@ -134,11 +145,16 @@ class _Body extends ConsumerWidget {
       appBar: AppBar(
         title: Text(l10n.orderNumberTitle('${o.orderNo}')),
         actions: [
-          if (actions.onShare != null && o.status != OrderStatus.cancelled)
+          if (o.status != OrderStatus.cancelled)
             IconButton(
               tooltip: l10n.commonShare,
               icon: const Icon(Icons.share_rounded),
-              onPressed: () => actions.onShare!(o),
+              onPressed: () async {
+                final ok = await ref
+                    .read(fileSharerProvider)
+                    .share(text: orderShareText(l10n, o, locale, session?.businessName ?? ''));
+                if (!ok && context.mounted) AppFeedback.show(context, l10n.shareFailed, tone: FeedbackTone.error);
+              },
             ),
         ],
       ),
