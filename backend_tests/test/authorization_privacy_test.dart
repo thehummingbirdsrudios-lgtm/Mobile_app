@@ -92,6 +92,25 @@ void main() {
     });
   });
 
+  group('current_session', () {
+    test('returns identity, tenant, role and permissions of the caller only', () async {
+      final session = await staffCatalogue.json('select public.current_session()');
+      expect(session['tenant_id'], a.tenantId);
+      expect(session['role'], 'staff');
+      expect(session['username'], 'staff_cat_a');
+      expect(session['permissions'], ['catalogue.manage']);
+      expect(session['business_name'], isNotEmpty);
+    });
+
+    test('is null for deactivated staff and unknown users', () async {
+      await owner.query('select public.set_member_active(@u::uuid, false)', {'u': a.staffMinId});
+      expect(await staffMin.scalar('select public.current_session()'), isNull);
+      await owner.query('select public.set_member_active(@u::uuid, true)', {'u': a.staffMinId});
+      final stranger = await db.actor(TestDb.newId());
+      expect(await stranger.scalar('select public.current_session()'), isNull);
+    });
+  });
+
   group('staff permissions are enforced server-side', () {
     test('Hisaab needs hisaab.view', () async {
       expect(await staffMin.count('select 1 from public.customer_balances'), 0);
