@@ -1,0 +1,34 @@
+erDiagram
+  tenants ||--|| business_profiles : has
+  tenants ||--o{ tenant_counters : numbers
+  tenants ||--o{ tenant_members : employs
+  app_users ||--|| tenant_members : "belongs to one"
+  tenant_members ||--o{ member_permissions : granted
+  tenants ||--o{ categories : owns
+  tenants ||--o{ products : owns
+  categories |o--o{ products : groups
+  products ||--o| product_private : "owner-only cost"
+  products ||--o{ product_media : images
+  tenants ||--o{ customers : owns
+  customers ||--|| customer_balances : baki
+  customers ||--o{ customer_product_rates : "special rate"
+  products ||--o{ customer_product_rates : priced
+  customers ||--o{ orders : places
+  orders |o--o{ orders : "reorder_of (Fari Order)"
+  orders ||--|{ order_items : contains
+  products ||--o{ order_items : "snapshot of"
+  customers ||--o{ payments : pays
+  orders |o--o{ payments : "paid with"
+  customers ||--o{ ledger_entries : hisaab
+  orders |o--o{ ledger_entries : "order / reversal"
+  payments |o--|| ledger_entries : "payment entry"
+  ledger_entries |o--o| ledger_entries : reverses
+  orders ||--o| bills : billed
+  customers |o--o{ photo_enquiries : asks
+  customers |o--o{ remarks : vaat
+  orders |o--o{ remarks : vaat
+  products |o--o{ remarks : vaat
+  photo_enquiries |o--o{ remarks : vaat
+  tenants ||--o{ share_assets : generated
+  tenant_members ||--o{ notifications : receives
+  tenants ||--o{ audit_logs : records
