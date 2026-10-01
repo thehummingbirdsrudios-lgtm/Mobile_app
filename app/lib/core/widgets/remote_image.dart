@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,10 +35,10 @@ class SignedUrlCache {
           _entries[id] = (url: url, expires: _clock().add(reuseFor));
           return url;
         })
-        // Block body on purpose: `=> _inFlight.remove(id)` would return this
-        // very future, and whenComplete would wait on itself forever.
+        // Never return the removed entry: it is this very future, and
+        // whenComplete would wait on itself forever (a past bug).
         .whenComplete(() {
-          _inFlight.remove(id);
+          unawaited(_inFlight.remove(id));
         });
   }
 }
