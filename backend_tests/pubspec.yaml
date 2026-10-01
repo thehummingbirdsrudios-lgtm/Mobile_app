@@ -1,0 +1,14 @@
+name: vepari_backend_tests
+description: >-
+  Database-level tests for the Vepari Supabase schema: tenant isolation,
+  authorization, money/ledger integrity, idempotency, concurrency, share
+  privacy, search and performance. Run via tool/db_test.sh.
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  postgres: ^3.5.17
+  test: ^1.26.0
