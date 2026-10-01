@@ -8,6 +8,7 @@
 | Owner-only data | Cost, supplier and notes invisible to all staff; audit redacts cost values | Pass | same |
 | Financial integrity | Server totals; concurrent duplicate orders and payments; ledger property test (150 operations); reconciliation; immutability triggers | Pass | `orders_money_test.dart` |
 | Idempotency tests detect regressions | Mutation probe: idempotency lock removed | 2 tests failed as expected | Session log |
+| Code-review fixes | Payment permission via create_order; bill PDF reads; cross-bucket moves; replay with payment; session rejection → client sign-out | Pass; storage fixes mutation-probed | R-006 to R-014 in regression-suite.md |
 | Safe share | Seeded secrets absent from product and bill payloads; allow-listed keys | Pass | `authorization_privacy_test.dart` |
 | Input abuse | Malformed JSON items, non-integer and out-of-range quantities, huge line counts, LIKE wildcards in search, oversized queries | Pass | `orders_money_test.dart`, `authorization_privacy_test.dart` |
 | Client error leakage | Every failure kind renders without codes, SQL or exception names | Pass | `app_failure_test.dart` |

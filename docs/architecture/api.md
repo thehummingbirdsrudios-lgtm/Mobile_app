@@ -34,12 +34,14 @@ Both map to permission and validation kinds respectively.
 ## Write RPCs (idempotent on `client_request_id`)
 
 ### `create_order(p_customer_id, p_items, p_client_request_id, p_note?, p_reorder_of?, p_payment?) → order`
-`orders.create`. Items: `[{product_id, qty, expected_rate_paise?}]`, at most 200
-lines. Duplicate products are merged. `p_payment` is `{amount_paise, mode, reference?}`
+`orders.create`; also `payments.record` when `p_payment` is given. Items:
+`[{product_id, qty, expected_rate_paise?}]`, at most 200 lines. Duplicate products are merged. `p_payment` is `{amount_paise, mode, reference?}`
 and is recorded atomically with the order.
 
 Returns `{order_id, order_no, customer_id, status, total_qty, total_paise,
-total_weight_mg, created_at, replayed, payment?}`.
+total_weight_mg, created_at, replayed, payment?}`. A replay returns the same
+order, and the same payment if one was taken with it. Each line's effective
+rate is resolved once per call.
 
 ### `record_payment(p_customer_id, p_amount_paise, p_mode, p_client_request_id, p_reference?, p_note?, p_order_id?) → payment`
 `payments.record`. Returns `{payment_id, payment_no, amount_paise, mode,

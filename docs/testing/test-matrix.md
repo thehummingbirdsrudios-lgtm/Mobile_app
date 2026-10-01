@@ -23,8 +23,8 @@
 | NFR-I18N-001 | `money_test.dart`, `formatters_test.dart` | Unit | Pass |
 
 **Totals (2026-10-01):**
-- Database: 99 functional + 16 scale = 115 tests.
-- App: 70 tests, plus 7 opt-in visual renders.
+- Database: 105 functional + 16 scale = 121 tests.
+- App: 74 tests, plus 7 opt-in visual renders.
 
 **Not yet automated:**
 - E2E journeys on a device

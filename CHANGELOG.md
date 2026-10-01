@@ -20,3 +20,14 @@ All notable changes are documented here ([Keep a Changelog](https://keepachangel
   legal screens; module-boundary checker.
 - Vepari brand mark and launcher/web icons.
 - CI for app, database and secret scanning.
+
+### Fixed (from code review, before first release)
+- `create_order` requires `payments.record` to take a payment; it resolves
+  rates once per line; a replay returns its payment.
+- Storage: bill PDFs need `bills.issue` / `hisaab.view`; objects cannot be
+  moved across buckets.
+- Opening-balance race returns `opening_exists`.
+- The app signs out when the server rejects the session. Error
+  classification fixed for SQLSTATE vs HTTP codes and GoTrue codes.
+- Android application id `com.thehummingbirdstudio.vepari` (`in.*` is invalid).
+- Success colour contrast raised to AA.
