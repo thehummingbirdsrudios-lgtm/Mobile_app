@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'app/app.dart';
+import 'core/core.dart';
+import 'core/network/api_client.dart' show SupabaseRpcTransport;
+import 'features/auth/auth.dart';
+import 'features/auth/auth_adapters.dart';
+import 'features/dashboard/dashboard.dart';
+import 'features/dashboard/dashboard_adapters.dart';
+import 'features/settings/settings.dart';
+import 'features/settings/settings_adapters.dart';
+
+/// Composition root: the only place concrete adapters (Supabase) are wired
+/// to module ports. Everything else depends on interfaces.
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final config = AppConfig.fromEnvironment();
+  final logger = AppLogger.forBuild();
+  logger.info('app.start', {'env': config.environment, 'version': config.appVersion});
+  final preferences = await SharedPreferencesStore.create();
+
+  final overrides = [
+    appConfigProvider.overrideWithValue(config),
+    preferenceStoreProvider.overrideWithValue(preferences),
+  ];
+
+  if (config.isConfigured) {
+    await Supabase.initialize(
+      url: config.supabaseUrl,
+      publishableKey: config.supabasePublishableKey,
+      authOptions: FlutterAuthClientOptions(localStorage: SecureSessionStorage()),
+      debug: false,
+    );
+    final client = Supabase.instance.client;
+    final api = ApiClient(transport: SupabaseRpcTransport(client), logger: logger);
+    overrides.addAll([
+      authRepositoryProvider.overrideWithValue(
+        AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
+      ),
+      dashboardRepositoryProvider.overrideWithValue(DashboardRepositoryImpl(DashboardApi(api))),
+    ]);
+  } else {
+    overrides.add(authRepositoryProvider.overrideWithValue(const UnconfiguredAuthRepository()));
+  }
+
+  runApp(ProviderScope(overrides: overrides, child: const VepariApp()));
+}

@@ -1,0 +1,84 @@
+{
+  "@@locale": "hi",
+
+  "appName": "Vepari",
+
+  "navHome": "होम",
+  "navMaal": "माल",
+  "navOrder": "ऑर्डर",
+  "navCustomer": "ग्राहक",
+  "navHisaab": "हिसाब",
+  "navMore": "और",
+
+  "loginGreeting": "नमस्ते 👋",
+  "loginSubtitle": "अपने बिज़नेस में लॉगिन करें",
+  "loginUsername": "यूज़रनेम",
+  "loginPassword": "पासवर्ड",
+  "loginButton": "लॉगिन",
+  "loginShowPassword": "पासवर्ड दिखाएँ",
+  "loginHidePassword": "पासवर्ड छुपाएँ",
+  "loginNoAccountHint": "अकाउंट नहीं है? अपने मालिक से पूछें।",
+
+  "validationUsernameRequired": "यूज़रनेम लिखें",
+  "validationUsernameInvalid": "सिर्फ़ a–z, 0–9, डॉट और अंडरस्कोर चलेगा",
+  "validationPasswordRequired": "पासवर्ड लिखें",
+
+  "errorInvalidCredentials": "यूज़रनेम या पासवर्ड गलत है।",
+  "errorAccountDisabled": "यह अकाउंट चालू नहीं है। मालिक से संपर्क करें।",
+  "errorNetwork": "इंटरनेट कनेक्शन चेक करें।",
+  "errorTimeout": "सर्वर जवाब देने में देर कर रहा है। फिर से कोशिश करें।",
+  "errorServerUnavailable": "अभी सर्वर नहीं मिल रहा। थोड़ी देर बाद कोशिश करें।",
+  "errorPermission": "इस काम की अनुमति नहीं है।",
+  "errorNotFound": "यह रिकॉर्ड नहीं मिला।",
+  "errorAlreadyExists": "यह रिकॉर्ड पहले से है।",
+  "errorProductUnavailable": "यह माल अभी उपलब्ध नहीं है।",
+  "errorRateChanged": "रेट बदल गया है। नया रेट देखकर फिर से कन्फ़र्म करें।",
+  "errorInvalidInput": "कुछ जानकारी सही नहीं है। चेक करें।",
+  "errorSessionExpired": "सेशन खत्म हो गया। फिर से लॉगिन करें।",
+  "errorMaintenance": "थोड़ा मेंटेनेंस चल रहा है। थोड़ी देर बाद फिर कोशिश करें।",
+  "errorGeneric": "कुछ गड़बड़ हो गई। फिर से कोशिश करें।",
+  "retry": "फिर से कोशिश करें",
+
+  "notConfiguredTitle": "सर्वर सेट नहीं है",
+  "notConfiguredBody": "इस बिल्ड में सर्वर की जानकारी नहीं है। एडमिन से संपर्क करें।",
+
+  "greeting": "नमस्ते {name} 👋",
+  "homeTodayQuestion": "आज क्या है?",
+  "statSalesToday": "आज की बिक्री",
+  "statPaymentsToday": "पेमेंट",
+  "statTotalBaki": "कुल बाकी",
+  "statPendingOrders": "बाकी ऑर्डर",
+  "quickActions": "जल्दी के काम",
+  "actionOrder": "ऑर्डर",
+  "actionPayment": "पेमेंट",
+  "actionNewMaal": "नया माल",
+  "actionHisaab": "हिसाब",
+  "newMaalCount": "{count, plural, =0{कोई नई डिज़ाइन नहीं} =1{1 नई डिज़ाइन} other{{count} नई डिज़ाइन}}",
+
+  "comingSoonTitle": "यह हिस्सा तैयार हो रहा है",
+  "comingSoonBody": "आने वाले अपडेट में आएगा।",
+
+  "searchHint": "डिज़ाइन, ग्राहक, ऑर्डर खोजें",
+
+  "moreLanguage": "भाषा",
+  "moreBusiness": "बिज़नेस",
+  "morePrivacy": "प्राइवेसी पॉलिसी",
+  "moreTerms": "नियम और शर्तें",
+  "moreLogout": "लॉगआउट",
+  "roleOwner": "मालिक",
+  "roleStaff": "स्टाफ़",
+  "appVersion": "वर्ज़न {version}",
+  "legalDraftNotice": "ड्राफ़्ट — प्रकाशन से पहले कानूनी जाँच बाकी।",
+
+  "unsavedTitle": "बिना सेव किया काम है।",
+  "unsavedBody": "अभी बाहर गए तो यह काम चला जाएगा।",
+  "unsavedKeepEditing": "काम जारी रखें",
+  "unsavedDiscard": "छोड़ दें",
+
+  "feedbackOrderSaved": "ऑर्डर हो गया",
+  "feedbackPaymentSaved": "पेमेंट सेव हुआ",
+  "feedbackBillReady": "बिल तैयार",
+
+  "pieces": "{count} नग",
+  "loading": "लोड हो रहा है"
+}

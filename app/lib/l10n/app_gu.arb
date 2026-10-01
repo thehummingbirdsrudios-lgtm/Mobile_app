@@ -1,0 +1,84 @@
+{
+  "@@locale": "gu",
+
+  "appName": "Vepari",
+
+  "navHome": "હોમ",
+  "navMaal": "માલ",
+  "navOrder": "ઓર્ડર",
+  "navCustomer": "ગ્રાહક",
+  "navHisaab": "હિસાબ",
+  "navMore": "વધુ",
+
+  "loginGreeting": "નમસ્કાર 👋",
+  "loginSubtitle": "તમારા બિઝનેસમાં લોગિન કરો",
+  "loginUsername": "યુઝરનેમ",
+  "loginPassword": "પાસવર્ડ",
+  "loginButton": "લોગિન",
+  "loginShowPassword": "પાસવર્ડ બતાવો",
+  "loginHidePassword": "પાસવર્ડ છુપાવો",
+  "loginNoAccountHint": "એકાઉન્ટ નથી? તમારા માલિકને પૂછો.",
+
+  "validationUsernameRequired": "યુઝરનેમ લખો",
+  "validationUsernameInvalid": "ફક્ત a–z, 0–9, ડોટ અને અન્ડરસ્કોર ચાલે",
+  "validationPasswordRequired": "પાસવર્ડ લખો",
+
+  "errorInvalidCredentials": "યુઝરનેમ અથવા પાસવર્ડ ખોટો છે.",
+  "errorAccountDisabled": "આ એકાઉન્ટ ચાલુ નથી. માલિકનો સંપર્ક કરો.",
+  "errorNetwork": "ઇન્ટરનેટ કનેક્શન ચેક કરો.",
+  "errorTimeout": "સર્વર જવાબ આપવામાં વાર લગાડે છે. ફરી ટ્રાય કરો.",
+  "errorServerUnavailable": "હમણાં સર્વર મળતું નથી. થોડી વાર પછી ટ્રાય કરો.",
+  "errorPermission": "આ કામ માટે પરમિશન નથી.",
+  "errorNotFound": "આ રેકોર્ડ મળ્યો નથી.",
+  "errorAlreadyExists": "આ રેકોર્ડ પહેલેથી છે.",
+  "errorProductUnavailable": "આ માલ હવે ઉપલબ્ધ નથી.",
+  "errorRateChanged": "રેટ બદલાયો છે. નવો રેટ જોઈને ફરી કન્ફર્મ કરો.",
+  "errorInvalidInput": "અમુક માહિતી બરાબર નથી. ચેક કરો.",
+  "errorSessionExpired": "સેશન પૂરું થયું. ફરી લોગિન કરો.",
+  "errorMaintenance": "થોડું મેન્ટેનન્સ ચાલુ છે. થોડી વાર પછી ફરી ટ્રાય કરો.",
+  "errorGeneric": "કંઈક પ્રોબ્લેમ થયો. ફરી ટ્રાય કરો.",
+  "retry": "ફરી ટ્રાય કરો",
+
+  "notConfiguredTitle": "સર્વર સેટ નથી",
+  "notConfiguredBody": "આ બિલ્ડમાં સર્વરની માહિતી નથી. એડમિનનો સંપર્ક કરો.",
+
+  "greeting": "નમસ્કાર {name} 👋",
+  "homeTodayQuestion": "આજે શું છે?",
+  "statSalesToday": "આજનું વેચાણ",
+  "statPaymentsToday": "પેમેન્ટ",
+  "statTotalBaki": "કુલ બાકી",
+  "statPendingOrders": "બાકી ઓર્ડર",
+  "quickActions": "ઝડપી કામ",
+  "actionOrder": "ઓર્ડર",
+  "actionPayment": "પેમેન્ટ",
+  "actionNewMaal": "નવો માલ",
+  "actionHisaab": "હિસાબ",
+  "newMaalCount": "{count, plural, =0{નવી ડિઝાઇન નથી} =1{1 નવી ડિઝાઇન} other{{count} નવી ડિઝાઇન}}",
+
+  "comingSoonTitle": "આ ભાગ તૈયાર થઈ રહ્યો છે",
+  "comingSoonBody": "આવતા અપડેટમાં આવશે.",
+
+  "searchHint": "ડિઝાઇન, ગ્રાહક, ઓર્ડર શોધો",
+
+  "moreLanguage": "ભાષા",
+  "moreBusiness": "બિઝનેસ",
+  "morePrivacy": "પ્રાઇવસી પોલિસી",
+  "moreTerms": "નિયમો અને શરતો",
+  "moreLogout": "લોગઆઉટ",
+  "roleOwner": "માલિક",
+  "roleStaff": "સ્ટાફ",
+  "appVersion": "વર્ઝન {version}",
+  "legalDraftNotice": "ડ્રાફ્ટ — પ્રકાશિત કરતાં પહેલાં કાનૂની ચકાસણી બાકી.",
+
+  "unsavedTitle": "સેવ ન થયેલું કામ છે.",
+  "unsavedBody": "હમણાં બહાર જશો તો આ કામ જતું રહેશે.",
+  "unsavedKeepEditing": "કામ ચાલુ રાખો",
+  "unsavedDiscard": "છોડી દો",
+
+  "feedbackOrderSaved": "ઓર્ડર થઈ ગયો",
+  "feedbackPaymentSaved": "પેમેન્ટ સેવ થયું",
+  "feedbackBillReady": "બિલ તૈયાર",
+
+  "pieces": "{count} નંગ",
+  "loading": "લોડ થાય છે"
+}

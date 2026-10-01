@@ -1,0 +1,22 @@
+/// Shared kernel: the ONLY entry point feature modules use for core code.
+/// Core never imports from features (enforced by tool/check_boundaries.dart).
+library;
+
+export 'config/app_config.dart';
+export 'design/theme.dart';
+export 'design/tokens.dart';
+export 'errors/app_failure.dart';
+export 'format/formatters.dart';
+export 'logging/app_logger.dart';
+export 'money/money.dart';
+export 'motion/motion.dart';
+export 'network/api_client.dart' show ApiClient, RpcTransport;
+export 'network/json_reader.dart';
+export 'storage/tenant_cache.dart';
+export 'widgets/app_button.dart';
+export 'widgets/brand_mark.dart';
+export 'widgets/display.dart';
+export 'widgets/inputs.dart';
+export 'widgets/states.dart';
+export 'widgets/success_check.dart';
+export 'widgets/unsaved_changes_guard.dart';
