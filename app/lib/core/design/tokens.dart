@@ -23,7 +23,7 @@ abstract final class AppColors {
   static const goldText = Color(0xFF7A5A1C);
   static const goldTint = Color(0xFFF4EBD9);
 
-  static const success = Color(0xFF2E7D4F);
+  static const success = Color(0xFF276F45); // 5.3:1 on successTint (AA for small text)
   static const successTint = Color(0xFFE6F2EA);
   static const warning = Color(0xFF9A5B00);
   static const warningTint = Color(0xFFFBF0DF);
