@@ -10,6 +10,8 @@ import 'features/auth/auth.dart';
 import 'features/auth/auth_adapters.dart';
 import 'features/catalogue/catalogue.dart';
 import 'features/catalogue/catalogue_adapters.dart';
+import 'features/customers/customers.dart';
+import 'features/customers/customers_adapters.dart';
 import 'features/dashboard/dashboard.dart';
 import 'features/dashboard/dashboard_adapters.dart';
 import 'features/search/search.dart';
@@ -45,6 +47,7 @@ Future<void> main() async {
     overrides.addAll([
       storageClientProvider.overrideWithValue(storage),
       catalogueRepositoryProvider.overrideWithValue(CatalogueRepositoryImpl(CatalogueApi(client, api, storage))),
+      customerRepositoryProvider.overrideWithValue(CustomerRepositoryImpl(CustomersApi(client, api))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

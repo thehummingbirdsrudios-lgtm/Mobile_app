@@ -461,4 +461,138 @@ class AppLocalizationsGu extends AppLocalizations {
   String selectionCount(int count) {
     return '$count પસંદ કરી';
   }
+
+  @override
+  String get customerAdd => 'ગ્રાહક ઉમેરો';
+
+  @override
+  String get customerEdit => 'ગ્રાહક બદલો';
+
+  @override
+  String get customersEmpty => 'હજી કોઈ ગ્રાહક નથી.';
+
+  @override
+  String customersNoMatch(String query) {
+    return '“$query” નામનો કોઈ ગ્રાહક નથી';
+  }
+
+  @override
+  String get customerSearchHint => 'નામ કે મોબાઇલથી શોધો';
+
+  @override
+  String get sortAZ => 'A–Z';
+
+  @override
+  String get sortBaki => 'બાકી પહેલા';
+
+  @override
+  String get fieldCustomerName => 'ગ્રાહકનું નામ';
+
+  @override
+  String get fieldShopName => 'દુકાનનું નામ';
+
+  @override
+  String get fieldCity => 'શહેર';
+
+  @override
+  String get fieldMobile => 'મોબાઇલ';
+
+  @override
+  String get fieldWhatsapp => 'વોટ્સએપ નંબર';
+
+  @override
+  String get whatsappSameAsMobile => 'વોટ્સએપ આ જ નંબર પર';
+
+  @override
+  String get fieldNotes => 'નોંધ';
+
+  @override
+  String get fieldOpeningBaki => 'શરૂઆતની બાકી';
+
+  @override
+  String get openingBakiHelp => 'આ ગ્રાહક પાસે પહેલેથી લેવાના પૈસા. ફક્ત એક જ વાર નાખી શકાય.';
+
+  @override
+  String get openingBakiFailed => 'ગ્રાહક સેવ થયો, પણ શરૂઆતની બાકી નહીં. હિસાબમાંથી ઉમેરો.';
+
+  @override
+  String get actionCall => 'કૉલ';
+
+  @override
+  String get bakiLabel => 'બાકી';
+
+  @override
+  String get openOrdersLabel => 'ચાલુ ઓર્ડર';
+
+  @override
+  String get totalOrdersLabel => 'ઓર્ડર';
+
+  @override
+  String get lastOrderLabel => 'છેલ્લો ઓર્ડર';
+
+  @override
+  String get regularMaalTitle => 'રેગ્યુલર માલ';
+
+  @override
+  String get regularMaalEmpty => 'આ ગ્રાહક જે ડિઝાઇન મંગાવે તે અહીં દેખાશે.';
+
+  @override
+  String regularMaalMeta(int times, int qty) {
+    return '$times× · છેલ્લે $qty નંગ';
+  }
+
+  @override
+  String get specialRatesTitle => 'ખાસ ભાવ';
+
+  @override
+  String specialRatesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ડિઝાઇન',
+      one: '1 ડિઝાઇન',
+      zero: 'કોઈ નહીં',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get specialRatesEmpty => 'કોઈ ખાસ ભાવ નથી. આ ગ્રાહક સામાન્ય ભાવ ચૂકવે છે.';
+
+  @override
+  String get specialRateAdd => 'ખાસ ભાવ ઉમેરો';
+
+  @override
+  String specialRateNormal(String rate) {
+    return 'સામાન્ય $rate';
+  }
+
+  @override
+  String get specialRateRemove => 'ખાસ ભાવ કાઢો';
+
+  @override
+  String get designNotFound => 'આ નંબરની કોઈ ડિઝાઇન નથી.';
+
+  @override
+  String get archiveCustomer => 'ગ્રાહક આર્કાઇવ કરો';
+
+  @override
+  String archiveCustomerBody(String name) {
+    return '$name લિસ્ટ અને નવા ઓર્ડરમાંથી છુપાશે. હિસાબ અને જૂના ઓર્ડર સુરક્ષિત રહેશે.';
+  }
+
+  @override
+  String get unarchiveCustomer => 'ગ્રાહક પાછો લાવો';
+
+  @override
+  String get whatsappUnavailable => 'આ ફોનમાં વોટ્સએપ ખૂલ્યું નહીં.';
+
+  @override
+  String get callUnavailable => 'આ ડિવાઇસ પર કૉલ થઈ શકતો નથી.';
+
+  @override
+  String get statusArchived => 'આર્કાઇવ';
+
+  @override
+  String get neverLabel => '—';
 }

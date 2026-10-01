@@ -944,6 +944,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} selected'**
   String selectionCount(int count);
+
+  /// Create customer action
+  ///
+  /// In en, this message translates to:
+  /// **'Add customer'**
+  String get customerAdd;
+
+  /// Edit customer title
+  ///
+  /// In en, this message translates to:
+  /// **'Edit customer'**
+  String get customerEdit;
+
+  /// Empty customer list
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet.'**
+  String get customersEmpty;
+
+  /// Customer search no result
+  ///
+  /// In en, this message translates to:
+  /// **'No customer matches “{query}”'**
+  String customersNoMatch(String query);
+
+  /// Customer list search
+  ///
+  /// In en, this message translates to:
+  /// **'Search name or mobile'**
+  String get customerSearchHint;
+
+  /// Sort customers by name
+  ///
+  /// In en, this message translates to:
+  /// **'A–Z'**
+  String get sortAZ;
+
+  /// Sort customers by highest Baki
+  ///
+  /// In en, this message translates to:
+  /// **'Baki first'**
+  String get sortBaki;
+
+  /// Form field
+  ///
+  /// In en, this message translates to:
+  /// **'Customer name'**
+  String get fieldCustomerName;
+
+  /// Form field
+  ///
+  /// In en, this message translates to:
+  /// **'Shop name'**
+  String get fieldShopName;
+
+  /// Form field
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get fieldCity;
+
+  /// Form field
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile'**
+  String get fieldMobile;
+
+  /// Form field
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp number'**
+  String get fieldWhatsapp;
+
+  /// Switch in customer form
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp on the same number'**
+  String get whatsappSameAsMobile;
+
+  /// Form field
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get fieldNotes;
+
+  /// Form field: amount owed when the customer is added
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Baki'**
+  String get fieldOpeningBaki;
+
+  /// Help under opening Baki
+  ///
+  /// In en, this message translates to:
+  /// **'Amount this customer already owes you. Can be set only once.'**
+  String get openingBakiHelp;
+
+  /// Partial save message
+  ///
+  /// In en, this message translates to:
+  /// **'Customer saved, but the opening Baki was not. Add it from Hisaab.'**
+  String get openingBakiFailed;
+
+  /// Call customer
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get actionCall;
+
+  /// Outstanding amount label
+  ///
+  /// In en, this message translates to:
+  /// **'Baki'**
+  String get bakiLabel;
+
+  /// Count of orders not completed
+  ///
+  /// In en, this message translates to:
+  /// **'Open orders'**
+  String get openOrdersLabel;
+
+  /// Total order count
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get totalOrdersLabel;
+
+  /// Date of last order
+  ///
+  /// In en, this message translates to:
+  /// **'Last order'**
+  String get lastOrderLabel;
+
+  /// Designs a customer orders often
+  ///
+  /// In en, this message translates to:
+  /// **'Regular Maal'**
+  String get regularMaalTitle;
+
+  /// Empty Regular Maal
+  ///
+  /// In en, this message translates to:
+  /// **'Designs this customer orders will appear here.'**
+  String get regularMaalEmpty;
+
+  /// Times ordered and last quantity
+  ///
+  /// In en, this message translates to:
+  /// **'{times}× · last {qty} pcs'**
+  String regularMaalMeta(int times, int qty);
+
+  /// Per-customer rates
+  ///
+  /// In en, this message translates to:
+  /// **'Special rates'**
+  String get specialRatesTitle;
+
+  /// Number of special rates
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{None} =1{1 design} other{{count} designs}}'**
+  String specialRatesCount(int count);
+
+  /// Empty special rates
+  ///
+  /// In en, this message translates to:
+  /// **'No special rates. This customer pays the normal rate.'**
+  String get specialRatesEmpty;
+
+  /// Action
+  ///
+  /// In en, this message translates to:
+  /// **'Add special rate'**
+  String get specialRateAdd;
+
+  /// Default rate shown next to special rate
+  ///
+  /// In en, this message translates to:
+  /// **'Normal {rate}'**
+  String specialRateNormal(String rate);
+
+  /// Action
+  ///
+  /// In en, this message translates to:
+  /// **'Remove special rate'**
+  String get specialRateRemove;
+
+  /// Design lookup failed
+  ///
+  /// In en, this message translates to:
+  /// **'No design with this number.'**
+  String get designNotFound;
+
+  /// Action
+  ///
+  /// In en, this message translates to:
+  /// **'Archive customer'**
+  String get archiveCustomer;
+
+  /// Archive confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'{name} will be hidden from lists and new orders. Hisaab and old orders stay safe.'**
+  String archiveCustomerBody(String name);
+
+  /// Action
+  ///
+  /// In en, this message translates to:
+  /// **'Restore customer'**
+  String get unarchiveCustomer;
+
+  /// Error
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp could not be opened on this phone.'**
+  String get whatsappUnavailable;
+
+  /// Error
+  ///
+  /// In en, this message translates to:
+  /// **'Calling is not available on this device.'**
+  String get callUnavailable;
+
+  /// Badge
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get statusArchived;
+
+  /// Placeholder when there is no date
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get neverLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

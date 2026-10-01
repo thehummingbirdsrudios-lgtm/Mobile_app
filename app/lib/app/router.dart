@@ -105,6 +105,22 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.search, builder: (_, _) => const SearchScreen()),
       GoRoute(path: AppRoutes.navoMaal, builder: (_, _) => const NavoMaalScreen()),
+      GoRoute(path: AppRoutes.newCustomer, builder: (_, _) => const CustomerEditScreen()),
+      GoRoute(
+        path: '/customers/:id',
+        redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.customer),
+        builder: (_, s) => CustomerDetailScreen(customerId: s.pathParameters['id']!),
+        routes: [
+          GoRoute(
+            path: 'edit',
+            builder: (_, s) => CustomerEditScreen(customerId: s.pathParameters['id']),
+          ),
+          GoRoute(
+            path: 'rates',
+            builder: (_, s) => CustomerRatesScreen(customerId: s.pathParameters['id']!),
+          ),
+        ],
+      ),
       GoRoute(path: AppRoutes.newProduct, builder: (_, _) => const ProductEditScreen()),
       GoRoute(
         path: '/product/:id',

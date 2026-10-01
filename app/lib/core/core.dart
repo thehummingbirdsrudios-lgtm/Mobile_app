@@ -16,6 +16,7 @@ export 'navigation/app_navigator.dart';
 export 'network/api_client.dart' show ApiClient, RpcTransport;
 export 'network/json_reader.dart';
 export 'network/storage_client.dart' show Buckets, StorageClient, storageClientProvider;
+export 'platform/contact_launcher.dart';
 export 'state/paged.dart';
 export 'storage/tenant_cache.dart';
 export 'util/ids.dart';

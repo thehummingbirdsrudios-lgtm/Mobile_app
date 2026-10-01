@@ -21,6 +21,21 @@ extension JsonReader on Map<String, dynamic> {
     throw FormatException('expected integer', key);
   }
 
+  /// ISO-8601 timestamp (as PostgREST sends timestamptz).
+  DateTime requireDateTime(String key) {
+    final value = this[key];
+    if (value is String) {
+      final parsed = DateTime.tryParse(value);
+      if (parsed != null) return parsed;
+    }
+    throw FormatException('expected timestamp', key);
+  }
+
+  DateTime? optionalDateTime(String key) => this[key] == null ? null : requireDateTime(key);
+
+  /// Money in paise; null stays null (e.g. Baki hidden by permissions).
+  int? optionalInt(String key) => this[key] == null ? null : requireInt(key);
+
   List<String> stringList(String key) {
     final value = this[key];
     if (value == null) return const [];

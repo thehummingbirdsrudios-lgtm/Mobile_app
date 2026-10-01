@@ -619,5 +619,189 @@
         "type": "int"
       }
     }
+  },
+  "customerAdd": "Add customer",
+  "@customerAdd": {
+    "description": "Create customer action"
+  },
+  "customerEdit": "Edit customer",
+  "@customerEdit": {
+    "description": "Edit customer title"
+  },
+  "customersEmpty": "No customers yet.",
+  "@customersEmpty": {
+    "description": "Empty customer list"
+  },
+  "customersNoMatch": "No customer matches “{query}”",
+  "@customersNoMatch": {
+    "description": "Customer search no result",
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "customerSearchHint": "Search name or mobile",
+  "@customerSearchHint": {
+    "description": "Customer list search"
+  },
+  "sortAZ": "A–Z",
+  "@sortAZ": {
+    "description": "Sort customers by name"
+  },
+  "sortBaki": "Baki first",
+  "@sortBaki": {
+    "description": "Sort customers by highest Baki"
+  },
+  "fieldCustomerName": "Customer name",
+  "@fieldCustomerName": {
+    "description": "Form field"
+  },
+  "fieldShopName": "Shop name",
+  "@fieldShopName": {
+    "description": "Form field"
+  },
+  "fieldCity": "City",
+  "@fieldCity": {
+    "description": "Form field"
+  },
+  "fieldMobile": "Mobile",
+  "@fieldMobile": {
+    "description": "Form field"
+  },
+  "fieldWhatsapp": "WhatsApp number",
+  "@fieldWhatsapp": {
+    "description": "Form field"
+  },
+  "whatsappSameAsMobile": "WhatsApp on the same number",
+  "@whatsappSameAsMobile": {
+    "description": "Switch in customer form"
+  },
+  "fieldNotes": "Notes",
+  "@fieldNotes": {
+    "description": "Form field"
+  },
+  "fieldOpeningBaki": "Opening Baki",
+  "@fieldOpeningBaki": {
+    "description": "Form field: amount owed when the customer is added"
+  },
+  "openingBakiHelp": "Amount this customer already owes you. Can be set only once.",
+  "@openingBakiHelp": {
+    "description": "Help under opening Baki"
+  },
+  "openingBakiFailed": "Customer saved, but the opening Baki was not. Add it from Hisaab.",
+  "@openingBakiFailed": {
+    "description": "Partial save message"
+  },
+  "actionCall": "Call",
+  "@actionCall": {
+    "description": "Call customer"
+  },
+  "bakiLabel": "Baki",
+  "@bakiLabel": {
+    "description": "Outstanding amount label"
+  },
+  "openOrdersLabel": "Open orders",
+  "@openOrdersLabel": {
+    "description": "Count of orders not completed"
+  },
+  "totalOrdersLabel": "Orders",
+  "@totalOrdersLabel": {
+    "description": "Total order count"
+  },
+  "lastOrderLabel": "Last order",
+  "@lastOrderLabel": {
+    "description": "Date of last order"
+  },
+  "regularMaalTitle": "Regular Maal",
+  "@regularMaalTitle": {
+    "description": "Designs a customer orders often"
+  },
+  "regularMaalEmpty": "Designs this customer orders will appear here.",
+  "@regularMaalEmpty": {
+    "description": "Empty Regular Maal"
+  },
+  "regularMaalMeta": "{times}× · last {qty} pcs",
+  "@regularMaalMeta": {
+    "description": "Times ordered and last quantity",
+    "placeholders": {
+      "times": {
+        "type": "int"
+      },
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "specialRatesTitle": "Special rates",
+  "@specialRatesTitle": {
+    "description": "Per-customer rates"
+  },
+  "specialRatesCount": "{count, plural, =0{None} =1{1 design} other{{count} designs}}",
+  "@specialRatesCount": {
+    "description": "Number of special rates",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "specialRatesEmpty": "No special rates. This customer pays the normal rate.",
+  "@specialRatesEmpty": {
+    "description": "Empty special rates"
+  },
+  "specialRateAdd": "Add special rate",
+  "@specialRateAdd": {
+    "description": "Action"
+  },
+  "specialRateNormal": "Normal {rate}",
+  "@specialRateNormal": {
+    "description": "Default rate shown next to special rate",
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+  "specialRateRemove": "Remove special rate",
+  "@specialRateRemove": {
+    "description": "Action"
+  },
+  "designNotFound": "No design with this number.",
+  "@designNotFound": {
+    "description": "Design lookup failed"
+  },
+  "archiveCustomer": "Archive customer",
+  "@archiveCustomer": {
+    "description": "Action"
+  },
+  "archiveCustomerBody": "{name} will be hidden from lists and new orders. Hisaab and old orders stay safe.",
+  "@archiveCustomerBody": {
+    "description": "Archive confirmation",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "unarchiveCustomer": "Restore customer",
+  "@unarchiveCustomer": {
+    "description": "Action"
+  },
+  "whatsappUnavailable": "WhatsApp could not be opened on this phone.",
+  "@whatsappUnavailable": {
+    "description": "Error"
+  },
+  "callUnavailable": "Calling is not available on this device.",
+  "@callUnavailable": {
+    "description": "Error"
+  },
+  "statusArchived": "Archived",
+  "@statusArchived": {
+    "description": "Badge"
+  },
+  "neverLabel": "—",
+  "@neverLabel": {
+    "description": "Placeholder when there is no date"
   }
 }

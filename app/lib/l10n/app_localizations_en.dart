@@ -461,4 +461,138 @@ class AppLocalizationsEn extends AppLocalizations {
   String selectionCount(int count) {
     return '$count selected';
   }
+
+  @override
+  String get customerAdd => 'Add customer';
+
+  @override
+  String get customerEdit => 'Edit customer';
+
+  @override
+  String get customersEmpty => 'No customers yet.';
+
+  @override
+  String customersNoMatch(String query) {
+    return 'No customer matches “$query”';
+  }
+
+  @override
+  String get customerSearchHint => 'Search name or mobile';
+
+  @override
+  String get sortAZ => 'A–Z';
+
+  @override
+  String get sortBaki => 'Baki first';
+
+  @override
+  String get fieldCustomerName => 'Customer name';
+
+  @override
+  String get fieldShopName => 'Shop name';
+
+  @override
+  String get fieldCity => 'City';
+
+  @override
+  String get fieldMobile => 'Mobile';
+
+  @override
+  String get fieldWhatsapp => 'WhatsApp number';
+
+  @override
+  String get whatsappSameAsMobile => 'WhatsApp on the same number';
+
+  @override
+  String get fieldNotes => 'Notes';
+
+  @override
+  String get fieldOpeningBaki => 'Opening Baki';
+
+  @override
+  String get openingBakiHelp => 'Amount this customer already owes you. Can be set only once.';
+
+  @override
+  String get openingBakiFailed => 'Customer saved, but the opening Baki was not. Add it from Hisaab.';
+
+  @override
+  String get actionCall => 'Call';
+
+  @override
+  String get bakiLabel => 'Baki';
+
+  @override
+  String get openOrdersLabel => 'Open orders';
+
+  @override
+  String get totalOrdersLabel => 'Orders';
+
+  @override
+  String get lastOrderLabel => 'Last order';
+
+  @override
+  String get regularMaalTitle => 'Regular Maal';
+
+  @override
+  String get regularMaalEmpty => 'Designs this customer orders will appear here.';
+
+  @override
+  String regularMaalMeta(int times, int qty) {
+    return '$times× · last $qty pcs';
+  }
+
+  @override
+  String get specialRatesTitle => 'Special rates';
+
+  @override
+  String specialRatesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count designs',
+      one: '1 design',
+      zero: 'None',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get specialRatesEmpty => 'No special rates. This customer pays the normal rate.';
+
+  @override
+  String get specialRateAdd => 'Add special rate';
+
+  @override
+  String specialRateNormal(String rate) {
+    return 'Normal $rate';
+  }
+
+  @override
+  String get specialRateRemove => 'Remove special rate';
+
+  @override
+  String get designNotFound => 'No design with this number.';
+
+  @override
+  String get archiveCustomer => 'Archive customer';
+
+  @override
+  String archiveCustomerBody(String name) {
+    return '$name will be hidden from lists and new orders. Hisaab and old orders stay safe.';
+  }
+
+  @override
+  String get unarchiveCustomer => 'Restore customer';
+
+  @override
+  String get whatsappUnavailable => 'WhatsApp could not be opened on this phone.';
+
+  @override
+  String get callUnavailable => 'Calling is not available on this device.';
+
+  @override
+  String get statusArchived => 'Archived';
+
+  @override
+  String get neverLabel => '—';
 }

@@ -6,6 +6,7 @@ import 'package:vepari/app/app.dart';
 import 'package:vepari/core/core.dart';
 import 'package:vepari/features/auth/auth.dart';
 import 'package:vepari/features/catalogue/catalogue.dart';
+import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/dashboard/dashboard.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
@@ -37,6 +38,8 @@ Future<ProviderContainer> pumpVepari(
   FakeCatalogueRepository? catalogue,
   FakePhotoPicker? photos,
   FakeSearchRepository? search,
+  FakeCustomerRepository? customers,
+  FakeContactLauncher? contacts,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
@@ -56,6 +59,8 @@ Future<ProviderContainer> pumpVepari(
       catalogueRepositoryProvider.overrideWithValue(catalogue ?? FakeCatalogueRepository()),
       photoPickerProvider.overrideWithValue(photos ?? FakePhotoPicker()),
       searchRepositoryProvider.overrideWithValue(search ?? FakeSearchRepository()),
+      customerRepositoryProvider.overrideWithValue(customers ?? FakeCustomerRepository()),
+      contactLauncherProvider.overrideWithValue(contacts ?? FakeContactLauncher()),
       imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),

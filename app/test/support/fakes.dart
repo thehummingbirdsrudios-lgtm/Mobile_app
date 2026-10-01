@@ -6,6 +6,8 @@ import 'package:vepari/features/auth/auth.dart';
 import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/catalogue/domain/catalogue.dart'
     show CatalogueCursor, PhotoUpload, ProductDraft, ProductPrivate;
+import 'package:vepari/features/customers/customers.dart';
+import 'package:vepari/features/customers/domain/customers.dart' show CustomerCursor, CustomerDraft;
 import 'package:vepari/features/dashboard/dashboard.dart';
 import 'package:vepari/features/search/search.dart';
 import 'package:vepari/features/settings/settings.dart';
@@ -335,3 +337,188 @@ const sampleHits = [
   SearchHit(kind: SearchKind.customer, id: customerPatelId, title: 'Patel Kundan Stores', subtitle: 'Rajkot'),
   SearchHit(kind: SearchKind.order, id: orderFirstId, title: '1045', subtitle: 'Patel Kundan Stores'),
 ];
+
+// ---------------------------------------------------------------------------
+// Customers
+// ---------------------------------------------------------------------------
+const customerShahId = '00000000-0000-4000-8000-00000000c002';
+
+class FakeCustomerRepository implements CustomerRepository {
+  FakeCustomerRepository({List<CustomerDetail>? customers}) : customers = customers ?? sampleCustomers();
+
+  final List<CustomerDetail> customers;
+  final created = <CustomerDraft>[];
+  final updates = <(String, CustomerDraft)>[];
+  final openings = <(String, Money, String)>[];
+  final rateList = <String, List<CustomerRate>>{};
+  final regular = <String, List<RegularMaalItem>>{};
+  final queries = <CustomerQuery>[];
+  AppFailure? pageError;
+  AppFailure? openingError;
+
+  /// Whether Baki is visible to the caller (mirrors server RLS).
+  bool hideBaki = false;
+
+  @override
+  Future<PageResult<CustomerSummary, CustomerCursor>> page(
+    CustomerQuery query, {
+    CustomerCursor? after,
+    int limit = 30,
+  }) async {
+    queries.add(query);
+    if (pageError != null) throw pageError!;
+    final q = query.search.toLowerCase();
+    var rows = customers
+        .where((c) => !c.isArchived)
+        .where((c) => q.isEmpty || c.name.toLowerCase().contains(q) || (c.phone ?? '').contains(q))
+        .toList();
+    if (query.sort == CustomerSort.baki) {
+      rows = rows.where((c) => (c.baki?.paise ?? 0) != 0).toList()
+        ..sort((a, b) => b.baki!.paise.compareTo(a.baki!.paise));
+    } else {
+      rows.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    }
+    return PageResult([
+      for (final c in rows)
+        CustomerSummary(
+          id: c.id,
+          name: c.name,
+          shopName: c.shopName,
+          city: c.city,
+          phone: c.phone,
+          baki: hideBaki ? null : c.baki,
+        ),
+    ]);
+  }
+
+  @override
+  Future<CustomerDetail?> detail(String customerId) async {
+    final c = customers.where((c) => c.id == customerId).firstOrNull;
+    if (c == null || !hideBaki) return c;
+    return CustomerDetail(
+      id: c.id,
+      name: c.name,
+      isArchived: c.isArchived,
+      orderCount: c.orderCount,
+      openOrders: c.openOrders,
+      specialRates: c.specialRates,
+      shopName: c.shopName,
+      city: c.city,
+      phone: c.phone,
+      whatsappPhone: c.whatsappPhone,
+      notes: c.notes,
+      lastOrderAt: c.lastOrderAt,
+    );
+  }
+
+  @override
+  Future<String> create(CustomerDraft draft) async {
+    created.add(draft);
+    final id = '00000000-0000-4000-8000-${(0xc100 + created.length).toString().padLeft(12, '0')}';
+    customers.add(
+      CustomerDetail(
+        id: id,
+        name: draft.name.trim(),
+        isArchived: false,
+        orderCount: 0,
+        openOrders: 0,
+        specialRates: 0,
+        phone: CustomerDraft.normalisePhone(draft.phone),
+        baki: Money.zero,
+      ),
+    );
+    return id;
+  }
+
+  @override
+  Future<void> update(String customerId, CustomerDraft draft) async => updates.add((customerId, draft));
+
+  @override
+  Future<void> setArchived(String customerId, {required bool archived}) async {}
+
+  @override
+  Future<void> recordOpeningBalance(String customerId, Money amount, {required String requestId}) async {
+    if (openingError != null) throw openingError!;
+    openings.add((customerId, amount, requestId));
+  }
+
+  @override
+  Future<List<RegularMaalItem>> regularMaal(String customerId, {int limit = 20}) async =>
+      regular[customerId] ?? const [];
+
+  @override
+  Future<List<CustomerRate>> rates(String customerId) async => rateList[customerId] ?? const [];
+
+  @override
+  Future<ProductRef?> findDesign(String customerId, String designNo) async => designNo.toUpperCase() == '1024'
+      ? const ProductRef(
+          productId: productKundanId,
+          designNo: '1024',
+          name: 'Kundan Set',
+          defaultRate: Money.paise(62000),
+        )
+      : null;
+
+  @override
+  Future<void> setRate(String customerId, String productId, Money rate) async {
+    final list = [...?rateList[customerId]]..removeWhere((r) => r.productId == productId);
+    list.add(
+      CustomerRate(
+        productId: productId,
+        designNo: '1024',
+        name: 'Kundan Set',
+        defaultRate: const Money.paise(62000),
+        rate: rate,
+      ),
+    );
+    rateList[customerId] = list;
+  }
+
+  @override
+  Future<void> removeRate(String customerId, String productId) async =>
+      rateList[customerId]?.removeWhere((r) => r.productId == productId);
+}
+
+List<CustomerDetail> sampleCustomers() => [
+  CustomerDetail(
+    id: customerPatelId,
+    name: 'Patel Kundan Stores',
+    isArchived: false,
+    orderCount: 12,
+    openOrders: 2,
+    specialRates: 1,
+    city: 'Rajkot',
+    phone: '9825012345',
+    baki: const Money.paise(4820000),
+    lastOrderAt: DateTime.utc(2026, 9, 28),
+  ),
+  const CustomerDetail(
+    id: customerShahId,
+    name: 'Shah Imitation',
+    isArchived: false,
+    orderCount: 0,
+    openOrders: 0,
+    specialRates: 0,
+    shopName: 'Shah Fancy',
+    city: 'Surat',
+    baki: Money.paise(125000),
+  ),
+];
+
+/// Records launches instead of opening apps.
+class FakeContactLauncher implements ContactLauncher {
+  final launched = <String>[];
+  bool available = true;
+
+  @override
+  Future<bool> call(String phone) async {
+    launched.add('tel:$phone');
+    return available;
+  }
+
+  @override
+  Future<bool> whatsapp(String phone, {String? text}) async {
+    launched.add('wa:$phone');
+    return available;
+  }
+}
