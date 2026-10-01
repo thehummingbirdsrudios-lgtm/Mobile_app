@@ -1,5 +1,6 @@
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image/image.dart' as img;
 
 /// Upload limits (mirror the product-media bucket: 25 MB, images only).
@@ -50,6 +51,11 @@ class ImageDerivatives {
 
 /// Validates and processes a picked photo in a background isolate.
 Future<ImageDerivatives> buildImageDerivatives(Uint8List original) => compute(processImage, original);
+
+typedef ImageProcessor = Future<ImageDerivatives> Function(Uint8List original);
+
+/// Seam for widget tests, which cannot await a real isolate under fake time.
+final imageProcessorProvider = Provider<ImageProcessor>((ref) => buildImageDerivatives);
 
 /// Pure, synchronous pipeline (public for tests). Validates by decoding the
 /// actual bytes — never trusts a file name or a claimed MIME type.

@@ -72,8 +72,10 @@ class AppCard extends StatelessWidget {
   }
 }
 
-/// Photo-first product card: image, design number, name, rate, availability.
-/// The image slot is supplied by the caller (signed, cached thumbnail).
+/// Photo-first product card: image, design no, name, rate, availability.
+/// The photo takes the remaining height, so the card never overflows on
+/// narrow phones or with large text; the image slot is supplied by the
+/// caller (signed, cached thumbnail).
 class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
@@ -107,35 +109,57 @@ class ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: ColoredBox(color: AppColors.surfaceMuted, child: image),
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ColoredBox(color: AppColors.surfaceMuted, child: image),
+                if (onAdd != null)
+                  Positioned(
+                    right: AppSpacing.xxs,
+                    bottom: AppSpacing.xxs,
+                    child: IconButton.filled(
+                      tooltip: addLabel,
+                      onPressed: isAvailable ? onAdd : null,
+                      icon: const Icon(Icons.add_rounded),
+                      style: IconButton.styleFrom(
+                        minimumSize: const Size.square(kMinTouchTarget),
+                        disabledBackgroundColor: AppColors.divider,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.sm, AppSpacing.sm, AppSpacing.xxs, AppSpacing.sm),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
+            padding: const EdgeInsets.fromLTRB(AppSpacing.sm, AppSpacing.xs, AppSpacing.sm, AppSpacing.sm),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(designNo, style: text.titleMedium!.copyWith(fontFeatures: AppType.figures), maxLines: 1),
-                      Text(name, style: text.bodyMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
-                      const SizedBox(height: AppSpacing.xxs),
-                      MoneyText(rate, style: text.titleMedium),
-                      const SizedBox(height: AppSpacing.xxs),
-                      StatusChip(label: availabilityLabel, tone: isAvailable ? StatusTone.success : StatusTone.neutral),
-                    ],
-                  ),
+                Text(
+                  designNo,
+                  style: text.titleMedium!.copyWith(fontFeatures: AppType.figures),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                if (onAdd != null)
-                  IconButton.filled(
-                    tooltip: addLabel,
-                    onPressed: isAvailable ? onAdd : null,
-                    icon: const Icon(Icons.add_rounded),
-                    style: IconButton.styleFrom(minimumSize: const Size.square(kMinTouchTarget)),
-                  ),
+                Text(name, style: text.bodyMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
+                Row(
+                  children: [
+                    Flexible(child: MoneyText(rate, style: text.titleMedium)),
+                    const SizedBox(width: AppSpacing.xs),
+                    Icon(Icons.circle, size: 8, color: isAvailable ? AppColors.success : AppColors.muted),
+                    const SizedBox(width: AppSpacing.xxs),
+                    Flexible(
+                      child: Text(
+                        availabilityLabel,
+                        style: AppType.caption.copyWith(color: isAvailable ? AppColors.success : AppColors.muted),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

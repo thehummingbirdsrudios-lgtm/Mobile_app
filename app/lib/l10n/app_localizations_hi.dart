@@ -227,4 +227,183 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get loading => 'लोड हो रहा है';
+
+  @override
+  String get commonSave => 'सेव करें';
+
+  @override
+  String get commonSaved => 'सेव हुआ';
+
+  @override
+  String get commonCancel => 'रद्द करें';
+
+  @override
+  String get commonEdit => 'बदलें';
+
+  @override
+  String get commonAdd => 'जोड़ें';
+
+  @override
+  String get commonDone => 'हो गया';
+
+  @override
+  String get commonClose => 'बंद करें';
+
+  @override
+  String get commonRemove => 'हटाएँ';
+
+  @override
+  String get commonConfirm => 'कन्फ़र्म करें';
+
+  @override
+  String get commonShare => 'शेयर';
+
+  @override
+  String get commonWhatsapp => 'WhatsApp';
+
+  @override
+  String get commonVaat => 'बात';
+
+  @override
+  String get commonOrderKaro => 'ऑर्डर करें';
+
+  @override
+  String get commonNotFound => 'यह रिकॉर्ड नहीं मिला।';
+
+  @override
+  String get commonPageNotFound => 'यह पेज नहीं है।';
+
+  @override
+  String get commonGoHome => 'होम पर जाएँ';
+
+  @override
+  String get validationRequired => 'ज़रूरी है';
+
+  @override
+  String get validationAmount => 'सही रकम लिखें';
+
+  @override
+  String get validationWeight => 'ग्राम में सही वज़न लिखें';
+
+  @override
+  String get validationPhone => '10 अंकों का मोबाइल नंबर लिखें';
+
+  @override
+  String get validationTooLong => 'बहुत लंबा है';
+
+  @override
+  String get productAdd => 'नई डिज़ाइन जोड़ें';
+
+  @override
+  String get productEdit => 'डिज़ाइन बदलें';
+
+  @override
+  String get productAvailable => 'उपलब्ध';
+
+  @override
+  String get productNotAvailable => 'उपलब्ध नहीं';
+
+  @override
+  String get productArchived => 'आर्काइव';
+
+  @override
+  String get catalogueEmpty => 'अभी माल नहीं है।';
+
+  @override
+  String get catalogueEmptyOwnerAction => 'डिज़ाइन जोड़ें';
+
+  @override
+  String get fieldDesignNo => 'डिज़ाइन नं.';
+
+  @override
+  String get fieldName => 'नाम';
+
+  @override
+  String get fieldRate => 'रेट (₹ प्रति नग)';
+
+  @override
+  String get fieldWeight => 'वज़न (ग्राम)';
+
+  @override
+  String get fieldCategory => 'कैटेगरी';
+
+  @override
+  String get fieldNoCategory => 'कोई कैटेगरी नहीं';
+
+  @override
+  String get fieldDescription => 'विवरण';
+
+  @override
+  String get fieldAvailable => 'ऑर्डर के लिए उपलब्ध';
+
+  @override
+  String get ownerOnlySection => 'यह सिर्फ़ आप देख सकते हैं';
+
+  @override
+  String get fieldCost => 'लागत (₹)';
+
+  @override
+  String get fieldSupplier => 'सप्लायर';
+
+  @override
+  String get fieldInternalNote => 'अंदरूनी नोट';
+
+  @override
+  String get weightLabel => 'वज़न';
+
+  @override
+  String get perPiece => 'प्रति नग';
+
+  @override
+  String get photosTitle => 'फ़ोटो';
+
+  @override
+  String get photoCamera => 'कैमरा';
+
+  @override
+  String get photoGallery => 'गैलरी';
+
+  @override
+  String get photoPreparing => 'फ़ोटो तैयार हो रही है…';
+
+  @override
+  String get photoRejected => 'यह फ़ाइल फ़ोटो के रूप में नहीं चलेगी।';
+
+  @override
+  String get photoTooLarge => 'फ़ोटो बहुत बड़ी है (अधिकतम 25 MB)।';
+
+  @override
+  String get photoDuplicate => 'यह फ़ोटो पहले से है।';
+
+  @override
+  String get photoAdded => 'फ़ोटो जुड़ गई';
+
+  @override
+  String get photoSaveFirst => 'पहले डिज़ाइन सेव करें, फिर फ़ोटो जोड़ें।';
+
+  @override
+  String get designNoTaken => 'यह डिज़ाइन नंबर पहले से है।';
+
+  @override
+  String get validationDesignNo => 'अक्षर, अंक, - / . _ इस्तेमाल करें (अधिकतम 24)';
+
+  @override
+  String get archiveDesign => 'डिज़ाइन आर्काइव करें';
+
+  @override
+  String archiveDesignBody(String designNo) {
+    return 'डिज़ाइन $designNo माल और नए ऑर्डर से छुप जाएगी। पुराने ऑर्डर और बिल सुरक्षित रहेंगे।';
+  }
+
+  @override
+  String get unarchiveDesign => 'माल में वापस लाएँ';
+
+  @override
+  String get rateNeedsPermission => 'रेट बदलने की अनुमति वाले ही रेट बदल सकते हैं।';
+
+  @override
+  String get catalogueAll => 'सब';
+
+  @override
+  String get categoryNew => 'नई कैटेगरी';
 }

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:vepari/app/app.dart';
 import 'package:vepari/core/core.dart';
 import 'package:vepari/features/auth/auth.dart';
+import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/dashboard/dashboard.dart';
 import 'package:vepari/features/settings/settings.dart';
 
@@ -17,11 +18,22 @@ const testConfig = AppConfig(
   appVersion: '0.1.0',
 );
 
+/// Renders images as plain boxes in tests (no network).
+Widget testImageBuilder({
+  required String url,
+  required String cacheKey,
+  required BoxFit fit,
+  int? cacheWidth,
+  String? semanticLabel,
+}) => ColoredBox(key: ValueKey('img:$cacheKey'), color: const Color(0xFFE0D6C4));
+
 /// Pumps the full app with fakes at a given screen size and language.
 Future<ProviderContainer> pumpVepari(
   WidgetTester tester, {
   required FakeAuthRepository auth,
   FakeDashboardRepository? dashboard,
+  FakeCatalogueRepository? catalogue,
+  FakePhotoPicker? photos,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
@@ -34,6 +46,12 @@ Future<ProviderContainer> pumpVepari(
   final prefs = MemoryPreferenceStore()..values['locale'] = locale.languageCode;
   final container = ProviderContainer(
     overrides: [
+      ...appLayerOverrides,
+      storageClientProvider.overrideWithValue(FakeStorage()),
+      networkImageBuilderProvider.overrideWithValue(testImageBuilder),
+      catalogueRepositoryProvider.overrideWithValue(catalogue ?? FakeCatalogueRepository()),
+      photoPickerProvider.overrideWithValue(photos ?? FakePhotoPicker()),
+      imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),
       authRepositoryProvider.overrideWithValue(auth),

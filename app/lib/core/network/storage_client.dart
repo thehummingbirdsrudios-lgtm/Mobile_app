@@ -17,8 +17,8 @@ abstract interface class StorageClient {
   Future<Uint8List> download(String bucket, String path);
 }
 
-class SupabaseStorageClient implements StorageClient {
-  SupabaseStorageClient(this._client, this._api);
+class SupabaseObjectStorage implements StorageClient {
+  SupabaseObjectStorage(this._client, this._api);
 
   final SupabaseClient _client;
   final ApiClient _api;

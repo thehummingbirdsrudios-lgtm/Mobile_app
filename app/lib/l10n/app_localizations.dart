@@ -500,6 +500,360 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading'**
   String get loading;
+
+  /// Save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get commonSave;
+
+  /// Saved confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get commonSaved;
+
+  /// Cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get commonCancel;
+
+  /// Edit action
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get commonEdit;
+
+  /// Add action
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get commonAdd;
+
+  /// Done action
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get commonDone;
+
+  /// Close action
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get commonClose;
+
+  /// Remove action
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get commonRemove;
+
+  /// Confirm action
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get commonConfirm;
+
+  /// Share action
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get commonShare;
+
+  /// WhatsApp action
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get commonWhatsapp;
+
+  /// Remarks (voice/text/photo) section
+  ///
+  /// In en, this message translates to:
+  /// **'Vaat'**
+  String get commonVaat;
+
+  /// Primary order action
+  ///
+  /// In en, this message translates to:
+  /// **'Order Karo'**
+  String get commonOrderKaro;
+
+  /// Detail screen when the id is unknown or not visible
+  ///
+  /// In en, this message translates to:
+  /// **'This record was not found.'**
+  String get commonNotFound;
+
+  /// Unknown route / deep link
+  ///
+  /// In en, this message translates to:
+  /// **'This page does not exist.'**
+  String get commonPageNotFound;
+
+  /// Button back to home
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Home'**
+  String get commonGoHome;
+
+  /// Required field
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get validationRequired;
+
+  /// Invalid money input
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid amount'**
+  String get validationAmount;
+
+  /// Invalid weight
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid weight in grams'**
+  String get validationWeight;
+
+  /// Invalid phone
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a 10-digit mobile number'**
+  String get validationPhone;
+
+  /// Text too long
+  ///
+  /// In en, this message translates to:
+  /// **'Too long'**
+  String get validationTooLong;
+
+  /// Create product
+  ///
+  /// In en, this message translates to:
+  /// **'Add design'**
+  String get productAdd;
+
+  /// Edit product
+  ///
+  /// In en, this message translates to:
+  /// **'Edit design'**
+  String get productEdit;
+
+  /// Availability chip
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get productAvailable;
+
+  /// Availability chip
+  ///
+  /// In en, this message translates to:
+  /// **'Not available'**
+  String get productNotAvailable;
+
+  /// Archived chip
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get productArchived;
+
+  /// Empty catalogue
+  ///
+  /// In en, this message translates to:
+  /// **'No maal yet.'**
+  String get catalogueEmpty;
+
+  /// Empty catalogue action
+  ///
+  /// In en, this message translates to:
+  /// **'Add design'**
+  String get catalogueEmptyOwnerAction;
+
+  /// Design number field
+  ///
+  /// In en, this message translates to:
+  /// **'Design no.'**
+  String get fieldDesignNo;
+
+  /// Name field
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get fieldName;
+
+  /// Rate field
+  ///
+  /// In en, this message translates to:
+  /// **'Rate (₹ per piece)'**
+  String get fieldRate;
+
+  /// Weight field
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (g)'**
+  String get fieldWeight;
+
+  /// Category field
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get fieldCategory;
+
+  /// Category none option
+  ///
+  /// In en, this message translates to:
+  /// **'No category'**
+  String get fieldNoCategory;
+
+  /// Description field
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get fieldDescription;
+
+  /// Availability switch
+  ///
+  /// In en, this message translates to:
+  /// **'Available for order'**
+  String get fieldAvailable;
+
+  /// Owner-only private section header
+  ///
+  /// In en, this message translates to:
+  /// **'Only you can see this'**
+  String get ownerOnlySection;
+
+  /// Owner cost field
+  ///
+  /// In en, this message translates to:
+  /// **'Cost (₹)'**
+  String get fieldCost;
+
+  /// Supplier field
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier'**
+  String get fieldSupplier;
+
+  /// Internal note field
+  ///
+  /// In en, this message translates to:
+  /// **'Internal note'**
+  String get fieldInternalNote;
+
+  /// Weight label on detail
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get weightLabel;
+
+  /// Rate unit
+  ///
+  /// In en, this message translates to:
+  /// **'per piece'**
+  String get perPiece;
+
+  /// Photos section
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photosTitle;
+
+  /// Take a photo
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get photoCamera;
+
+  /// Pick from gallery
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get photoGallery;
+
+  /// Image processing/upload progress
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing photo…'**
+  String get photoPreparing;
+
+  /// Invalid image
+  ///
+  /// In en, this message translates to:
+  /// **'This file is not a usable photo.'**
+  String get photoRejected;
+
+  /// Oversized image
+  ///
+  /// In en, this message translates to:
+  /// **'Photo is too large (max 25 MB).'**
+  String get photoTooLarge;
+
+  /// Duplicate image
+  ///
+  /// In en, this message translates to:
+  /// **'This photo is already added.'**
+  String get photoDuplicate;
+
+  /// Upload success
+  ///
+  /// In en, this message translates to:
+  /// **'Photo added'**
+  String get photoAdded;
+
+  /// Photos need a saved product
+  ///
+  /// In en, this message translates to:
+  /// **'Save the design first, then add photos.'**
+  String get photoSaveFirst;
+
+  /// Unique violation on design no
+  ///
+  /// In en, this message translates to:
+  /// **'This design number already exists.'**
+  String get designNoTaken;
+
+  /// Invalid design number
+  ///
+  /// In en, this message translates to:
+  /// **'Use letters, numbers, - / . _ (max 24)'**
+  String get validationDesignNo;
+
+  /// Archive action
+  ///
+  /// In en, this message translates to:
+  /// **'Archive design'**
+  String get archiveDesign;
+
+  /// Archive confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Design {designNo} will be hidden from Maal and new orders. Existing orders and bills stay safe.'**
+  String archiveDesignBody(String designNo);
+
+  /// Unarchive action
+  ///
+  /// In en, this message translates to:
+  /// **'Bring back to Maal'**
+  String get unarchiveDesign;
+
+  /// Rate field locked hint
+  ///
+  /// In en, this message translates to:
+  /// **'Only staff with rate permission can change rates.'**
+  String get rateNeedsPermission;
+
+  /// Catalogue filter: all categories
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get catalogueAll;
+
+  /// Create category
+  ///
+  /// In en, this message translates to:
+  /// **'New category'**
+  String get categoryNew;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

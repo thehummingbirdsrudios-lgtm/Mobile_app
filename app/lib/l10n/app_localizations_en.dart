@@ -227,4 +227,183 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading => 'Loading';
+
+  @override
+  String get commonSave => 'Save';
+
+  @override
+  String get commonSaved => 'Saved';
+
+  @override
+  String get commonCancel => 'Cancel';
+
+  @override
+  String get commonEdit => 'Edit';
+
+  @override
+  String get commonAdd => 'Add';
+
+  @override
+  String get commonDone => 'Done';
+
+  @override
+  String get commonClose => 'Close';
+
+  @override
+  String get commonRemove => 'Remove';
+
+  @override
+  String get commonConfirm => 'Confirm';
+
+  @override
+  String get commonShare => 'Share';
+
+  @override
+  String get commonWhatsapp => 'WhatsApp';
+
+  @override
+  String get commonVaat => 'Vaat';
+
+  @override
+  String get commonOrderKaro => 'Order Karo';
+
+  @override
+  String get commonNotFound => 'This record was not found.';
+
+  @override
+  String get commonPageNotFound => 'This page does not exist.';
+
+  @override
+  String get commonGoHome => 'Go to Home';
+
+  @override
+  String get validationRequired => 'Required';
+
+  @override
+  String get validationAmount => 'Enter a valid amount';
+
+  @override
+  String get validationWeight => 'Enter a valid weight in grams';
+
+  @override
+  String get validationPhone => 'Enter a 10-digit mobile number';
+
+  @override
+  String get validationTooLong => 'Too long';
+
+  @override
+  String get productAdd => 'Add design';
+
+  @override
+  String get productEdit => 'Edit design';
+
+  @override
+  String get productAvailable => 'Available';
+
+  @override
+  String get productNotAvailable => 'Not available';
+
+  @override
+  String get productArchived => 'Archived';
+
+  @override
+  String get catalogueEmpty => 'No maal yet.';
+
+  @override
+  String get catalogueEmptyOwnerAction => 'Add design';
+
+  @override
+  String get fieldDesignNo => 'Design no.';
+
+  @override
+  String get fieldName => 'Name';
+
+  @override
+  String get fieldRate => 'Rate (₹ per piece)';
+
+  @override
+  String get fieldWeight => 'Weight (g)';
+
+  @override
+  String get fieldCategory => 'Category';
+
+  @override
+  String get fieldNoCategory => 'No category';
+
+  @override
+  String get fieldDescription => 'Details';
+
+  @override
+  String get fieldAvailable => 'Available for order';
+
+  @override
+  String get ownerOnlySection => 'Only you can see this';
+
+  @override
+  String get fieldCost => 'Cost (₹)';
+
+  @override
+  String get fieldSupplier => 'Supplier';
+
+  @override
+  String get fieldInternalNote => 'Internal note';
+
+  @override
+  String get weightLabel => 'Weight';
+
+  @override
+  String get perPiece => 'per piece';
+
+  @override
+  String get photosTitle => 'Photos';
+
+  @override
+  String get photoCamera => 'Camera';
+
+  @override
+  String get photoGallery => 'Gallery';
+
+  @override
+  String get photoPreparing => 'Preparing photo…';
+
+  @override
+  String get photoRejected => 'This file is not a usable photo.';
+
+  @override
+  String get photoTooLarge => 'Photo is too large (max 25 MB).';
+
+  @override
+  String get photoDuplicate => 'This photo is already added.';
+
+  @override
+  String get photoAdded => 'Photo added';
+
+  @override
+  String get photoSaveFirst => 'Save the design first, then add photos.';
+
+  @override
+  String get designNoTaken => 'This design number already exists.';
+
+  @override
+  String get validationDesignNo => 'Use letters, numbers, - / . _ (max 24)';
+
+  @override
+  String get archiveDesign => 'Archive design';
+
+  @override
+  String archiveDesignBody(String designNo) {
+    return 'Design $designNo will be hidden from Maal and new orders. Existing orders and bills stay safe.';
+  }
+
+  @override
+  String get unarchiveDesign => 'Bring back to Maal';
+
+  @override
+  String get rateNeedsPermission => 'Only staff with rate permission can change rates.';
+
+  @override
+  String get catalogueAll => 'All';
+
+  @override
+  String get categoryNew => 'New category';
 }

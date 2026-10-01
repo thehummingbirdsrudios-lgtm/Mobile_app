@@ -5,8 +5,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'app/app.dart';
 import 'core/core.dart';
 import 'core/network/api_client.dart' show SupabaseRpcTransport;
+import 'core/network/storage_client.dart' show SupabaseObjectStorage;
 import 'features/auth/auth.dart';
 import 'features/auth/auth_adapters.dart';
+import 'features/catalogue/catalogue.dart';
+import 'features/catalogue/catalogue_adapters.dart';
 import 'features/dashboard/dashboard.dart';
 import 'features/dashboard/dashboard_adapters.dart';
 import 'features/settings/settings.dart';
@@ -22,6 +25,7 @@ Future<void> main() async {
   final preferences = await SharedPreferencesStore.create();
 
   final overrides = [
+    ...appLayerOverrides,
     appConfigProvider.overrideWithValue(config),
     preferenceStoreProvider.overrideWithValue(preferences),
   ];
@@ -35,7 +39,10 @@ Future<void> main() async {
     );
     final client = Supabase.instance.client;
     final api = ApiClient(transport: SupabaseRpcTransport(client), logger: logger);
+    final storage = SupabaseObjectStorage(client, api);
     overrides.addAll([
+      storageClientProvider.overrideWithValue(storage),
+      catalogueRepositoryProvider.overrideWithValue(CatalogueRepositoryImpl(CatalogueApi(client, api, storage))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

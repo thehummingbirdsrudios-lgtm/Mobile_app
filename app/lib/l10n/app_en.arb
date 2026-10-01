@@ -1,164 +1,538 @@
 {
   "@@locale": "en",
-
   "appName": "Vepari",
-  "@appName": { "description": "Product name. Not translated." },
-
+  "@appName": {
+    "description": "Product name. Not translated."
+  },
   "navHome": "Home",
-  "@navHome": { "description": "Bottom navigation: home tab" },
+  "@navHome": {
+    "description": "Bottom navigation: home tab"
+  },
   "navMaal": "Maal",
-  "@navMaal": { "description": "Bottom navigation: catalogue of goods (maal)" },
+  "@navMaal": {
+    "description": "Bottom navigation: catalogue of goods (maal)"
+  },
   "navOrder": "Order",
-  "@navOrder": { "description": "Bottom navigation: orders tab" },
+  "@navOrder": {
+    "description": "Bottom navigation: orders tab"
+  },
   "navCustomer": "Customer",
-  "@navCustomer": { "description": "Bottom navigation: customers tab" },
+  "@navCustomer": {
+    "description": "Bottom navigation: customers tab"
+  },
   "navHisaab": "Hisaab",
-  "@navHisaab": { "description": "Bottom navigation: accounts / ledger (hisaab)" },
+  "@navHisaab": {
+    "description": "Bottom navigation: accounts / ledger (hisaab)"
+  },
   "navMore": "More",
-  "@navMore": { "description": "Bottom navigation: settings and everything else" },
-
+  "@navMore": {
+    "description": "Bottom navigation: settings and everything else"
+  },
   "loginGreeting": "Namaskar 👋",
-  "@loginGreeting": { "description": "Login screen headline" },
+  "@loginGreeting": {
+    "description": "Login screen headline"
+  },
   "loginSubtitle": "Login to your business",
-  "@loginSubtitle": { "description": "Login screen sub-heading" },
+  "@loginSubtitle": {
+    "description": "Login screen sub-heading"
+  },
   "loginUsername": "Username",
-  "@loginUsername": { "description": "Username field label" },
+  "@loginUsername": {
+    "description": "Username field label"
+  },
   "loginPassword": "Password",
-  "@loginPassword": { "description": "Password field label" },
+  "@loginPassword": {
+    "description": "Password field label"
+  },
   "loginButton": "Login",
-  "@loginButton": { "description": "Login button" },
+  "@loginButton": {
+    "description": "Login button"
+  },
   "loginShowPassword": "Show password",
-  "@loginShowPassword": { "description": "Accessibility label for the show-password toggle" },
+  "@loginShowPassword": {
+    "description": "Accessibility label for the show-password toggle"
+  },
   "loginHidePassword": "Hide password",
-  "@loginHidePassword": { "description": "Accessibility label for the hide-password toggle" },
+  "@loginHidePassword": {
+    "description": "Accessibility label for the hide-password toggle"
+  },
   "loginNoAccountHint": "No account? Ask your business owner.",
-  "@loginNoAccountHint": { "description": "Hint under login: accounts are created by the owner" },
-
+  "@loginNoAccountHint": {
+    "description": "Hint under login: accounts are created by the owner"
+  },
   "validationUsernameRequired": "Enter your username",
-  "@validationUsernameRequired": { "description": "Validation: empty username" },
+  "@validationUsernameRequired": {
+    "description": "Validation: empty username"
+  },
   "validationUsernameInvalid": "Use only a–z, 0–9, dot and underscore",
-  "@validationUsernameInvalid": { "description": "Validation: username has invalid characters" },
+  "@validationUsernameInvalid": {
+    "description": "Validation: username has invalid characters"
+  },
   "validationPasswordRequired": "Enter your password",
-  "@validationPasswordRequired": { "description": "Validation: empty password" },
-
+  "@validationPasswordRequired": {
+    "description": "Validation: empty password"
+  },
   "errorInvalidCredentials": "Username or password is wrong.",
-  "@errorInvalidCredentials": { "description": "Login failed" },
+  "@errorInvalidCredentials": {
+    "description": "Login failed"
+  },
   "errorAccountDisabled": "This account is not active. Contact your owner.",
-  "@errorAccountDisabled": { "description": "Login ok but membership inactive" },
+  "@errorAccountDisabled": {
+    "description": "Login ok but membership inactive"
+  },
   "errorNetwork": "Check your internet connection.",
-  "@errorNetwork": { "description": "No network" },
+  "@errorNetwork": {
+    "description": "No network"
+  },
   "errorTimeout": "Server is slow to respond. Try again.",
-  "@errorTimeout": { "description": "Request timed out" },
+  "@errorTimeout": {
+    "description": "Request timed out"
+  },
   "errorServerUnavailable": "Server is not reachable right now. Try again shortly.",
-  "@errorServerUnavailable": { "description": "5xx / server down" },
+  "@errorServerUnavailable": {
+    "description": "5xx / server down"
+  },
   "errorPermission": "You don't have permission for this.",
-  "@errorPermission": { "description": "Authorization failure" },
+  "@errorPermission": {
+    "description": "Authorization failure"
+  },
   "errorNotFound": "This record was not found.",
-  "@errorNotFound": { "description": "Record missing or not visible" },
+  "@errorNotFound": {
+    "description": "Record missing or not visible"
+  },
   "errorAlreadyExists": "This record already exists.",
-  "@errorAlreadyExists": { "description": "Unique violation" },
+  "@errorAlreadyExists": {
+    "description": "Unique violation"
+  },
   "errorProductUnavailable": "This maal is not available now.",
-  "@errorProductUnavailable": { "description": "Ordering an archived/unavailable design" },
+  "@errorProductUnavailable": {
+    "description": "Ordering an archived/unavailable design"
+  },
   "errorRateChanged": "The rate has changed. Check the new rate and confirm again.",
-  "@errorRateChanged": { "description": "Server rejected an order because a rate changed" },
+  "@errorRateChanged": {
+    "description": "Server rejected an order because a rate changed"
+  },
   "errorInvalidInput": "Some details are not right. Please check.",
-  "@errorInvalidInput": { "description": "Validation failed on the server" },
+  "@errorInvalidInput": {
+    "description": "Validation failed on the server"
+  },
   "errorSessionExpired": "Your session has ended. Please login again.",
-  "@errorSessionExpired": { "description": "Auth session expired or revoked" },
+  "@errorSessionExpired": {
+    "description": "Auth session expired or revoked"
+  },
   "errorMaintenance": "Some maintenance is going on. Please try again in a little while.",
-  "@errorMaintenance": { "description": "Maintenance mode" },
+  "@errorMaintenance": {
+    "description": "Maintenance mode"
+  },
   "errorGeneric": "Something went wrong. Try again.",
-  "@errorGeneric": { "description": "Unknown error" },
+  "@errorGeneric": {
+    "description": "Unknown error"
+  },
   "retry": "Try again",
-  "@retry": { "description": "Retry button" },
-
+  "@retry": {
+    "description": "Retry button"
+  },
   "notConfiguredTitle": "Server not set up",
-  "@notConfiguredTitle": { "description": "Build has no backend configuration" },
+  "@notConfiguredTitle": {
+    "description": "Build has no backend configuration"
+  },
   "notConfiguredBody": "This build has no server configuration. Please contact the admin.",
-  "@notConfiguredBody": { "description": "Explanation for missing backend configuration" },
-
+  "@notConfiguredBody": {
+    "description": "Explanation for missing backend configuration"
+  },
   "greeting": "Namaskar {name} 👋",
   "@greeting": {
     "description": "Home greeting with the user's display name",
-    "placeholders": { "name": { "type": "String", "example": "Rajeshbhai" } }
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Rajeshbhai"
+      }
+    }
   },
   "homeTodayQuestion": "What's happening today?",
-  "@homeTodayQuestion": { "description": "Home sub-heading above today's numbers" },
+  "@homeTodayQuestion": {
+    "description": "Home sub-heading above today's numbers"
+  },
   "statSalesToday": "Today's sale",
-  "@statSalesToday": { "description": "Dashboard tile: sales today" },
+  "@statSalesToday": {
+    "description": "Dashboard tile: sales today"
+  },
   "statPaymentsToday": "Payment",
-  "@statPaymentsToday": { "description": "Dashboard tile: payments received today" },
+  "@statPaymentsToday": {
+    "description": "Dashboard tile: payments received today"
+  },
   "statTotalBaki": "Total Baki",
-  "@statTotalBaki": { "description": "Dashboard tile: total outstanding (baki)" },
+  "@statTotalBaki": {
+    "description": "Dashboard tile: total outstanding (baki)"
+  },
   "statPendingOrders": "Orders pending",
-  "@statPendingOrders": { "description": "Dashboard tile: open orders" },
+  "@statPendingOrders": {
+    "description": "Dashboard tile: open orders"
+  },
   "quickActions": "Quick actions",
-  "@quickActions": { "description": "Section title" },
+  "@quickActions": {
+    "description": "Section title"
+  },
   "actionOrder": "Order",
-  "@actionOrder": { "description": "Quick action: new order" },
+  "@actionOrder": {
+    "description": "Quick action: new order"
+  },
   "actionPayment": "Payment",
-  "@actionPayment": { "description": "Quick action: receive payment" },
+  "@actionPayment": {
+    "description": "Quick action: receive payment"
+  },
   "actionNewMaal": "Navo Maal",
-  "@actionNewMaal": { "description": "Quick action: new arrivals" },
+  "@actionNewMaal": {
+    "description": "Quick action: new arrivals"
+  },
   "actionHisaab": "Hisaab",
-  "@actionHisaab": { "description": "Quick action: accounts" },
+  "@actionHisaab": {
+    "description": "Quick action: accounts"
+  },
   "newMaalCount": "{count, plural, =0{No new designs} =1{1 new design} other{{count} new designs}}",
   "@newMaalCount": {
     "description": "Number of new designs in the last 7 days",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
-
   "comingSoonTitle": "This section is being built",
-  "@comingSoonTitle": { "description": "Honest state for a tab not yet implemented in this build" },
+  "@comingSoonTitle": {
+    "description": "Honest state for a tab not yet implemented in this build"
+  },
   "comingSoonBody": "It will arrive in an upcoming update.",
-  "@comingSoonBody": { "description": "Body for not-yet-built section" },
-
+  "@comingSoonBody": {
+    "description": "Body for not-yet-built section"
+  },
   "searchHint": "Search design, customer, order",
-  "@searchHint": { "description": "Universal search placeholder" },
-
+  "@searchHint": {
+    "description": "Universal search placeholder"
+  },
   "moreLanguage": "Language",
-  "@moreLanguage": { "description": "Settings row: app language" },
+  "@moreLanguage": {
+    "description": "Settings row: app language"
+  },
   "moreBusiness": "Business",
-  "@moreBusiness": { "description": "Settings row: business profile" },
+  "@moreBusiness": {
+    "description": "Settings row: business profile"
+  },
   "morePrivacy": "Privacy Policy",
-  "@morePrivacy": { "description": "Settings row: privacy policy" },
+  "@morePrivacy": {
+    "description": "Settings row: privacy policy"
+  },
   "moreTerms": "Terms & Conditions",
-  "@moreTerms": { "description": "Settings row: terms" },
+  "@moreTerms": {
+    "description": "Settings row: terms"
+  },
   "moreLogout": "Logout",
-  "@moreLogout": { "description": "Settings row: sign out" },
+  "@moreLogout": {
+    "description": "Settings row: sign out"
+  },
   "roleOwner": "Owner",
-  "@roleOwner": { "description": "Role label" },
+  "@roleOwner": {
+    "description": "Role label"
+  },
   "roleStaff": "Staff",
-  "@roleStaff": { "description": "Role label" },
+  "@roleStaff": {
+    "description": "Role label"
+  },
   "appVersion": "Version {version}",
   "@appVersion": {
     "description": "App version line",
-    "placeholders": { "version": { "type": "String", "example": "0.1.0" } }
+    "placeholders": {
+      "version": {
+        "type": "String",
+        "example": "0.1.0"
+      }
+    }
   },
   "legalDraftNotice": "Draft — under legal review before publication.",
-  "@legalDraftNotice": { "description": "Banner on unpublished legal documents" },
-
+  "@legalDraftNotice": {
+    "description": "Banner on unpublished legal documents"
+  },
   "unsavedTitle": "There is unsaved work.",
-  "@unsavedTitle": { "description": "Unsaved-changes dialog title" },
+  "@unsavedTitle": {
+    "description": "Unsaved-changes dialog title"
+  },
   "unsavedBody": "If you leave now, it will be lost.",
-  "@unsavedBody": { "description": "Unsaved-changes dialog body" },
+  "@unsavedBody": {
+    "description": "Unsaved-changes dialog body"
+  },
   "unsavedKeepEditing": "Continue editing",
-  "@unsavedKeepEditing": { "description": "Unsaved-changes dialog: stay" },
+  "@unsavedKeepEditing": {
+    "description": "Unsaved-changes dialog: stay"
+  },
   "unsavedDiscard": "Discard",
-  "@unsavedDiscard": { "description": "Unsaved-changes dialog: leave and lose changes" },
-
+  "@unsavedDiscard": {
+    "description": "Unsaved-changes dialog: leave and lose changes"
+  },
   "feedbackOrderSaved": "Order placed",
-  "@feedbackOrderSaved": { "description": "Success: order created on the server" },
+  "@feedbackOrderSaved": {
+    "description": "Success: order created on the server"
+  },
   "feedbackPaymentSaved": "Payment saved",
-  "@feedbackPaymentSaved": { "description": "Success: payment committed" },
+  "@feedbackPaymentSaved": {
+    "description": "Success: payment committed"
+  },
   "feedbackBillReady": "Bill ready",
-  "@feedbackBillReady": { "description": "Success: bill generated" },
-
+  "@feedbackBillReady": {
+    "description": "Success: bill generated"
+  },
   "pieces": "{count} pcs",
   "@pieces": {
     "description": "Quantity in pieces",
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "loading": "Loading",
-  "@loading": { "description": "Accessibility label for loading states" }
+  "@loading": {
+    "description": "Accessibility label for loading states"
+  },
+  "commonSave": "Save",
+  "@commonSave": {
+    "description": "Save button"
+  },
+  "commonSaved": "Saved",
+  "@commonSaved": {
+    "description": "Saved confirmation"
+  },
+  "commonCancel": "Cancel",
+  "@commonCancel": {
+    "description": "Cancel button"
+  },
+  "commonEdit": "Edit",
+  "@commonEdit": {
+    "description": "Edit action"
+  },
+  "commonAdd": "Add",
+  "@commonAdd": {
+    "description": "Add action"
+  },
+  "commonDone": "Done",
+  "@commonDone": {
+    "description": "Done action"
+  },
+  "commonClose": "Close",
+  "@commonClose": {
+    "description": "Close action"
+  },
+  "commonRemove": "Remove",
+  "@commonRemove": {
+    "description": "Remove action"
+  },
+  "commonConfirm": "Confirm",
+  "@commonConfirm": {
+    "description": "Confirm action"
+  },
+  "commonShare": "Share",
+  "@commonShare": {
+    "description": "Share action"
+  },
+  "commonWhatsapp": "WhatsApp",
+  "@commonWhatsapp": {
+    "description": "WhatsApp action"
+  },
+  "commonVaat": "Vaat",
+  "@commonVaat": {
+    "description": "Remarks (voice/text/photo) section"
+  },
+  "commonOrderKaro": "Order Karo",
+  "@commonOrderKaro": {
+    "description": "Primary order action"
+  },
+  "commonNotFound": "This record was not found.",
+  "@commonNotFound": {
+    "description": "Detail screen when the id is unknown or not visible"
+  },
+  "commonPageNotFound": "This page does not exist.",
+  "@commonPageNotFound": {
+    "description": "Unknown route / deep link"
+  },
+  "commonGoHome": "Go to Home",
+  "@commonGoHome": {
+    "description": "Button back to home"
+  },
+  "validationRequired": "Required",
+  "@validationRequired": {
+    "description": "Required field"
+  },
+  "validationAmount": "Enter a valid amount",
+  "@validationAmount": {
+    "description": "Invalid money input"
+  },
+  "validationWeight": "Enter a valid weight in grams",
+  "@validationWeight": {
+    "description": "Invalid weight"
+  },
+  "validationPhone": "Enter a 10-digit mobile number",
+  "@validationPhone": {
+    "description": "Invalid phone"
+  },
+  "validationTooLong": "Too long",
+  "@validationTooLong": {
+    "description": "Text too long"
+  },
+  "productAdd": "Add design",
+  "@productAdd": {
+    "description": "Create product"
+  },
+  "productEdit": "Edit design",
+  "@productEdit": {
+    "description": "Edit product"
+  },
+  "productAvailable": "Available",
+  "@productAvailable": {
+    "description": "Availability chip"
+  },
+  "productNotAvailable": "Not available",
+  "@productNotAvailable": {
+    "description": "Availability chip"
+  },
+  "productArchived": "Archived",
+  "@productArchived": {
+    "description": "Archived chip"
+  },
+  "catalogueEmpty": "No maal yet.",
+  "@catalogueEmpty": {
+    "description": "Empty catalogue"
+  },
+  "catalogueEmptyOwnerAction": "Add design",
+  "@catalogueEmptyOwnerAction": {
+    "description": "Empty catalogue action"
+  },
+  "fieldDesignNo": "Design no.",
+  "@fieldDesignNo": {
+    "description": "Design number field"
+  },
+  "fieldName": "Name",
+  "@fieldName": {
+    "description": "Name field"
+  },
+  "fieldRate": "Rate (₹ per piece)",
+  "@fieldRate": {
+    "description": "Rate field"
+  },
+  "fieldWeight": "Weight (g)",
+  "@fieldWeight": {
+    "description": "Weight field"
+  },
+  "fieldCategory": "Category",
+  "@fieldCategory": {
+    "description": "Category field"
+  },
+  "fieldNoCategory": "No category",
+  "@fieldNoCategory": {
+    "description": "Category none option"
+  },
+  "fieldDescription": "Details",
+  "@fieldDescription": {
+    "description": "Description field"
+  },
+  "fieldAvailable": "Available for order",
+  "@fieldAvailable": {
+    "description": "Availability switch"
+  },
+  "ownerOnlySection": "Only you can see this",
+  "@ownerOnlySection": {
+    "description": "Owner-only private section header"
+  },
+  "fieldCost": "Cost (₹)",
+  "@fieldCost": {
+    "description": "Owner cost field"
+  },
+  "fieldSupplier": "Supplier",
+  "@fieldSupplier": {
+    "description": "Supplier field"
+  },
+  "fieldInternalNote": "Internal note",
+  "@fieldInternalNote": {
+    "description": "Internal note field"
+  },
+  "weightLabel": "Weight",
+  "@weightLabel": {
+    "description": "Weight label on detail"
+  },
+  "perPiece": "per piece",
+  "@perPiece": {
+    "description": "Rate unit"
+  },
+  "photosTitle": "Photos",
+  "@photosTitle": {
+    "description": "Photos section"
+  },
+  "photoCamera": "Camera",
+  "@photoCamera": {
+    "description": "Take a photo"
+  },
+  "photoGallery": "Gallery",
+  "@photoGallery": {
+    "description": "Pick from gallery"
+  },
+  "photoPreparing": "Preparing photo…",
+  "@photoPreparing": {
+    "description": "Image processing/upload progress"
+  },
+  "photoRejected": "This file is not a usable photo.",
+  "@photoRejected": {
+    "description": "Invalid image"
+  },
+  "photoTooLarge": "Photo is too large (max 25 MB).",
+  "@photoTooLarge": {
+    "description": "Oversized image"
+  },
+  "photoDuplicate": "This photo is already added.",
+  "@photoDuplicate": {
+    "description": "Duplicate image"
+  },
+  "photoAdded": "Photo added",
+  "@photoAdded": {
+    "description": "Upload success"
+  },
+  "photoSaveFirst": "Save the design first, then add photos.",
+  "@photoSaveFirst": {
+    "description": "Photos need a saved product"
+  },
+  "designNoTaken": "This design number already exists.",
+  "@designNoTaken": {
+    "description": "Unique violation on design no"
+  },
+  "validationDesignNo": "Use letters, numbers, - / . _ (max 24)",
+  "@validationDesignNo": {
+    "description": "Invalid design number"
+  },
+  "archiveDesign": "Archive design",
+  "@archiveDesign": {
+    "description": "Archive action"
+  },
+  "archiveDesignBody": "Design {designNo} will be hidden from Maal and new orders. Existing orders and bills stay safe.",
+  "@archiveDesignBody": {
+    "description": "Archive confirmation",
+    "placeholders": {
+      "designNo": {
+        "type": "String"
+      }
+    }
+  },
+  "unarchiveDesign": "Bring back to Maal",
+  "@unarchiveDesign": {
+    "description": "Unarchive action"
+  },
+  "rateNeedsPermission": "Only staff with rate permission can change rates.",
+  "@rateNeedsPermission": {
+    "description": "Rate field locked hint"
+  },
+  "catalogueAll": "All",
+  "@catalogueAll": {
+    "description": "Catalogue filter: all categories"
+  },
+  "categoryNew": "New category",
+  "@categoryNew": {
+    "description": "Create category"
+  }
 }

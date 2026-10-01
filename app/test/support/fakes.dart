@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:vepari/core/core.dart';
 import 'package:vepari/features/auth/auth.dart';
+import 'package:vepari/features/catalogue/catalogue.dart';
+import 'package:vepari/features/catalogue/domain/catalogue.dart'
+    show CatalogueCursor, PhotoUpload, ProductDraft, ProductPrivate;
 import 'package:vepari/features/dashboard/dashboard.dart';
 import 'package:vepari/features/settings/settings.dart';
 
@@ -105,3 +109,181 @@ const sampleSummary = DashboardSummary(
   pendingOrders: 3,
   newMaalLast7Days: 12,
 );
+
+// ---------------------------------------------------------------------------
+// Catalogue
+// ---------------------------------------------------------------------------
+class FakeCatalogueRepository implements CatalogueRepository {
+  FakeCatalogueRepository({List<ProductDetail>? products}) : products = products ?? sampleProducts();
+
+  final List<ProductDetail> products;
+  final categoriesList = <Category>[const Category(id: 'cat-1', name: 'Kundan')];
+  final addedPhotos = <(String, PhotoUpload)>[];
+  final updates = <(String, ProductDraft, bool)>[];
+  AppFailure? createError;
+  AppFailure? pageError;
+  int pageCalls = 0;
+
+  @override
+  Future<PageResult<ProductSummary, CatalogueCursor>> page(
+    CatalogueFilter filter, {
+    CatalogueCursor? after,
+    int limit = 30,
+  }) async {
+    pageCalls++;
+    if (pageError != null) throw pageError!;
+    final visible = products
+        .where((p) => !p.isArchived)
+        .where((p) => filter.categoryId == null || p.categoryId == filter.categoryId)
+        .where((p) => filter.newSince == null || !p.publishedAt.isBefore(filter.newSince!))
+        .toList();
+    final start = after == null ? 0 : visible.indexWhere((p) => p.id == after.id) + 1;
+    final slice = visible.skip(start).take(limit).toList();
+    final items = [
+      for (final p in slice)
+        ProductSummary(
+          id: p.id,
+          designNo: p.designNo,
+          name: p.name,
+          rate: p.rate,
+          isAvailable: p.isAvailable,
+          publishedAt: p.publishedAt,
+          weightMg: p.weightMg,
+          thumbPath: p.photos.isEmpty ? null : p.photos.first.thumbPath,
+        ),
+    ];
+    final more = start + limit < visible.length;
+    return PageResult(items, next: more ? (publishedAt: slice.last.publishedAt, id: slice.last.id) : null);
+  }
+
+  @override
+  Future<ProductDetail?> detail(String productId) async => products.where((p) => p.id == productId).firstOrNull;
+
+  @override
+  Future<List<Category>> categories() async => categoriesList;
+
+  @override
+  Future<Category> createCategory(String name) async {
+    final c = Category(id: 'cat-${categoriesList.length + 1}', name: name);
+    categoriesList.add(c);
+    return c;
+  }
+
+  @override
+  Future<String> create(ProductDraft draft, {required bool includePrivate}) async {
+    if (createError != null) throw createError!;
+    final id = '00000000-0000-4000-8000-${(products.length + 1).toString().padLeft(12, '0')}';
+    products.add(
+      ProductDetail(
+        id: id,
+        designNo: draft.designNo,
+        name: draft.name,
+        rate: draft.rate!,
+        isAvailable: draft.isAvailable,
+        isArchived: false,
+        publishedAt: DateTime.now(),
+        photos: const [],
+        weightMg: draft.weightMg,
+      ),
+    );
+    return id;
+  }
+
+  @override
+  Future<void> update(
+    String productId,
+    ProductDraft draft, {
+    required bool includeRate,
+    required bool includePrivate,
+  }) async {
+    updates.add((productId, draft, includeRate));
+  }
+
+  @override
+  Future<void> setArchived(String productId, {required bool archived}) async {
+    final i = products.indexWhere((p) => p.id == productId);
+    final p = products[i];
+    products[i] = ProductDetail(
+      id: p.id,
+      designNo: p.designNo,
+      name: p.name,
+      rate: p.rate,
+      isAvailable: p.isAvailable,
+      isArchived: archived,
+      publishedAt: p.publishedAt,
+      photos: p.photos,
+    );
+  }
+
+  @override
+  Future<void> addPhoto(String productId, PhotoUpload upload) async => addedPhotos.add((productId, upload));
+
+  @override
+  Future<void> removePhoto(String photoId) async {}
+}
+
+const productKundanId = '00000000-0000-4000-8000-000000001024';
+const productJhumkaId = '00000000-0000-4000-8000-000000001025';
+
+List<ProductDetail> sampleProducts() => [
+  ProductDetail(
+    id: productKundanId,
+    designNo: '1024',
+    name: 'Kundan Set',
+    rate: const Money.paise(62000),
+    isAvailable: true,
+    isArchived: false,
+    publishedAt: DateTime.now().subtract(const Duration(days: 1)),
+    weightMg: 42000,
+    categoryId: 'cat-1',
+    categoryName: 'Kundan',
+    photos: const [ProductPhoto(id: 'm1', thumbPath: 't/p/1024/thumb.jpg', cataloguePath: 't/p/1024/catalogue.jpg')],
+    private: const ProductPrivate(cost: Money.paise(42000), supplierName: 'Secret Supplier', internalNote: 'Note'),
+  ),
+  ProductDetail(
+    id: productJhumkaId,
+    designNo: '1025',
+    name: 'Jhumka',
+    rate: const Money.paise(32000),
+    isAvailable: false,
+    isArchived: false,
+    publishedAt: DateTime.now().subtract(const Duration(days: 30)),
+    photos: const [],
+  ),
+];
+
+/// Storage that never touches the network.
+class FakeStorage implements StorageClient {
+  final uploads = <String>[];
+
+  @override
+  Future<String> signedUrl(String bucket, String path, {Duration expiresIn = const Duration(hours: 1)}) async =>
+      'https://storage.invalid/$bucket/$path';
+
+  @override
+  Future<void> upload(String bucket, String path, Uint8List bytes, {required String contentType}) async =>
+      uploads.add('$bucket/$path');
+
+  @override
+  Future<Uint8List> download(String bucket, String path) async => Uint8List(0);
+}
+
+class FakePhotoPicker implements PhotoPicker {
+  FakePhotoPicker([this.next]);
+
+  Uint8List? next;
+
+  @override
+  Future<Uint8List?> pick(PhotoOrigin origin) async => next;
+}
+
+/// Records navigation instead of performing it.
+class RecordingNavigator implements AppNavigator {
+  final calls = <String>[];
+
+  @override
+  void noSuchMethod(Invocation invocation) => calls.add(
+    '${invocation.memberName.toString().replaceAll('Symbol("', '').replaceAll('")', '')}'
+    '${invocation.positionalArguments.isEmpty ? '' : ':${invocation.positionalArguments.join(',')}'}',
+  );
+}

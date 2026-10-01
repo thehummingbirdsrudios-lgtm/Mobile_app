@@ -31,7 +31,7 @@ void main() {
     await pumpVepari(tester, auth: FakeAuthRepository(restored: ownerSession));
     await tester.tap(find.text('Maal'));
     await tester.pumpAndSettle();
-    expect(find.text('This section is being built'), findsOneWidget);
+    expect(find.text('Kundan Set'), findsOneWidget);
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
     expect(find.text('Namaskar Rajeshbhai 👋'), findsOneWidget);
