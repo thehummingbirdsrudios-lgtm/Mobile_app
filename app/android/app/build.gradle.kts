@@ -16,7 +16,7 @@ val keystoreProperties = Properties().apply {
 val hasReleaseKey = keystoreProperties.getProperty("storeFile") != null
 
 android {
-    namespace = "`in`.hummingbird.vepari"
+    namespace = "com.thehummingbirdstudio.vepari"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -26,7 +26,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "`in`.hummingbird.vepari"
+        applicationId = "com.thehummingbirdstudio.vepari"
         // Android 7.0+ (API 24): the supported baseline — see docs/testing/compatibility-matrix.md.
         minSdk = 24
         targetSdk = flutter.targetSdkVersion
