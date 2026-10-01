@@ -21,6 +21,11 @@ All notable changes are documented here ([Keep a Changelog](https://keepachangel
 - Vepari brand mark and launcher/web icons.
 - CI for app, database and secret scanning.
 
+### Security
+- `create_order` replay returns a payment only to callers with
+  `payments.record` or `hisaab.view`. `client_request_id` is no longer
+  readable by clients (found by security review; regression-tested).
+
 ### Fixed (from code review, before first release)
 - `create_order` requires `payments.record` to take a payment; it resolves
   rates once per line; a replay returns its payment.

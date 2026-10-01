@@ -8,6 +8,11 @@ parameter.
 - **Writes that move money or create orders or bills** go only through SECURITY
   DEFINER RPCs.
 
+## Column visibility
+Idempotency keys (`client_request_id` on `orders`, `payments` and
+`ledger_entries`) are never readable by clients. Query these tables with
+explicit column lists; PostgREST `select=*` on them is denied by design.
+
 ## Error model
 RPC failures raise `SQLSTATE P0001` with `message` set to a **stable code**.
 `detail` is JSON or empty. The client maps codes in

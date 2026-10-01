@@ -10,7 +10,7 @@
 ## Derivatives
 | Variant | Size | Used by |
 |---|---|---|
-| original | as uploaded (≤ 25 MB image) | Owner download only |
+| original | as uploaded (≤ 25 MB image) | Not used by any screen. Storage currently lets every member read it; restrict to owners in the media increment |
 | catalogue | 800 px long edge, JPEG/WebP q≈82 | Product detail |
 | thumb | 256 px | Catalogue grid, bill thumbnails, order lines |
 | share | 1280 px with optional business watermark | WhatsApp |

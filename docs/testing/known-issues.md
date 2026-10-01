@@ -12,4 +12,5 @@
 | KI-008 | Medium | Personal-data erasure procedure (anonymise a customer while keeping financial history) not implemented | DPDP request handling is manual | Design with the customer increment |
 | KI-009 | Low | No automated dependency CVE scan (pub has no built-in audit) | Vulnerable transitive dependencies could go unnoticed | Add OSV-Scanner to CI |
 | KI-010 | Low | Release build uses R8 shrinking but has never been built or run | Possible missing keep rules | Build and smoke-test a release APK in CI or on a device |
+| KI-012 | Medium (before sharing ships) | Any member can read, overwrite and delete everything in the `share` bucket. That is fine for product images, but bill, receipt and Hisaab shares would expose Baki to staff without `hisaab.view`. | Future data exposure | When the share increment lands: gate by `share_assets.source` and by creator, or keep financial shares in the `bills` bucket |
 | KI-011 | Low | Notifications, version gate and maintenance mode designed but not built | — | Increments 12–13 |

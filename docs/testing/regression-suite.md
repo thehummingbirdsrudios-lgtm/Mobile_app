@@ -21,3 +21,4 @@ test`, legal sync, web and APK builds; `tool/db_test.sh --scale`; gitleaks.
 | R-013 | A banned user saw "wrong password"; offline auth showed a generic error | Status 400 checked before specific codes | `app_failure_test` "auth: specific codes win…" |
 | R-014 | Deactivated staff kept a signed-in UI with cached data | Server rejection not fed back to the session | `api_client_test` "session rejection is published", `session_controller_test` |
 | R-015 | AppSearchField could dispose a parent's controller | Ownership read from the current widget | Code fix (ownership fixed at init) |
+| R-016 | Staff with only `orders.create` could replay any order and read its payment and Baki (security review, MEDIUM) | Replay returned the payment before the permission check; `client_request_id` was readable by every member | `authorization_privacy_test` "replaying an order never reveals its payment…", "idempotency keys are not readable…" |
