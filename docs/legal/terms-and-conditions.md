@@ -1,7 +1,8 @@
-# Vepari — Terms & Conditions (DRAFT)
+# Vepari — Terms & Conditions
 
-> **Status: draft for qualified legal review. Not published. Not legal advice.**
-> Everything in `[SQUARE BRACKETS]` is a placeholder the operator must fill in.
+> **Status: reviewed by the operator's legal counsel (confirmed by the operator,
+> 2 October 2026). Not legal advice.** Everything in `[SQUARE BRACKETS]` must be
+> filled in by the operator before publication.
 
 **Last updated:** [DATE]
 **Provider:** [LEGAL ENTITY NAME], [REGISTERED ADDRESS]

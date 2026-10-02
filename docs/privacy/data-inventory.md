@@ -15,7 +15,9 @@ Keep this synchronised with the schema and the privacy policy
 | Transactions | orders, items, payments (amount, mode, reference), ledger, bills | Accounting | Respective tables | Orders: members; money: `hisaab.view` / `payments.record` | Business lifetime + statutory period [TBD] | Supabase | Not deletable (immutable financial history) |
 | Media | product photos/videos | Catalogue | `product-media` bucket + metadata | Members | Until archived + cleanup | Supabase | Archive, then object cleanup |
 | Remarks (Vaat) | text, original voice recordings, photos | Communication | `remarks`, `remarks` bucket | Members; archive by author or owner | Business lifetime | Supabase | Archive |
-| Shared files | generated share images/PDFs | WhatsApp sharing | `share` bucket, `share_assets` | Creator | 7 days | Supabase; recipient's chosen app once shared | Automatic expiry cleanup |
+| Shared files | generated share images/PDFs/CSVs | WhatsApp sharing, export | Device temp folder only (the `share` bucket is closed to the app) | The app | Deleted right after the share; swept at next start if interrupted | Recipient's chosen app once shared | Automatic |
+| Notifications | kind, subject id, short args (design no/name, order no, customer name; payment amount only for `hisaab.view`) | In-app inbox and push | `notifications` | The recipient | Business lifetime (no purge yet, KI-017) | Supabase; push text (no amounts) via Google FCM | Not user-deletable |
+| Device push token | FCM registration token for this install | Deliver pushes | `device_tokens` (max 10 per member) | The member (own rows) | Until logout (deleted on server and phone), uninstall or FCM reports it invalid | Supabase; Google FCM | Logout; uninstall |
 | Audit trail | actor, action, entity, changed fields | Security, disputes | `audit_logs` | Owner | Business lifetime [TBD] | Supabase | Not deletable |
 | Device: session | Supabase session | Stay signed in | Android Keystore-backed secure storage | The app | Until logout or expiry | — | Logout; uninstall |
 | Device: preference | chosen language | UX | shared_preferences | The app | Until changed or uninstall | — | Uninstall |
@@ -25,4 +27,5 @@ Keep this synchronised with the schema and the privacy policy
 - analytics or behavioural tracking
 - crash reports with personal data
 
-**Not yet collected:** notification tokens (planned; add a row here when built).
+Push tokens are collected only after sign-in and only if the person allows
+notifications (Android 13+ asks). Without one, the inbox and bell still work.

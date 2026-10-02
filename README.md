@@ -29,19 +29,39 @@ flutter run --dart-define-from-file=env/development.json
 Without configuration the app starts and says plainly that no server is set up.
 
 ## Deploying the backend
-1. Apply `supabase/migrations/*` in order to a Supabase project
-   (`supabase db push`). **Never apply `supabase/tests/shim/`** — it emulates
+The hosted project is **`vepari`** (`zzghblixuxhjxpxzugac`, ap-south-1 Mumbai),
+deployed and tested on 2026-10-02. For another environment:
+
+1. Apply `supabase/migrations/*` in order (`supabase db push`, or the Supabase
+   MCP / SQL Editor). **Never apply `supabase/tests/shim/`**: it emulates
    platform pieces for local tests only.
 2. Deploy the Edge Functions (`cd supabase/functions && deno test` first):
-   - `supabase functions deploy staff-admin` — secret `LOGIN_DOMAIN` (same as the app's).
-   - `supabase functions deploy push-dispatch --no-verify-jwt` — secrets
-     `PUSH_WEBHOOK_SECRET` (random, ≥ 16 chars) and optionally
-     `FCM_SERVICE_ACCOUNT`; then add a Database Webhook on INSERT into
-     `public.notifications` that sends the same secret as `x-webhook-secret`.
-3. Create the first business and owner with `admin_create_tenant` (service
-   role). Owners then create staff from the app (More → Staff).
-4. Operators can set `platform_settings.min_app_version` and `maintenance`
+   - `supabase functions deploy staff-admin` (JWT verification on). Optional
+     secret `LOGIN_DOMAIN`; the default matches the app's.
+   - `supabase functions deploy push-dispatch --no-verify-jwt`. Secret
+     `FCM_SERVICE_ACCOUNT` (the Firebase service-account JSON) turns push on.
+3. Configure the push webhook in Vault (the trigger and the function read it;
+   the secret is generated in the database and never handled by a person):
+   ```sql
+   select vault.create_secret('https://<ref>.supabase.co/functions/v1/push-dispatch', 'vepari_push_url');
+   select vault.create_secret(encode(extensions.gen_random_bytes(32), 'hex'), 'vepari_push_secret');
+   ```
+4. Authentication: turn **off** "Allow new users to sign up". Accounts are
+   created only by owners (staff) and operators (owners).
+5. Create each business and its owner: [docs/operations/onboarding.md](docs/operations/onboarding.md).
+6. Operators can set `platform_settings.min_app_version` and `maintenance`
    (service role) to retire old builds or pause writes.
+
+Hosted migration history notes: versions are the times they were applied
+(names match the files), `20261001000500_business_rpcs` is recorded in three
+parts, and five migrations were run through the SQL Editor because the MCP
+connector asks for interactive approval of any `drop`/`delete` statement.
+
+## Pilot build
+Actions → **Pilot build** → Run workflow, with the project URL and the
+publishable key (both public). It produces an installable release APK and an
+AAB as artifacts. Without `android/key.properties` they are debug-signed:
+fine for pilot phones, not accepted by Play.
 
 ## Status
 Increments 0–16 are built and tested; see

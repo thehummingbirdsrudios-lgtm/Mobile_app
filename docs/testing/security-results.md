@@ -16,7 +16,11 @@
 | Logging | Sensitive field names redacted; payloads never logged | Pass | `api_client_test.dart` |
 | Secrets | gitleaks across full history | Pass (CI) | CI "Secret scan" |
 | Staff provisioning (Edge Function) | Caller from own JWT; owner-only; tenant never taken from the body; input rules; rollback of half-created logins; passwords/tokens never logged | 12 Deno + 8 DB tests pass (mutation-probed: owner check and rollback) | `staff-admin/handler_test.ts`, `owner_admin_test.dart` |
-| Push dispatch | Webhook secret (constant-time, ≥16 chars); lock-screen text without amounts; data payload id+kind only; invalid tokens forgotten; RS256 JWT verified | 9 Deno tests pass | `push-dispatch/handler_test.ts` |
+| Push dispatch | Webhook secret (constant-time, ≥16 chars); lock-screen text without amounts; data payload ids only (notification, kind, target); invalid tokens forgotten; RS256 JWT verified; malformed FCM secret does not crash the function | 11 Deno tests pass | `push-dispatch/handler_test.ts` |
+| Push webhook (DB) | One `pg_net` request per notification, body = id only (no args/amounts), secret from Vault; nothing sent unconfigured; secret RPC service-role only; Vault unreadable by app users | 5 DB tests pass (mutation-probed: leaking args into the body fails 2) | `push_webhook_test.dart` |
+| Push on the phone | Pushes open only for a signed-in member; sign-out unregisters on the server and deletes the token on the phone; tapped targets re-authorised by the target screen | 7 widget/unit tests pass | `push_messages_test.dart` |
+| **Hosted, live (2026-10-02)** | Through the real Auth, REST and Edge Function endpoints of `vepari` (run from inside the database with `pg_net`): owner login 200; staff-admin create 200, duplicate 409, no token 401, staff caller 403, reset 200 then old password rejected; staff reading owner cost data → `[]`; staff product insert stamped to their tenant; webhook trigger → push-dispatch 200; forged webhook secret 401; concurrent duplicate order+payment → one of each; Baki = ledger sum | Pass | Session log; `net._http_response` (expires after 6 h) |
+| Supabase advisors (hosted) | Security and performance lints after deployment | No ERROR. 6 `auth_rls_initplan` warnings fixed (`20261002000200`). Remaining warnings are by design or accepted (KI-021); leaked-password protection needs the Pro plan (KI-004) | Advisor output, session log |
 | Notifications | Never to the actor or stopped staff; payment amounts only to `hisaab.view` (re-checked at read time); no cost/supplier/notes in any row | Pass | `notifications_test.dart` |
 | Export | Owner-only even for all-permission staff; own business only; CSV formula injection defused | Pass | `export_test.dart` (DB + app) |
 | Storage hardening | `share` bucket closed; photo originals owner/catalogue-manager only; no cross-bucket moves (share and remarks → bills) | Pass | `hardening_test.dart`, `authorization_privacy_test.dart` |
@@ -27,8 +31,8 @@
 | Android data | Backups and device transfer disabled; session in the keystore | Configured, not device-tested | AndroidManifest, `data_extraction_rules.xml` |
 
 **Not yet tested:**
-- Hosted Supabase project settings (KI-004)
-- Deployed Edge Functions and Database Webhook (KI-014)
-- DAST against a deployed API
+- Sign-ups off, backups/PITR and a restore drill on the hosted project (KI-004)
+- A push delivered to a real phone (KI-013)
+- DAST against the deployed API
 - `deno.lock` dependency audit (not an OSV format; KI-018)
 - Upload malware scanning (KI-005)

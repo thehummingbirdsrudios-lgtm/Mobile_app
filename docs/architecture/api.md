@@ -88,7 +88,7 @@ Own notifications only, under RLS. `null` marks them all read.
 | Function | Auth | Request | Responses |
 |---|---|---|---|
 | `staff-admin` | Caller's JWT; active owner | `{action: "create_staff", username, display_name, password, permissions[]}` or `{action: "reset_password", user_id, password}` | `200 {user_id}`. Errors: `400 invalid_request {field}`, `401 not_authenticated`, `403 permission_denied`, `404 member_not_found`, `409 username_taken`, `500 server_error`. |
-| `push-dispatch` | `x-webhook-secret` (Database Webhook on `notifications` INSERT) | Supabase webhook payload | `200 {sent, invalid, failed}`, or `{sent: 0, skipped: "not_configured"}` without FCM |
+| `push-dispatch` | `x-webhook-secret` (the `notifications_push` trigger, via `pg_net`; secret in Vault) | `{type: "INSERT", table: "notifications", record: {id}}` | `200 {sent, invalid, failed}`, or `{sent: 0, skipped: "not_configured"}` without FCM; `401` wrong secret. Push data: `{notification_id, kind, target_kind?, target_id?}` (ids only). |
 
 ## Read RPCs
 | RPC | Auth | Returns |
@@ -109,7 +109,8 @@ Own notifications only, under RLS. `null` marks them all read.
 | `export_ledger / export_orders(from, to, after_at?, after_id?, limit ≤ 1000)` | owner | keyset by `(created_at, id)` within `[from, to)` |
 | `export_order_items(from, to, after_at?, after_id?, limit ≤ 500 orders)` | owner | lines of whole orders |
 | `app_status()` | anyone (also before sign-in) | `{min_app_version, maintenance}` |
-| `push_targets(notification_id)`, `forget_device_tokens(tokens[])` | `service_role` | devices of an active recipient while the notification is unread |
+| `push_targets(notification_id)`, `forget_device_tokens(tokens[])` | `service_role` | devices of an active recipient while the notification is unread; returns token, platform, locale, kind, args, target_kind, target_id |
+| `push_webhook_secret()` | `service_role` | the Vault secret shared by the trigger and `push-dispatch` |
 
 ## Versioning
 - Changes are additive: new optional parameters and new JSON fields.

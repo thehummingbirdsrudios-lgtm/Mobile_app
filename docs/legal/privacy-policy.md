@@ -1,9 +1,13 @@
-# Vepari — Privacy Policy (DRAFT)
+# Vepari — Privacy Policy
 
-> **Status: draft for qualified legal review. Not published. Not legal advice.**
-> Everything in `[SQUARE BRACKETS]` is a placeholder the operator must fill in.
-> This draft describes what the app does as of version 0.1.0 and must be
-> updated whenever data collection changes (see docs/privacy/data-inventory.md).
+> **Status: reviewed by the operator's legal counsel (confirmed by the operator,
+> 2 October 2026). Not legal advice.** Everything in `[SQUARE BRACKETS]` must be
+> filled in by the operator before publication. Updated after that review, for
+> counsel to confirm: push notifications through Firebase Cloud Messaging
+> (sections 2 and 4), the hosting region (section 3) and how share files are
+> deleted (section 5). This text describes what the app does as of version
+> 0.1.0 and must be updated whenever data collection changes (see
+> docs/privacy/data-inventory.md).
 
 **Last updated:** [DATE]
 **Operator:** [LEGAL ENTITY NAME], [REGISTERED ADDRESS] ("we", "us")
@@ -29,6 +33,7 @@ for it, and we process it on the Business's behalf to provide the service.
 | Remarks | text notes, voice recordings, photos attached to orders/customers/products | Communication the user chooses to record (voice/photo features are being introduced) |
 | Activity record | who changed rates, received payments, issued bills, etc. | Security and dispute resolution (visible to the Business owner) |
 | On the device | your sign-in session (in the phone's secure keystore) and your chosen language | To keep you signed in and show the right language |
+| Push token | a random identifier for this installation of the app, issued by Google Firebase | To deliver notifications to your phone; removed when you log out |
 
 We do **not** collect location, contacts, advertising identifiers, or analytics
 about your behaviour, and the app contains no advertising.
@@ -36,7 +41,7 @@ about your behaviour, and the app contains no advertising.
 ## 3. Where information is stored
 
 Data is stored with our hosting provider, Supabase (managed PostgreSQL database,
-authentication and file storage), in [REGION — e.g. ap-south-1 Mumbai]. Data is
+authentication and file storage), in the ap-south-1 region (Mumbai, India). Data is
 encrypted in transit (TLS). Each Business's data is kept separate from every
 other Business by database-level access rules.
 
@@ -49,7 +54,12 @@ other Business by database-level access rules.
   image or PDF containing only customer-safe information (for example design
   number, photo and rate) and hands it to the app you pick using your phone's
   share sheet. We do not send messages on your behalf and do not read WhatsApp.
-- **Service providers:** Supabase, as described above.
+- **Service providers:** Supabase, as described above, and Google Firebase
+  Cloud Messaging, which delivers notifications to your phone. For that it
+  receives your phone's push token and the short notification text (for
+  example a design number and name, an order number or a customer name).
+  Amounts are never included. You can turn notifications off in your phone's
+  settings; the app keeps working and shows them inside the app.
 - **Legal requirements:** where required by law, [DESCRIBE PROCESS].
 
 We do not sell personal information.
@@ -59,8 +69,9 @@ We do not sell personal information.
 Business records (orders, payments, ledger, bills) are kept while the Business's
 account is active, and afterwards for [PERIOD] or as required by applicable tax
 and accounting law. Archived customers and products remain in historical
-records so past bills stay correct. Temporary share files are deleted after
-[7 DAYS].
+records so past bills stay correct. Files you share (bills, receipts, photos)
+are prepared on your phone and deleted right after sharing (or at the next app
+start if sharing was interrupted); no copy is kept on our servers.
 
 ## 6. Your choices and rights
 

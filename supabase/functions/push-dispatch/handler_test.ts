@@ -1,5 +1,5 @@
 // Unit tests for push-dispatch (no network): deno test supabase/functions
-import { FcmSender, type ServiceAccount, signedAssertion } from "./fcm.ts";
+import { FcmSender, senderFromSecret, type ServiceAccount, signedAssertion } from "./fcm.ts";
 import { type Deps, handle, type Push, pushText, type SendResult, type Target } from "./handler.ts";
 
 function assertEquals(actual: unknown, expected: unknown, message = "") {
@@ -231,4 +231,22 @@ Deno.test("sender: token reused until near expiry; errors mapped", async () => {
   fcmStatus = 503;
   fcmBody = "unavailable";
   assertEquals(await sender.send(push), "failed");
+});
+
+Deno.test("the FCM secret: absent means off, malformed is reported and off, never a crash", () => {
+  let reports = 0;
+  const report = () => reports++;
+  assertEquals(senderFromSecret(undefined, report), null);
+  assertEquals(senderFromSecret("", report), null);
+  assertEquals(reports, 0, "no secret is not an error");
+  assertEquals(senderFromSecret('{"project_id": "vepari", "client_em', report), null, "a partial paste");
+  assertEquals(senderFromSecret('{"project_id": "vepari"}', report), null, "fields missing");
+  assertEquals(senderFromSecret("[]", report), null);
+  assertEquals(reports, 3);
+  const ok = senderFromSecret(
+    JSON.stringify({ project_id: "vepari", client_email: "push@vepari.iam.gserviceaccount.com", private_key: "k" }),
+    report,
+  );
+  assertEquals(ok instanceof FcmSender, true);
+  assertEquals(reports, 3);
 });

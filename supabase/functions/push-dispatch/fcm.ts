@@ -90,3 +90,23 @@ export class FcmSender {
     return "failed";
   };
 }
+
+/**
+ * The FCM sender for the FCM_SERVICE_ACCOUNT secret, or null when push is
+ * not configured. A malformed secret (e.g. a partial paste) must not take the
+ * function down: it is reported through [onInvalid] (never the value) and
+ * push is skipped, so in-app notifications are unaffected.
+ */
+export function senderFromSecret(raw: string | undefined, onInvalid: () => void, fetcher?: Fetch): FcmSender | null {
+  if (!raw) return null;
+  try {
+    const account = JSON.parse(raw) as Partial<ServiceAccount>;
+    if (account.project_id && account.client_email && account.private_key) {
+      return new FcmSender(account as ServiceAccount, fetcher);
+    }
+  } catch {
+    // fall through
+  }
+  onInvalid();
+  return null;
+}

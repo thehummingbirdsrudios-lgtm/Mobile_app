@@ -1,0 +1,119 @@
+name: Pilot build
+
+# Builds an installable release APK (plus a Play-format AAB) pointed at a
+# hosted backend. Run it from Actions → Pilot build → Run workflow.
+#
+# The inputs are public client values: they ship inside every APK anyway.
+# Never put secrets here. Without android/key.properties the build is signed
+# with the debug key: fine for installing on pilot phones, rejected by Play.
+on:
+  workflow_dispatch:
+    inputs:
+      supabase_url:
+        description: Supabase project URL (https://<ref>.supabase.co)
+        required: true
+      supabase_publishable_key:
+        description: Supabase publishable key (sb_publishable_…, public)
+        required: true
+      app_env:
+        description: Environment name shown in logs
+        default: pilot
+      app_version:
+        description: App version (x.y.z); the version gate compares it
+        default: 0.1.0
+
+permissions:
+  contents: read
+
+env:
+  FLUTTER_VERSION: 3.47.5
+
+jobs:
+  build:
+    name: Release APK and AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: app
+    env:
+      SUPABASE_URL: ${{ inputs.supabase_url }}
+      SUPABASE_KEY: ${{ inputs.supabase_publishable_key }}
+      APP_ENV: ${{ inputs.app_env }}
+      APP_VERSION: ${{ inputs.app_version }}
+    steps:
+      - uses: actions/checkout@v5
+
+      # Inputs reach the shell only through env and are validated, so they
+      # cannot inject commands or produce an app pointed somewhere odd.
+      - name: Validate inputs
+        run: |
+          [[ "$SUPABASE_URL" =~ ^https://[a-z0-9]{20}\.supabase\.co$ ]] || { echo "::error::supabase_url must be https://<20-char ref>.supabase.co"; exit 1; }
+          [[ "$SUPABASE_KEY" =~ ^sb_publishable_[A-Za-z0-9_-]{20,}$ ]] || { echo "::error::supabase_publishable_key must be an sb_publishable_ key"; exit 1; }
+          [[ "$APP_ENV" =~ ^[a-z][a-z0-9-]{1,19}$ ]] || { echo "::error::app_env: lowercase letters, digits, dashes"; exit 1; }
+          [[ "$APP_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::app_version must be x.y.z"; exit 1; }
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Environment file (built here, never committed)
+        run: |
+          mkdir -p env
+          jq -n --arg env "$APP_ENV" --arg url "$SUPABASE_URL" --arg key "$SUPABASE_KEY" --arg ver "$APP_VERSION" \
+            '{APP_ENV: $env, SUPABASE_URL: $url, SUPABASE_PUBLISHABLE_KEY: $key, LOGIN_DOMAIN: "login.vepari.invalid", APP_VERSION: $ver}' \
+            > env/pilot.json
+
+      - name: Build release APK
+        run: >
+          flutter build apk --release --dart-define-from-file=env/pilot.json
+          --build-name="$APP_VERSION" --build-number="$GITHUB_RUN_NUMBER"
+
+      - name: Build release AAB
+        run: >
+          flutter build appbundle --release --dart-define-from-file=env/pilot.json
+          --build-name="$APP_VERSION" --build-number="$GITHUB_RUN_NUMBER"
+
+      - name: Checksums and summary
+        run: |
+          mkdir -p ../dist
+          cp build/app/outputs/flutter-apk/app-release.apk "../dist/vepari-$APP_VERSION-$GITHUB_RUN_NUMBER.apk"
+          cp build/app/outputs/bundle/release/app-release.aab "../dist/vepari-$APP_VERSION-$GITHUB_RUN_NUMBER.aab"
+          (cd ../dist && sha256sum ./* > SHA256SUMS.txt && cat SHA256SUMS.txt)
+          signing="debug key (pilot install only; not accepted by Play)"
+          [ -f android/key.properties ] && signing="release key"
+          {
+            echo "### Vepari $APP_VERSION (build $GITHUB_RUN_NUMBER, $APP_ENV)"
+            echo "- Backend: $SUPABASE_URL"
+            echo "- Signed with: $signing"
+            echo "- Install: download **vepari-pilot-apk** below, unzip, open the .apk on the phone (allow installing from this source)."
+            echo '```'
+            cat ../dist/SHA256SUMS.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: vepari-pilot-apk
+          path: |
+            dist/*.apk
+            dist/SHA256SUMS.txt
+          retention-days: 14
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: vepari-pilot-aab
+          path: dist/*.aab
+          retention-days: 14
+          if-no-files-found: error

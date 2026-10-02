@@ -5,6 +5,27 @@ All notable changes are documented here ([Keep a Changelog](https://keepachangel
 
 ## [Unreleased]
 
+### Added (go-live, 2026-10-02)
+- Hosted Supabase project `vepari` (ap-south-1): all migrations applied,
+  `staff-admin` and `push-dispatch` deployed, Vault configured, QA business
+  for end-to-end checks; live checks through the real APIs.
+- Push webhook as a versioned migration (`pg_net` + Vault): one request per
+  notification, id only; `push_targets` returns the target for tap routing.
+- App push client (Firebase Cloud Messaging) behind `PushTokenSource`: tap
+  opens the subject, launch push opens after sign-in, foreground note with
+  Open, token deleted on sign-out; Android "Updates" channel and icon. Off
+  until `lib/firebase_options.dart` carries the Firebase project's options.
+- Pilot build workflow: installable release APK and AAB for a hosted backend.
+- Operator runbook for businesses and owner accounts.
+
+### Changed (go-live)
+- Six RLS policies evaluate `auth.uid()` once per statement.
+- `push-dispatch` survives a malformed `FCM_SERVICE_ACCOUNT`;
+  `staff-admin` defaults `LOGIN_DOMAIN`.
+- Legal texts marked as reviewed by counsel; push (FCM), hosting region and
+  share-file deletion described, pending counsel's confirmation of those
+  additions.
+
 ### Added (increments 11–16, 2026-10-02)
 - Owner admin: business details (with logo), staff logins and permissions,
   stop/restore access, new passwords, readable activity log.
