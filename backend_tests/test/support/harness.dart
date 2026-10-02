@@ -66,6 +66,14 @@ class TestDb {
     return Actor._(conn, userId);
   }
 
+  /// Acts as the service role, like an Edge Function holding the service key
+  /// (no user identity in the JWT).
+  Future<Actor> serviceRole() async {
+    final conn = await Connection.open(_adminEndpoint, settings: _settings);
+    _actorConnections.add(conn);
+    return Actor._(conn, null, serviceRole: true);
+  }
+
   Future<void> dispose() async {
     for (final c in _actorConnections) {
       await c.close();
@@ -101,14 +109,18 @@ class TestDb {
 /// Executes SQL as an API caller. Every call is its own transaction, like a
 /// PostgREST request.
 class Actor {
-  Actor._(this._conn, this.userId);
+  Actor._(this._conn, this.userId, {this.serviceRole = false});
 
   final Connection _conn;
   final String? userId;
+  final bool serviceRole;
 
   Future<Result> query(String sql, [Map<String, Object?> params = const {}]) {
     return _conn.runTx((tx) async {
-      if (userId == null) {
+      if (serviceRole) {
+        await tx.execute('set local role service_role');
+        await tx.execute("select set_config('request.jwt.claims', '{\"role\":\"service_role\"}', true)");
+      } else if (userId == null) {
         await tx.execute('set local role anon');
         await tx.execute("select set_config('request.jwt.claims', '{\"role\":\"anon\"}', true)");
       } else {
