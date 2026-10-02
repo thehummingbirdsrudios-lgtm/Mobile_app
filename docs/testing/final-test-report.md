@@ -7,7 +7,7 @@ This report covers only what was run, and says plainly what was not.
 
 ## Verdict
 - **Backend deployed and verified live**: migrations, both Edge Functions, the push webhook and the money flow, exercised through the real APIs (below).
-- **Push**: wired end to end and verified up to Firebase; it switches on when the Firebase project is connected. No push has reached a phone yet.
+- **Push**: configured with the Firebase project and verified with Google's FCM API (a fake token was rejected as invalid, proving authentication). No push has reached a phone yet.
 - **Not production-ready yet.** The app has not run on a device, and the operator items in the pilot checklist are open.
 
 ## What ran (all passing)
@@ -40,6 +40,9 @@ This report covers only what was run, and says plainly what was not.
 | Bill | #1 issued |
 | Books | Baki ₹1,000 = ledger sum; audit trail complete (staff created, password reset, order, payment, bill) |
 | Advisors | No ERROR; RLS init-plan warnings fixed; the rest accepted (KI-021) or plan-dependent (KI-004) |
+| Sign-ups | Off (`/auth/v1/settings`: `disable_signup: true`) |
+| FCM with the real Firebase project | `push-dispatch` obtained a Google access token with `FCM_SERVICE_ACCOUNT`; FCM rejected a fake device token (`invalid: 1`), which was then removed |
+| Demo data | 5 partner logins sign in (200) as owners of one business; 2 demo clients visible to them only; the QA business unchanged (before/after snapshot) |
 
 **Mutation probes** confirmed that these tests fail when the code under test is broken:
 - tenant isolation (RLS and storage)
@@ -68,8 +71,8 @@ One honest gap: the launch-push test passes even without the one-frame wait, so 
 | User acceptance with veparis | Not run | KI-007 |
 
 ## Pilot checklist (operator)
-1. Supabase: turn off sign-ups. Decide on the Pro plan (PITR, daily backups), then run a restore drill.
-2. Firebase: Android app `com.thehummingbirdstudio.vepari`; `google-services.json` becomes `lib/firebase_options.dart`; set the `FCM_SERVICE_ACCOUNT` function secret.
+1. Supabase: sign-ups are off (done). Decide on the Pro plan (PITR, daily backups), then run a restore drill.
+2. Firebase: done (project `imition-4e9ce`, `FCM_SERVICE_ACCOUNT` set). Restrict the Android API key to the app's package and signing SHA-1 in the Google Cloud console.
 3. Run **Pilot build**; install the APK on 3 phones (API 24 low-end, mid-range, tablet) and run the regression suite by hand, including a real push.
 4. Create each vepari's business and owner ([operations/onboarding.md](../operations/onboarding.md)).
 5. Fill in the `[placeholders]` in the legal texts and have counsel confirm the push/region/share-file additions.

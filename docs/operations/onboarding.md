@@ -38,6 +38,13 @@ the app (More → Staff). Project: `vepari` (`zzghblixuxhjxpxzugac`).
 | Retire old app versions | `update public.platform_settings set min_app_version = '0.2.0';` Older builds then show "Update required". |
 | Maintenance window | `update public.platform_settings set maintenance = true;` Business writes pause; reads keep working. Set it back to `false` when done. |
 
+## Our business (manufacturer)
+- Slug `vepari-manufacturer`, name "Vepari Manufacturer (Demo)" (rename it in the app: More → Business details).
+- Five partners are its **owners**: `krish`, `sujal`, `savan`, `bhaveshbhai`, `shaileshbhai`. Krish was created with `admin_create_tenant`; the others joined with `admin_add_member(..., 'owner', '{}')`.
+- Jewellers who order from us are its **customers** (clients). They have no login.
+- Demo clients: "Shree Demo Jewellers", "Royal Test Jewellers".
+- To add another partner or client, use [demo_owner_and_client_entries.sql](../../demo_owner_and_client_entries.sql).
+
 ## QA business
 "Vepari QA (test)" (slug `vepari-qa`) is used for end-to-end checks.
 - Its logins are `qa.owner` and `qa.staff`, and its data is test data only.
