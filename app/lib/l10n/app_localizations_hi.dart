@@ -1364,6 +1364,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get auditEntityRecord => 'रिकॉर्ड';
 
   @override
+  String get pushNewNotification => 'नई सूचना';
+
+  @override
+  String get pushOpen => 'खोलें';
+
+  @override
   String get notificationsTitle => 'सूचनाएँ';
 
   @override

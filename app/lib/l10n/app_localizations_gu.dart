@@ -1363,6 +1363,12 @@ class AppLocalizationsGu extends AppLocalizations {
   String get auditEntityRecord => 'રેકોર્ડ';
 
   @override
+  String get pushNewNotification => 'નવી સૂચના';
+
+  @override
+  String get pushOpen => 'ખોલો';
+
+  @override
   String get notificationsTitle => 'સૂચનાઓ';
 
   @override

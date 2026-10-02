@@ -1369,6 +1369,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get auditEntityRecord => 'Record';
 
   @override
+  String get pushNewNotification => 'New notification';
+
+  @override
+  String get pushOpen => 'Open';
+
+  @override
   String get notificationsTitle => 'Notifications';
 
   @override

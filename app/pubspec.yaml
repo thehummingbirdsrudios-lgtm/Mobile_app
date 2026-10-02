@@ -31,6 +31,8 @@ dependencies:
   path_provider: ^2.1.6
   record: ^7.1.1
   just_audio: ^0.10.6
+  firebase_core: ^4.15.0
+  firebase_messaging: ^16.7.0
 
 dev_dependencies:
   flutter_test:

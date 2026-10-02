@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/core.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/notification_providers.dart';
+import '../application/notification_targets.dart';
 import '../domain/notifications.dart';
 import 'notification_text.dart';
 
@@ -14,20 +15,8 @@ import 'notification_text.dart';
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
 
-  static void _open(AppNavigator nav, AppNotification n) {
-    final id = n.targetId;
-    if (id == null) return;
-    switch (n.targetKind) {
-      case 'product':
-        nav.openProduct(id);
-      case 'order':
-        nav.openOrder(id);
-      case 'customer':
-        n.kind == 'payment_received' ? nav.openHisaab(id) : nav.openCustomer(id);
-      case 'bill':
-        nav.openBill(id);
-    }
-  }
+  static void _open(AppNavigator nav, AppNotification n) =>
+      openNotificationTarget(nav, kind: n.kind, targetKind: n.targetKind, targetId: n.targetId);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

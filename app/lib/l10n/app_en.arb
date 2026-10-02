@@ -1943,6 +1943,10 @@
   "@auditEntityRecord": {
     "description": "Audit entity fallback"
   },
+  "pushNewNotification": "New notification",
+  "@pushNewNotification": {"description": "Shown when a push arrives while the app is open and has no title."},
+  "pushOpen": "Open",
+  "@pushOpen": {"description": "Action on the in-app note for a push: open what it is about."},
   "notificationsTitle": "Notifications",
   "@notificationsTitle": {
     "description": "Inbox screen title / bell tooltip"

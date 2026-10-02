@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -8,6 +10,7 @@ import 'app/app.dart';
 import 'core/core.dart';
 import 'core/network/api_client.dart' show SupabaseRpcTransport;
 import 'core/network/storage_client.dart' show SupabaseObjectStorage;
+import 'core/platform/firebase_push.dart';
 import 'features/admin/admin.dart';
 import 'features/admin/admin_adapters.dart';
 import 'features/auth/auth.dart';
@@ -36,6 +39,7 @@ import 'features/settings/settings.dart';
 import 'features/settings/settings_adapters.dart';
 import 'features/sharing/sharing.dart';
 import 'features/sharing/sharing_adapters.dart';
+import 'firebase_options.dart';
 
 /// Composition root: the only place concrete adapters (Supabase) are wired
 /// to module ports. Everything else depends on interfaces.
@@ -84,9 +88,25 @@ Future<void> main() async {
       dashboardRepositoryProvider.overrideWithValue(DashboardRepositoryImpl(DashboardApi(api))),
       searchRepositoryProvider.overrideWithValue(SearchRepositoryImpl(SearchApi(api), RecentSearchStore(preferences))),
     ]);
+    final push = await _firebasePush(logger);
+    if (push != null) overrides.add(pushTokenSourceProvider.overrideWithValue(push));
   } else {
     overrides.add(authRepositoryProvider.overrideWithValue(const UnconfiguredAuthRepository()));
   }
 
   runApp(ProviderScope(overrides: overrides, child: const VepariApp()));
+}
+
+/// FCM on Android when this build carries Firebase options; otherwise the
+/// app runs without push and notifications stay in the in-app inbox.
+Future<PushTokenSource?> _firebasePush(AppLogger logger) async {
+  final options = DefaultFirebaseOptions.currentPlatform;
+  if (options == null) return null;
+  try {
+    await Firebase.initializeApp(options: options);
+    return FirebasePushTokens(FirebaseMessaging.instance);
+  } on Object catch (e) {
+    logger.warning('push.init_failed', {'error': e.runtimeType.toString()});
+    return null;
+  }
 }

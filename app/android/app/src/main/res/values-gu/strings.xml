@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android notification channel for pushes (Settings → Apps → Vepari → Notifications). -->
+    <string name="notification_channel_updates">અપડેટ</string>
+    <string name="notification_channel_updates_description">નવો માલ, ઓર્ડર અને પેમેન્ટ</string>
+</resources>

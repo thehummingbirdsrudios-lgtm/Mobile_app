@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android notification channel for pushes (Settings → Apps → Vepari → Notifications). -->
+    <string name="notification_channel_updates">Updates</string>
+    <string name="notification_channel_updates_description">New Maal, orders and payments</string>
+</resources>

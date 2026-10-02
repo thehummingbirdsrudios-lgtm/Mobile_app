@@ -408,6 +408,8 @@
   "auditEntityCustomerRate": "ग्राहक का रेट",
   "auditEntityMember": "स्टाफ़ सदस्य",
   "auditEntityRecord": "रिकॉर्ड",
+  "pushNewNotification": "नई सूचना",
+  "pushOpen": "खोलें",
   "notificationsTitle": "सूचनाएँ",
   "notificationsEmpty": "सब देख लिया है",
   "notificationsEmptyBody": "आपके लिए नया माल, ऑर्डर और पेमेंट यहाँ दिखेंगे।",

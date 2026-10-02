@@ -39,10 +39,14 @@ class VepariApp extends ConsumerWidget {
       // Disk cache keys are tenant-prefixed storage paths, so another
       // business can never request (or be served) these entries.
 
-      // Push: register this device for the member who just signed in.
+      // Push: register this device for the member who just signed in and
+      // handle their pushes; stop handling them once nobody is signed in.
       if (next.$2 != null) {
         final locale = ref.read(localeControllerProvider)?.languageCode ?? 'gu';
         unawaited(ref.read(pushRegistrarProvider).register(locale: locale));
+        unawaited(ref.read(pushMessagesProvider).start());
+      } else {
+        ref.read(pushMessagesProvider).stop();
       }
     });
 
@@ -53,8 +57,8 @@ class VepariApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
       routerConfig: router,
-      // Version gate and maintenance banner above every route.
-      builder: (context, child) => AppGate(child: child ?? const SizedBox.shrink()),
+      // Version gate, maintenance banner and push notes above every route.
+      builder: (context, child) => AppGate(child: PushMessageListener(child: child ?? const SizedBox.shrink())),
       locale: chosen,
       supportedLocales: supportedAppLocales,
       localeListResolutionCallback: (deviceLocales, _) => resolveAppLocale(chosen, deviceLocales),

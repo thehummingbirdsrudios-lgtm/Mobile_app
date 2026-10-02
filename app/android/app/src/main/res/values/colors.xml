@@ -2,4 +2,6 @@
 <resources>
     <color name="ic_launcher_background">#1B1A17</color>
     <color name="splash_background">#FAF7F2</color>
+    <!-- Push accent: brand antique gold (AppColors.gold). -->
+    <color name="notification_accent">#A57C2C</color>
 </resources>

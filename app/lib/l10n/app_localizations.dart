@@ -2541,6 +2541,18 @@ abstract class AppLocalizations {
   /// **'Record'**
   String get auditEntityRecord;
 
+  /// Shown when a push arrives while the app is open and has no title.
+  ///
+  /// In en, this message translates to:
+  /// **'New notification'**
+  String get pushNewNotification;
+
+  /// Action on the in-app note for a push: open what it is about.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get pushOpen;
+
   /// Inbox screen title / bell tooltip
   ///
   /// In en, this message translates to:

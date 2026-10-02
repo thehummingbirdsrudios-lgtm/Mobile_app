@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Status-bar icon for pushes: the Vepari mark (brand/vepari-logo-mono.svg).
+     Android uses only its alpha, so it is drawn in white. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    <path android:fillColor="#FFFFFFFF" android:pathData="M128,160 L208,160 L256,296 L256,384 Z" />
+    <path android:fillColor="#FFFFFFFF" android:fillAlpha="0.72" android:pathData="M304,160 L384,160 L256,384 L256,296 Z" />
+    <path android:fillColor="#FFFFFFFF" android:pathData="M256,88 L276,118 L256,148 L236,118 Z" />
+</vector>

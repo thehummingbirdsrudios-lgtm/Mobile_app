@@ -1358,10 +1358,16 @@ class FakeNotificationsRepository implements NotificationsRepository {
 }
 
 class FakePushTokens implements PushTokenSource {
-  FakePushTokens(this.token);
+  FakePushTokens(this.token, {this.initial});
 
   String? token;
+
+  /// The push that "launched" the app (returned once by [initialMessage]).
+  PushMessage? initial;
   final refreshes = StreamController<String>.broadcast();
+  final foreground = StreamController<PushMessage>.broadcast();
+  final opened = StreamController<PushMessage>.broadcast();
+  int resets = 0;
 
   @override
   String get platform => 'android';
@@ -1372,7 +1378,30 @@ class FakePushTokens implements PushTokenSource {
   @override
   Stream<String> get tokenRefreshes => refreshes.stream;
 
-  Future<void> close() => refreshes.close();
+  @override
+  Future<void> reset() async {
+    resets++;
+    token = null;
+  }
+
+  @override
+  Stream<PushMessage> get foregroundMessages => foreground.stream;
+
+  @override
+  Stream<PushMessage> get openedMessages => opened.stream;
+
+  @override
+  Future<PushMessage?> initialMessage() async {
+    final m = initial;
+    initial = null;
+    return m;
+  }
+
+  Future<void> close() async {
+    await refreshes.close();
+    await foreground.close();
+    await opened.close();
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -408,6 +408,8 @@
   "auditEntityCustomerRate": "ગ્રાહકનો ભાવ",
   "auditEntityMember": "સ્ટાફ સભ્ય",
   "auditEntityRecord": "રેકોર્ડ",
+  "pushNewNotification": "નવી સૂચના",
+  "pushOpen": "ખોલો",
   "notificationsTitle": "સૂચનાઓ",
   "notificationsEmpty": "બધું જોઈ લીધું છે",
   "notificationsEmptyBody": "તમારા માટે નવો માલ, ઓર્ડર અને પેમેન્ટ અહીં દેખાશે.",

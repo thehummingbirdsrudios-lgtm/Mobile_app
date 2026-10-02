@@ -10,6 +10,9 @@
 //  R5 adapter barrels (*_supabase.dart) and package:supabase_flutter are used
 //     only by the composition root (lib/main.dart), data layers, the
 //     API client (core/network) and the error mapper (core/errors).
+//  R6 Firebase (package:firebase_*) is used only by its push adapter
+//     (core/platform/firebase_push.dart), lib/firebase_options.dart and the
+//     composition root, so the rest of the app depends on the push port.
 import 'dart:io';
 
 final _importPattern = RegExp(r'''^\s*(?:import|export)\s+['"]([^'"]+)['"]''', multiLine: true);
@@ -88,6 +91,14 @@ String? _check(String from, String uri, String? target) {
       !isComposition &&
       source?.module != _feature(target)?.module) {
     return 'R5: adapter barrels are imported only by lib/main.dart';
+  }
+
+  // R6
+  if (uri.startsWith('package:firebase_') &&
+      !isComposition &&
+      from != 'lib/core/platform/firebase_push.dart' &&
+      from != 'lib/firebase_options.dart') {
+    return 'R6: Firebase is only allowed in core/platform/firebase_push.dart and main.dart';
   }
 
   if (source == null) return null;
