@@ -177,7 +177,9 @@ void main() {
     await loadScaleData(a, products: 10000, customers: 5000, orders: 50000);
     await loadScaleData(world[1], products: 3000, customers: 1000, orders: 10000);
     await loadScaleData(world[2], products: 3000, customers: 1000, orders: 10000);
-    await db.admin.execute('analyze');
+    // Production runs autovacuum, which keeps the visibility map current (it
+    // decides whether index-only scans pay off); a bulk load has none yet.
+    await db.admin.execute('vacuum (analyze)');
     owner = await db.actor(a.ownerId);
     final busiest = await db.admin.execute(
       'select customer_id from public.orders where tenant_id = \$1 group by customer_id order by count(*) desc limit 1',
@@ -280,6 +282,12 @@ void main() {
       'select id, kind, args, read_at, created_at from public.notifications '
           'where tenant_id = @t::uuid and recipient_id = @u::uuid order by created_at desc, id desc limit 30',
       params: () => {'t': a.tenantId, 'u': a.ownerId},
+    );
+    plan(
+      'Unread count, member with nothing unread',
+      'select count(*) from (select 1 from public.notifications '
+          'where tenant_id = @t::uuid and recipient_id = @u::uuid and read_at is null limit 100) unread',
+      params: () => {'t': a.tenantId, 'u': TestDb.newId()},
     );
     plan(
       'Unread notification count (capped)',

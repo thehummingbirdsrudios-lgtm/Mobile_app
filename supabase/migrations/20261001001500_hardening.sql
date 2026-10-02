@@ -120,3 +120,36 @@ begin
   end loop;
 end
 $$;
+
+-- ---------------------------------------------------------------------------
+-- Inbox re-checks permission at read time: a member whose Hisaab permission
+-- was taken away no longer sees earlier payment notifications (amounts).
+-- ---------------------------------------------------------------------------
+create or replace function public.notification_page(
+  p_before_at timestamptz default null, p_before_id uuid default null, p_limit integer default 30
+) returns table (
+  id uuid, kind text, target_kind text, target_id uuid, args jsonb, read_at timestamptz, created_at timestamptz
+)
+language sql stable security invoker
+set search_path = ''
+as $$
+  select n.id, n.kind, n.target_kind, n.target_id, n.args, n.read_at, n.created_at
+    from public.notifications n
+   where n.tenant_id = (select app.current_tenant_id())
+     and n.recipient_id = auth.uid()
+     and (n.kind <> 'payment_received' or (select app.has_permission('hisaab.view')))
+     and (p_before_at is null or (n.created_at, n.id) < (p_before_at, p_before_id))
+   order by n.created_at desc, n.id desc
+   limit least(greatest(coalesce(p_limit, 30), 1), 100);
+$$;
+
+create or replace function public.unread_notification_count() returns integer
+language sql stable security invoker
+set search_path = ''
+as $$
+  select count(*)::integer from (
+    select 1 from public.notifications n
+     where n.tenant_id = (select app.current_tenant_id()) and n.recipient_id = auth.uid() and n.read_at is null
+       and (n.kind <> 'payment_received' or (select app.has_permission('hisaab.view')))
+     limit 100) unread;
+$$;

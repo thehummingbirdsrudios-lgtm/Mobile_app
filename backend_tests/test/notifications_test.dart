@@ -76,6 +76,20 @@ void main() {
     expect((await inbox(staffMin)).where((n) => n['kind'] == 'payment_received'), isEmpty);
   });
 
+  test('losing Hisaab permission hides earlier payment notifications', () async {
+    await owner.query("select public.set_member_permissions(@u::uuid, '{hisaab.view}')", {'u': a.staffMinId});
+    await owner.json("select public.record_payment(@c::uuid, 12300, 'cash', @r::uuid)", {
+      'c': a.suresh,
+      'r': TestDb.newId(),
+    });
+    expect((await inbox(staffMin)).where((n) => n['kind'] == 'payment_received'), hasLength(1));
+    await owner.query("select public.set_member_permissions(@u::uuid, '{}')", {'u': a.staffMinId});
+    expect((await inbox(staffMin)).where((n) => n['kind'] == 'payment_received'), isEmpty);
+    final unread = await staffMin.scalar('select public.unread_notification_count()');
+    final visible = (await inbox(staffMin)).where((n) => n['read_at'] == null).length;
+    expect(unread, visible);
+  });
+
   test('nothing ever carries cost, supplier or internal notes', () async {
     final all = await db.admin.execute('select args::text from public.notifications');
     for (final r in all) {
