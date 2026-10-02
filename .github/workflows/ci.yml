@@ -61,6 +61,11 @@ jobs:
       - name: Build Android (debug APK)
         run: flutter build apk --debug
 
+      # Exercises R8 shrinking and the release manifest. Signed with the debug
+      # key here (no key.properties in CI); the store build uses the real key.
+      - name: Build Android (release APK)
+        run: flutter build apk --release
+
   database:
     name: Database — migrations, RLS, money, isolation, scale
     runs-on: ubuntu-latest
@@ -115,6 +120,29 @@ jobs:
 
       - name: Tests
         run: deno test --frozen
+
+  dependencies:
+    name: Dependencies — known vulnerabilities (OSV)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: false
+
+      - name: Install osv-scanner
+        run: go install github.com/google/osv-scanner/v2/cmd/osv-scanner@v2.6.0
+
+      # Dart lockfiles. The Edge Functions' deno.lock is not a format OSV
+      # reads; its single npm dependency is pinned and reviewed by hand.
+      - name: Scan lockfiles
+        run: |
+          "$(go env GOPATH)/bin/osv-scanner" scan source \
+            --lockfile=app/pubspec.lock \
+            --lockfile=backend_tests/pubspec.lock
 
   secrets:
     name: Secret scan

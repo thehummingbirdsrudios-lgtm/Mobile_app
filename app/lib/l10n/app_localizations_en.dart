@@ -1591,4 +1591,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get colQty => 'Qty';
+
+  @override
+  String get updateRequiredTitle => 'Update Vepari to continue';
+
+  @override
+  String updateRequiredBody(String version) {
+    return 'This version ($version) is no longer supported. Install the latest Vepari from where you got the app, then open it again. Your data is safe on the server.';
+  }
+
+  @override
+  String get updateCheckAgain => 'Check again';
+
+  @override
+  String get maintenanceBanner => 'Vepari is being updated. You can look around; saving is paused for a few minutes.';
 }

@@ -53,6 +53,8 @@ class VepariApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
       routerConfig: router,
+      // Version gate and maintenance banner above every route.
+      builder: (context, child) => AppGate(child: child ?? const SizedBox.shrink()),
       locale: chosen,
       supportedLocales: supportedAppLocales,
       localeListResolutionCallback: (deviceLocales, _) => resolveAppLocale(chosen, deviceLocales),

@@ -2,3 +2,4 @@
 library;
 
 export 'data/local/shared_preferences_store.dart' show SharedPreferencesStore;
+export 'data/remote/app_status_api.dart' show AppStatusApi;

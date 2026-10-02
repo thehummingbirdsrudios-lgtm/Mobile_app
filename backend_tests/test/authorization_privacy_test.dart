@@ -321,16 +321,27 @@ void main() {
       expect(await staffFull.count("select 1 from storage.objects where bucket_id = 'bills'"), 1);
     });
 
-    test('a share file cannot be moved into the bills bucket without bills.issue', () async {
-      final name = '${a.tenantId}/share/forged.pdf';
-      await staffMin.query("insert into storage.objects (bucket_id, name) values ('share', @n)", {'n': name});
-      await expectLater(
-        () => staffMin.query(
-          "update storage.objects set bucket_id = 'bills', name = @to where bucket_id = 'share' and name = @n",
-          {'n': name, 'to': '${a.tenantId}/bills/9/bill.pdf'},
-        ),
-        throwsDbError(insufficientPrivilege),
+    test('no object can be moved into the bills bucket without bills.issue', () async {
+      // share: closed to app users (20261001001500); remarks: staff may upload.
+      final shareName = '${a.tenantId}/share/forged.pdf';
+      await db.admin.execute(
+        Sql.named("insert into storage.objects (bucket_id, name) values ('share', @n)"),
+        parameters: {'n': shareName},
       );
+      final remarkName = '${a.tenantId}/remarks/forged.pdf';
+      await staffMin.query("insert into storage.objects (bucket_id, name) values ('remarks', @n)", {'n': remarkName});
+      for (final (bucket, name) in [('share', shareName), ('remarks', remarkName)]) {
+        final moved = await staffMin.count(
+          "update storage.objects set bucket_id = 'bills', name = @to where bucket_id = @b and name = @n returning 1",
+          {'b': bucket, 'n': name, 'to': '${a.tenantId}/bills/9/$bucket.pdf'},
+        );
+        expect(moved, 0, reason: bucket);
+      }
+      final moved = await db.admin.execute(
+        Sql.named("select count(*) from storage.objects where bucket_id = 'bills' and name like @p"),
+        parameters: {'p': '${a.tenantId}/bills/9/%'},
+      );
+      expect(moved.single.first, 0);
     });
   });
 

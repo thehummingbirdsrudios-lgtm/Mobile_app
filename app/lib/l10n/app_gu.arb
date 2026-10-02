@@ -472,5 +472,9 @@
   "colTotalQty": "નંગ",
   "colTotal": "કુલ (₹)",
   "colLineNo": "લાઇન",
-  "colQty": "નંગ"
+  "colQty": "નંગ",
+  "updateRequiredTitle": "આગળ વધવા Vepari અપડેટ કરો",
+  "updateRequiredBody": "આ વર્ઝન ({version}) હવે ચાલતું નથી. જ્યાંથી એપ લીધી હતી ત્યાંથી નવું Vepari ઇન્સ્ટોલ કરો, પછી ફરી ખોલો. તમારો ડેટા સર્વર પર સુરક્ષિત છે.",
+  "updateCheckAgain": "ફરી તપાસો",
+  "maintenanceBanner": "Vepari અપડેટ થઈ રહ્યું છે. તમે જોઈ શકો છો; થોડી મિનિટ માટે સેવ નહીં થાય."
 }

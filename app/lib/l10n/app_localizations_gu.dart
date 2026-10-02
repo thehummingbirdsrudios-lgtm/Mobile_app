@@ -1579,4 +1579,18 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get colQty => 'નંગ';
+
+  @override
+  String get updateRequiredTitle => 'આગળ વધવા Vepari અપડેટ કરો';
+
+  @override
+  String updateRequiredBody(String version) {
+    return 'આ વર્ઝન ($version) હવે ચાલતું નથી. જ્યાંથી એપ લીધી હતી ત્યાંથી નવું Vepari ઇન્સ્ટોલ કરો, પછી ફરી ખોલો. તમારો ડેટા સર્વર પર સુરક્ષિત છે.';
+  }
+
+  @override
+  String get updateCheckAgain => 'ફરી તપાસો';
+
+  @override
+  String get maintenanceBanner => 'Vepari અપડેટ થઈ રહ્યું છે. તમે જોઈ શકો છો; થોડી મિનિટ માટે સેવ નહીં થાય.';
 }

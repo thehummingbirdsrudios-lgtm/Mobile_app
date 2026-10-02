@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -43,6 +45,8 @@ Future<void> main() async {
   final logger = AppLogger.forBuild();
   logger.info('app.start', {'env': config.environment, 'version': config.appVersion});
   final preferences = await SharedPreferencesStore.create();
+  // Files left by a share that was interrupted (bills, receipts, exports).
+  unawaited(const SystemFileSharer().sweep());
 
   final overrides = [
     ...appLayerOverrides,
@@ -73,6 +77,7 @@ Future<void> main() async {
       adminRepositoryProvider.overrideWithValue(AdminRepositoryImpl(AdminApi(client, api, storage))),
       notificationsRepositoryProvider.overrideWithValue(NotificationsRepositoryImpl(NotificationsApi(api))),
       exportRepositoryProvider.overrideWithValue(ExportRepositoryImpl(ExportApi(api))),
+      appStatusRepositoryProvider.overrideWithValue(AppStatusApi(api)),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

@@ -2930,6 +2930,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Qty'**
   String get colQty;
+
+  /// Version gate title
+  ///
+  /// In en, this message translates to:
+  /// **'Update Vepari to continue'**
+  String get updateRequiredTitle;
+
+  /// Version gate body
+  ///
+  /// In en, this message translates to:
+  /// **'This version ({version}) is no longer supported. Install the latest Vepari from where you got the app, then open it again. Your data is safe on the server.'**
+  String updateRequiredBody(String version);
+
+  /// Version gate retry
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get updateCheckAgain;
+
+  /// Maintenance banner
+  ///
+  /// In en, this message translates to:
+  /// **'Vepari is being updated. You can look around; saving is paused for a few minutes.'**
+  String get maintenanceBanner;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

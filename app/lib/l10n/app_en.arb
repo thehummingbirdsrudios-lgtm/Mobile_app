@@ -2254,5 +2254,26 @@
   "colQty": "Qty",
   "@colQty": {
     "description": "CSV header"
+  },
+  "updateRequiredTitle": "Update Vepari to continue",
+  "@updateRequiredTitle": {
+    "description": "Version gate title"
+  },
+  "updateRequiredBody": "This version ({version}) is no longer supported. Install the latest Vepari from where you got the app, then open it again. Your data is safe on the server.",
+  "@updateRequiredBody": {
+    "description": "Version gate body",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateCheckAgain": "Check again",
+  "@updateCheckAgain": {
+    "description": "Version gate retry"
+  },
+  "maintenanceBanner": "Vepari is being updated. You can look around; saving is paused for a few minutes.",
+  "@maintenanceBanner": {
+    "description": "Maintenance banner"
   }
 }
