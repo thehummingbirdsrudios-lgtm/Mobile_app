@@ -48,6 +48,45 @@ Removing the clause from the SECURITY INVOKER read functions (names are fully
 qualified and RLS still applies) brought it to **2–3 ms**. It also made their
 plans visible to the seq-scan check.
 
+## Re-run 2026-10-02 (after increments 11–16)
+Same data and environment. New this run:
+- The notification triggers fire during the bulk load, so the data load rose
+  from 17 s to about 70 s (the load is followed by `VACUUM (ANALYZE)`, as autovacuum would do).
+- Every seeded design notifies 3 members and every order 2 (owner + order manager):
+  about 190k notification rows across the three tenants (16k × 3 + 70k × 2).
+- Plans were added for the inbox, the unread count (busy owner, and a member
+  with nothing unread) and an export page.
+- One run without the vacuum showed the unread count flipping to a seq scan:
+  without a visibility map, index-only scans look expensive. It is now
+  stable over repeated runs (R-026).
+
+| Path | Measure | ms | Seq scans on large tables |
+|---|---|---:|---|
+| Catalogue first page | EXPLAIN ANALYZE | 2.65 | none |
+| Catalogue deep keyset page | EXPLAIN ANALYZE | 2.91 | none |
+| Navo Maal (last 7 days) | EXPLAIN ANALYZE | 1.17 | none |
+| Product detail | EXPLAIN ANALYZE | 0.35 | none |
+| Customers sorted by Baki | EXPLAIN ANALYZE | 1.82 | none |
+| Customer Hisaab (latest 50) | EXPLAIN ANALYZE | 0.74 | none |
+| Customer orders (latest 20) | EXPLAIN ANALYZE | 0.54 | none |
+| Pending orders | EXPLAIN ANALYZE | 0.42 | none |
+| Regular Maal | EXPLAIN ANALYZE | 14.73 | none |
+| Export: Hisaab entries, one month page | EXPLAIN ANALYZE | 1.39 | none |
+| Notification inbox (latest 30) | EXPLAIN ANALYZE | 0.66 | none |
+| Unread count, member with nothing unread | EXPLAIN ANALYZE | 0.34 | none |
+| Unread notification count (capped) | EXPLAIN ANALYZE | 0.63 | none |
+| search_all: design number | median of 7 client calls | 28.14 | n/a |
+| search_all: design name | median of 7 client calls | 29.60 | n/a |
+| search_all: customer name | median of 7 client calls | 26.72 | n/a |
+| search_all: phone digits | median of 7 client calls | 25.91 | n/a |
+| dashboard_summary | median of 7 client calls | 13.65 | n/a |
+| create_order (3 lines) | median of 7 client calls | 19.86 | n/a |
+| record_payment | median of 7 client calls | 10.25 | n/a |
+
+All hot paths stay index-only. Client-call figures vary run to run on this
+shared container (±50%), and Regular Maal varied the same way with no code
+change. Budgets are unchanged.
+
 ### Regression gate
 - CI runs the same suite.
 - Latency budgets are 50 ms for plans and 100–150 ms for RPCs, multiplied by
@@ -55,6 +94,13 @@ plans visible to the seq-scan check.
 - The "no sequential scan on large tables" assertion is strict everywhere.
 
 ## App
+**Bill PDF with product photos** (unit-measured, `bill_pdf_test.dart`):
+- Size:
+  - 25 lines: about 78 KB.
+  - 100 lines over 9 pages: about 270 KB.
+- Worst case per embedded photo: 49 / 30 / 17 KB at the 64 / 56 / 48 pt tiers.
+- At most 3 photo downloads run in flight.
+
 Not yet measured on devices. Planned for the catalogue increment and the
 hardening increment:
 - startup time

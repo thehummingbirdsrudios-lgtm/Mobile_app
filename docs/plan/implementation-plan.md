@@ -10,7 +10,27 @@ manual check → review → merge
 Each increment ships with DB tests for every new table or RPC (isolation
 included) and app tests for its states.
 
-## Done — Increment 0: foundation (this PR)
+## Status (2026-10-02)
+All planned increments are built and tested:
+- **Increment 0:** foundation.
+- **Increments 1–10:** catalogue, search, customers, orders, Hisaab, bills (with the photo PDF), Vaat, WhatsApp share, Navo Maal and Fari Order.
+- **Increments 11–16:** owner admin, staff Edge Function, notifications, export, hardening and QA.
+
+Evidence is in [../testing/test-matrix.md](../testing/test-matrix.md) and the
+[final test report](../testing/final-test-report.md).
+
+**Before the first pilot** (not code-complete items, see
+[known-issues.md](../testing/known-issues.md)):
+1. Hosted Supabase project, backups and a restore drill (KI-004).
+2. Deploy both Edge Functions and the Database Webhook, then verify them live (KI-014).
+3. Firebase project and the push plugin behind `PushTokenSource` (KI-013).
+4. Device QA of the release APK on three phones (KI-003).
+5. User sessions with 3–5 veparis (KI-007).
+6. Legal review of the policy texts.
+
+The original plan follows, kept for history.
+
+## Done — Increment 0: foundation
 - Schema, RLS, money RPCs, DB test-suite including scale.
 - App core: design, motion, errors, ApiClient, logger, cache.
 - Auth (login and session), Home dashboard, shell and navigation, settings

@@ -1,7 +1,9 @@
 # Regression suite
 
 **Run before every merge (CI):** app format, analyze, boundaries, `flutter
-test`, legal sync, web and APK builds; `tool/db_test.sh --scale`; gitleaks.
+test`, legal sync, web build, debug and release (R8) APK builds;
+`tool/db_test.sh --scale`; Edge Functions (`deno fmt`, `lint`, `check
+--frozen`, `test`); OSV dependency scan; gitleaks.
 
 ## Bugs found and their regression tests
 | ID | Bug | Root cause | Regression test |
@@ -22,3 +24,13 @@ test`, legal sync, web and APK builds; `tool/db_test.sh --scale`; gitleaks.
 | R-014 | Deactivated staff kept a signed-in UI with cached data | Server rejection not fed back to the session | `api_client_test` "session rejection is published", `session_controller_test` |
 | R-015 | AppSearchField could dispose a parent's controller | Ownership read from the current widget | Code fix (ownership fixed at init) |
 | R-016 | Staff with only `orders.create` could replay any order and read its payment and Baki (security review, MEDIUM) | Replay returned the payment before the permission check; `client_request_id` was readable by every member | `authorization_privacy_test` "replaying an order never reveals its payment…", "idempotency keys are not readable…" |
+| R-017 | No product photo ever loaded (signed URL never resolved) | `whenComplete` returned the removed in-flight future, which waited on itself | `signed_url_cache_test`, `catalogue_test` "photo resolves through a signed URL" |
+| R-018 | A form field scrolled far off-screen was not validated; the save went to the server | Lazy `ListView` disposed the field, unregistering it from its `Form` | `form_validation_test` (fails on the old layout: an empty-name customer was submitted) |
+| R-019 | Admin screens loaded data before checking the owner role | `ref.watch` ran before the `OwnerOnly` gate | `admin_test` "a staff deep link to owner screens is refused without a request" |
+| R-020 | Audit log could not say which permission was removed | DELETE rows stored an empty change set | `owner_admin_test` "a removed permission records what was removed" |
+| R-021 | "₹600 → ₹620" drawn with a missing-glyph box in Gujarati/Hindi | Hind fonts have no U+2192 | Glyph-coverage scan of every string; `admin_test` wording |
+| R-022 | Bill PDFs, receipts and owner exports (with cost) were left in the phone's temp folder | share_plus writes in-memory files to a new temp folder per share and never deletes them | `file_sharer_test` (deleted after the sheet, swept at start-up) |
+| R-023 | Any member could read, overwrite or delete every `share` bucket object (KI-012) | Bucket-wide policies | `hardening_test` "the share bucket is closed to app users" |
+| R-024 | Staff who lost Hisaab permission still saw earlier payment notifications (amounts) | Inbox filtered only by recipient | `notifications_test` "losing Hisaab permission hides earlier payment notifications" |
+| R-025 | Push registrar never resumed after sign-out under test time | Awaited `StreamSubscription.cancel()`, whose Future completes in the root zone | `notifications_test` "sign-out unregisters the device before signing out" |
+| R-026 | Unread-count plan flipped to a seq scan in one scale run | Bulk load left no visibility map (no vacuum), so index-only scans looked expensive; production autovacuum maintains it | `scale_perf_test` vacuums after load; plans for a busy owner and a member with nothing unread, stable over repeated runs |

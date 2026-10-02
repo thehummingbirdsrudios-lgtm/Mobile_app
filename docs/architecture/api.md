@@ -28,6 +28,8 @@ RPC failures raise `SQLSTATE P0001` with `message` set to a **stable code**.
 | `rate_changed` | The expected rate differs; `detail = [{product_id, rate_paise}]` | rateChanged |
 | `order_empty`, `order_too_large`, `invalid_quantity`, `invalid_amount`, `invalid_request`, `invalid_transition`, `note_required`, `order_cancelled`, `amount_too_large` | Validation | invalidInput |
 | `opening_exists` | Opening balance already recorded | alreadyExists |
+| `username_taken` | Login name exists (any business) | alreadyExists |
+| `maintenance` | Business writes are paused by the operator | maintenance |
 | `immutable_record` | Attempt to change history | (should not occur via the API) |
 
 Postgres codes:
@@ -68,7 +70,25 @@ balance_before_paise, balance_after_paise, received_at, replayed}`.
 Owner only, and staff targets only.
 
 ### `admin_create_tenant(...)`, `admin_add_member(...)`
-`service_role` only. Called by the provisioning Edge Function.
+`service_role` only. Used by operators to set up a business and its owner.
+
+### `staff_admin_create(p_actor, p_user_id, p_username, p_display_name, p_permissions[])`, `staff_admin_check_target(p_actor, p_user_id)`, `staff_admin_record_password_reset(p_actor, p_user_id)`
+`service_role` only, called by the `staff-admin` Edge Function.
+- The tenant is derived from `p_actor`'s active owner membership. The request never supplies it.
+- Audit rows are attributed to the actor.
+- Errors: `permission_denied`, `member_not_found`, `username_taken`, `invalid_request` (with `{field}`).
+
+### `register_device_token(p_token, p_platform, p_locale)`, `unregister_device_token(p_token)`
+Any member. A token belongs to the login that registered it last. Each member keeps at most 10 devices.
+
+### `mark_notifications_read(p_ids[]?) → integer`
+Own notifications only, under RLS. `null` marks them all read.
+
+## Edge Functions
+| Function | Auth | Request | Responses |
+|---|---|---|---|
+| `staff-admin` | Caller's JWT; active owner | `{action: "create_staff", username, display_name, password, permissions[]}` or `{action: "reset_password", user_id, password}` | `200 {user_id}`. Errors: `400 invalid_request {field}`, `401 not_authenticated`, `403 permission_denied`, `404 member_not_found`, `409 username_taken`, `500 server_error`. |
+| `push-dispatch` | `x-webhook-secret` (Database Webhook on `notifications` INSERT) | Supabase webhook payload | `200 {sent, invalid, failed}`, or `{sent: 0, skipped: "not_configured"}` without FCM |
 
 ## Read RPCs
 | RPC | Auth | Returns |
@@ -81,6 +101,15 @@ Owner only, and staff targets only.
 | `share_product(product_id, customer_id?)` | member | allow-listed share payload |
 | `bill_payload(bill_id)` | `bills.issue` or `hisaab.view` | allow-listed bill document data |
 | `dashboard_summary()` | `reports.view` | `{sales_today_paise, orders_today, payments_today_paise, total_baki_paise, pending_orders, new_maal_7d, day_start}` |
+| `member_list()` | owner | members with role, active flag, permissions |
+| `audit_page(before_id?, limit ≤ 200)` | owner | `(id, action, entity, entity_id, data, actor_name, created_at, subject)` |
+| `notification_page(before_at?, before_id?, limit ≤ 100)` | member (own rows) | `(id, kind, target_kind, target_id, args, read_at, created_at)`; payment rows only with `hisaab.view` |
+| `unread_notification_count()` | member | integer, capped at 100 |
+| `export_customers / export_designs(after?, limit ≤ 1000)` | owner | keyset by id; designs include cost and supplier |
+| `export_ledger / export_orders(from, to, after_at?, after_id?, limit ≤ 1000)` | owner | keyset by `(created_at, id)` within `[from, to)` |
+| `export_order_items(from, to, after_at?, after_id?, limit ≤ 500 orders)` | owner | lines of whole orders |
+| `app_status()` | anyone (also before sign-in) | `{min_app_version, maintenance}` |
+| `push_targets(notification_id)`, `forget_device_tokens(tokens[])` | `service_role` | devices of an active recipient while the notification is unread |
 
 ## Versioning
 - Changes are additive: new optional parameters and new JSON fields.

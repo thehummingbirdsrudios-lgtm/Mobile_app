@@ -1,6 +1,6 @@
 # Software Requirements Specification — Vepari
 
-Version 0.1 · 2026-10-01 · Status: baseline for increment 1 (foundation)
+Version 0.2 · 2026-10-02 · Status: increments 1–16 built (see test evidence in docs/testing)
 
 Requirement IDs are stable; trace them through
 [acceptance-criteria.md](acceptance-criteria.md) → code → tests
@@ -27,7 +27,7 @@ consumer marketplace. ~5 independent businesses (tenants) initially.
 ### Tenancy & security (TEN)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-TEN-001 | Each business's data is private; no other tenant can read, infer, link to or modify it via UI, API, IDs, search, files, URLs or notifications | Built (DB) |
+| REQ-TEN-001 | Each business's data is private; no other tenant can read, infer, link to or modify it via UI, API, IDs, search, files, URLs or notifications | Built (DB + app; isolation suite covers tables, RPCs, search, storage, notifications, device tokens) |
 | REQ-TEN-002 | Tenant is resolved server-side from the authenticated identity; client-supplied tenant ids are never trusted | Built |
 | REQ-TEN-003 | Disabled staff and suspended businesses lose access immediately | Built |
 | REQ-TEN-004 | Local caches are tenant-scoped and cleared on logout/account switch; no stale data shown before identity is verified | Built |
@@ -35,31 +35,31 @@ consumer marketplace. ~5 independent businesses (tenants) initially.
 ### Authentication & staff (AUTH)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-AUTH-001 | Login with username + password; no public signup, no Google signup | Built (client) |
-| REQ-AUTH-002 | Accounts created by owner/operator; passwords never stored in plain text | Partial (DB + provisioning RPC; Edge Function planned) |
-| REQ-AUTH-003 | Owner grants/revokes staff permissions; server enforces them | Built (DB) / Planned (UI) |
+| REQ-AUTH-001 | Login with username + password; no public signup, no Google signup | Built |
+| REQ-AUTH-002 | Accounts created by owner/operator; passwords never stored in plain text | Built (staff-admin Edge Function + owner UI; live deploy not verified here) |
+| REQ-AUTH-003 | Owner grants/revokes staff permissions; server enforces them | Built |
 | REQ-AUTH-004 | Session stored in platform keystore; logout clears session and cache | Built |
 
 ### Catalogue (MAAL)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-MAAL-001 | Photo-first catalogue with design no, name, rate, availability; keyset pagination | Built (DB) / Planned (UI) |
-| REQ-MAAL-002 | Product detail with multiple images / optional video | Partial (schema) |
-| REQ-MAAL-003 | Navo Maal: recently published designs | Built (DB) / Planned (UI) |
+| REQ-MAAL-001 | Photo-first catalogue with design no, name, rate, availability; keyset pagination | Built |
+| REQ-MAAL-002 | Product detail with multiple images / optional video | Partial (multiple photos built; video not built) |
+| REQ-MAAL-003 | Navo Maal: recently published designs | Built |
 | REQ-MAAL-004 | Archive (never delete) designs; history unaffected | Built |
 | REQ-MAAL-005 | Owner-only cost/supplier/internal notes | Built |
 
 ### Search (SRCH)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-SRCH-001 | One search box for design no/name, customer name/phone, order no | Built (DB) / Planned (UI) |
-| REQ-SRCH-002 | Indexed, bounded, debounced; no full-table scans | Built (DB) |
+| REQ-SRCH-001 | One search box for design no/name, customer name/phone, order no | Built |
+| REQ-SRCH-002 | Indexed, bounded, debounced; no full-table scans | Built |
 
 ### Customers & rates (CUST, RATE)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-CUST-001 | Customer profile: Baki, orders, Hisaab, Regular Maal, Vaat, WhatsApp | Partial (DB) |
-| REQ-CUST-002 | Regular Maal list per customer | Built (DB) |
+| REQ-CUST-001 | Customer profile: Baki, orders, Hisaab, Regular Maal, Vaat, WhatsApp | Built |
+| REQ-CUST-002 | Regular Maal list per customer | Built |
 | REQ-CUST-003 | Archive customers without breaking history | Built |
 | REQ-RATE-001 | Effective rate = customer-specific override else product rate | Built |
 | REQ-RATE-002 | Rate changes are permissioned and audited | Built |
@@ -67,13 +67,13 @@ consumer marketplace. ~5 independent businesses (tenants) initially.
 ### Orders (ORD)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-ORD-001 | Catalogue order and quick order (design × qty) | Built (DB) / Planned (UI) |
+| REQ-ORD-001 | Catalogue order and quick order (design × qty) | Built |
 | REQ-ORD-002 | Server recomputes all totals; client totals never accepted | Built |
 | REQ-ORD-003 | Duplicate submissions/retries never create a second order | Built |
 | REQ-ORD-004 | If a rate changed since the draft, the order is rejected with new rates for re-confirmation | Built |
 | REQ-ORD-005 | Confirmed orders preserve historical rate/name/photo | Built |
 | REQ-ORD-006 | Valid status transitions only (confirmed→processing→ready→completed; cancel before completion reverses Baki) | Built |
-| REQ-ORD-007 | Fari Order: reorder whole/partial previous order with today's rates | Built (DB) / Planned (UI) |
+| REQ-ORD-007 | Fari Order: reorder whole/partial previous order with today's rates | Built |
 | REQ-ORD-008 | Archived/unavailable designs and archived customers cannot be ordered | Built |
 
 ### Hisaab & payments (HSB, PAY)
@@ -87,39 +87,55 @@ consumer marketplace. ~5 independent businesses (tenants) initially.
 ### Bills & sharing (BILL, SHARE)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-BILL-001 | Bill issued from the authoritative order, one per order, idempotent | Built (DB) |
-| REQ-BILL-002 | Photo bill PDF readable on phone, shareable | Planned |
-| REQ-SHARE-001 | Every external share passes a privacy filter (allow-listed fields only) | Built (DB) |
-| REQ-SHARE-002 | WhatsApp via platform share; never claim "sent" when only prepared | Planned |
+| REQ-BILL-001 | Bill issued from the authoritative order, one per order, idempotent | Built |
+| REQ-BILL-002 | Photo bill PDF readable on phone, shareable | Built (PDF with each line's product photo; photo bill image) |
+| REQ-SHARE-001 | Every external share passes a privacy filter (allow-listed fields only) | Built |
+| REQ-SHARE-002 | WhatsApp via platform share; never claim "sent" when only prepared | Built (system share sheet; the app never claims "sent") |
 
 ### Communication (VAAT)
 | ID | Requirement | Status |
 |---|---|---|
-| REQ-VAAT-001 | Voice / Text / Photo remarks on customer, order, product, enquiry; original voice stored | Partial (schema) |
+| REQ-VAAT-001 | Voice / Text / Photo remarks on customer, order, product, enquiry; original voice stored | Built for customer, order and design; enquiry Planned |
+
+### Notifications (NOTIF)
+| ID | Requirement | Status |
+|---|---|---|
+| REQ-NOTIF-001 | In-app notifications for new designs, orders, status changes and payments, only to active members allowed to see the subject, never to the actor | Built |
+| REQ-NOTIF-002 | Push notifications with lock-screen-safe text (no amounts) | Partial (server dispatch built and tested; app push plugin needs the business's Firebase project) |
+
+### Export (EXP)
+| ID | Requirement | Status |
+|---|---|---|
+| REQ-EXP-001 | Owner exports customers, designs (with cost), Hisaab, orders and order lines as CSV that opens correctly in Excel (Gujarati/Hindi), safe from formula injection | Built |
+
+### Operations (OPS)
+| ID | Requirement | Status |
+|---|---|---|
+| REQ-OPS-001 | Operator can require a minimum app version and pause business writes (maintenance) without blocking reads | Built |
 
 ### Owner (OWN)
 | ID | Requirement | Status |
 |---|---|---|
 | REQ-OWN-001 | Dashboard: today's sale, payments, total Baki, pending orders; drill-down | Built |
-| REQ-OWN-002 | Settings in few sections with progressive disclosure | Partial (language, legal) |
-| REQ-OWN-003 | Audit log of sensitive actions, owner-only | Built (DB) |
+| REQ-OWN-002 | Settings in few sections with progressive disclosure | Built (business details, staff, activity log, export, language, legal) |
+| REQ-OWN-003 | Audit log of sensitive actions, owner-only | Built |
 
 ### UX (UX)
 | ID | Requirement | Status |
 |---|---|---|
 | REQ-UX-001 | Primary navigation: Home, Maal, Order, Customer, Hisaab, More | Built |
-| REQ-UX-002 | Every async surface has loading, empty, error and success states | Built for current screens |
+| REQ-UX-002 | Every async surface has loading, empty, error and success states | Built |
 | REQ-UX-003 | Buttons show pressed/loading/success/disabled and block double taps | Built |
 | REQ-UX-004 | Correct Back: keyboard → sheet → route; tabs return to Home first | Built |
 | REQ-UX-005 | Gujarati, Hindi, English; no hard-coded UI strings | Built |
-| REQ-UX-006 | Phone and tablet/desktop layouts from one design system | Built (shell) |
+| REQ-UX-006 | Phone and tablet/desktop layouts from one design system | Built |
 
 ## 4. Non-functional requirements
 | ID | Requirement | Target / evidence |
 |---|---|---|
 | NFR-PERF-001 | Hot queries index-only at 10k products / 5k customers / 50k orders | No seq scans; catalogue ≈2 ms (docs/testing/performance-results.md) |
 | NFR-PERF-002 | Order/payment RPC latency | create_order ≈16–20 ms, record_payment ≈8–10 ms (local) |
-| NFR-PERF-003 | No full-resolution images in lists; thumbnails only | Planned (media increment) |
+| NFR-PERF-003 | No full-resolution images in lists; thumbnails only | Built (derivatives + decode caps; bill photos optimised per tier) |
 | NFR-SEC-001 | No secrets in client; TLS only; least privilege | Built |
 | NFR-REL-001 | No duplicate financial records under retry/concurrency | Built + tested |
 | NFR-A11Y-001 | WCAG 2.2 AA contrast, 48 dp targets, semantic labels, reduced motion | Built for current screens |

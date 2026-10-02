@@ -5,7 +5,29 @@ All notable changes are documented here ([Keep a Changelog](https://keepachangel
 
 ## [Unreleased]
 
-### Added
+### Added (increments 11–16, 2026-10-02)
+- Owner admin: business details (with logo), staff logins and permissions,
+  stop/restore access, new passwords, readable activity log.
+- `staff-admin` Edge Function (create staff, reset password) with
+  service-role-only provisioning RPCs; `push-dispatch` Edge Function (FCM v1).
+- Notifications: in-app inbox and unread bell; fan-out for new designs,
+  orders, status changes and payments; device tokens.
+- Owner CSV export: customers + Baki, designs with cost, Hisaab, orders,
+  order lines (Excel-ready UTF-8, formula-injection safe).
+- Version gate and maintenance mode (writes paused, reads continue).
+- CI: Edge Functions job, release APK build, OSV dependency scan.
+
+### Security (increments 11–16)
+- `share` bucket closed to app users; photo originals restricted to the
+  owner and catalogue managers; share temp files deleted after sharing.
+- Inbox re-checks Hisaab permission before showing payment amounts.
+
+### Fixed (increments 11–16)
+- Forms validate fields scrolled off-screen (lazy lists skipped them).
+- Audit log records what a delete removed; rate changes read correctly in
+  Gujarati/Hindi.
+
+### Added (foundation and increments 1–10)
 - Multi-tenant Supabase schema with RLS on every table, composite tenant
   foreign keys, column-level grants and tenant-scoped storage policies.
 - Server-authoritative RPCs: `create_order`, `record_payment`,
