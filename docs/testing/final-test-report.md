@@ -16,7 +16,7 @@ This report covers only what was run, and says plainly what was not.
 |---|---|---|
 | Database: functional and scale | `tool/db_test.sh --scale` (PostgreSQL 16 with the Supabase shim) | **167 functional + 20 scale** |
 | Edge Functions | `deno fmt --check`, `deno lint`, `deno check --frozen */index.ts`, `deno test --frozen` | **23 passed** (`staff-admin` 12, `push-dispatch` 11) |
-| App | `dart format --set-exit-if-changed`, `flutter analyze`, `tool/check_boundaries.dart`, legal sync, `flutter test`, `flutter build web --release` | Clean; **314 passed**; web build OK |
+| App | `dart format --set-exit-if-changed`, `flutter analyze`, `tool/check_boundaries.dart`, legal sync, `flutter test`, `flutter build web --release` | Clean; **318 passed**; web build OK |
 | Visual review | `VEPARI_SCREENSHOTS=1 flutter test test/visual --update-goldens` | 28 render tests (34 images), from increments 11–16 |
 | CI | GitHub Actions on the PR head | App (incl. web, debug and release APK), database (incl. scale), Edge Functions, OSV, gitleaks |
 | **Hosted, live** | Real Auth / REST / Edge Function endpoints of `vepari`, called from inside the database with `pg_net` (the build container cannot reach `*.supabase.co`) | See next section |

@@ -34,7 +34,7 @@ Updated 2026-10-02 (after the hosted deployment). Paths are relative to `app/tes
 **Totals (2026-10-02, local runs, all passing):**
 - **Database:** 167 functional tests. With `--scale`: 187, which adds the 10k products / 5k customers / 50k orders plans.
 - **Edge Functions:** 23 Deno tests, plus `deno fmt`, `lint` and `check --frozen`.
-- **App:** 314 tests, plus 28 opt-in visual renders (gu/hi/en).
+- **App:** 318 tests, plus 28 opt-in visual renders (gu/hi/en).
 - **Hosted (live):** the checks listed under "Hosted, live" in security-results.md.
 - **CI:** app (format, analyze, boundaries, tests, web, debug and release APK), database (incl. scale), Edge Functions, OSV dependency scan, and gitleaks.
 

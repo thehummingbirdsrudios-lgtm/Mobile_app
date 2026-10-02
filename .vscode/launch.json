@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Vepari (Chrome)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "app",
+      "program": "lib/main.dart",
+      "deviceId": "chrome"
+    },
+    {
+      "name": "Vepari (phone / emulator)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "app",
+      "program": "lib/main.dart"
+    },
+    {
+      "name": "Vepari (phone, release mode)",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "app",
+      "program": "lib/main.dart",
+      "flutterMode": "release"
+    }
+  ]
+}

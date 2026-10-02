@@ -13,12 +13,21 @@ All notable changes are documented here ([Keep a Changelog](https://keepachangel
   notification, id only; `push_targets` returns the target for tap routing.
 - App push client (Firebase Cloud Messaging) behind `PushTokenSource`: tap
   opens the subject, launch push opens after sign-in, foreground note with
-  Open, token deleted on sign-out; Android "Updates" channel and icon. Off
-  until `lib/firebase_options.dart` carries the Firebase project's options.
+  Open, token deleted on sign-out; Android "Updates" channel and icon.
+  Connected to the Firebase project `imition-4e9ce` (`lib/firebase_options.dart`).
 - Pilot build workflow: installable release APK and AAB for a hosted backend.
 - Operator runbook for businesses and owner accounts.
 
 ### Changed (go-live)
+- A fresh clone runs with `flutter pub get` and `flutter run`: builds without
+  `--dart-define` options use the hosted project's public URL and publishable
+  key; env files still override. VS Code launch configs (Chrome, phone,
+  release) are committed; README has the clone-to-APK steps.
+- Pilot build workflow inputs default to the hosted project.
+
+### Fixed (go-live)
+- Web: a request that never reached the server (offline, blocked) now shows
+  the network message instead of a generic error (R-029).
 - Six RLS policies evaluate `auth.uid()` once per statement.
 - `push-dispatch` survives a malformed `FCM_SERVICE_ACCOUNT`;
   `staff-admin` defaults `LOGIN_DOMAIN`.

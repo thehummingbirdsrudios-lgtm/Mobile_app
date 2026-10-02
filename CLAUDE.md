@@ -17,7 +17,7 @@ Never claim "done" or "production-ready" without test/build evidence.
 | App quality gate | `dart format --set-exit-if-changed . && flutter analyze && dart run tool/check_boundaries.dart && flutter test` |
 | Legal texts | edit `docs/legal/*.md`, then `tool/sync_legal.sh` |
 | Icons | edit `brand/*.svg`, then `NODE_PATH=<playwright> node brand/render.mjs` |
-| Run app | `flutter run --dart-define-from-file=env/<env>.json` (copy `env/example.json`) |
+| Run app | `cd app && flutter run` (hosted `vepari` by default; another backend: `--dart-define-from-file=env/<env>.json`, copy `env/example.json`) |
 
 Flutter 3.47.5 / Dart 3.13. Backend: Supabase (Postgres + RLS, Auth, Storage).
 
