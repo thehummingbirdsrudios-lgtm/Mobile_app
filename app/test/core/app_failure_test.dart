@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:vepari/core/core.dart';
 import 'package:vepari/l10n/app_localizations_en.dart';
@@ -14,6 +15,15 @@ void main() {
       AppFailure.from(Exception('ClientException with SocketException: Failed host lookup')).kind,
       FailureKind.network,
     );
+  });
+
+  // R-029: on web the http package reports a failed fetch (offline, DNS,
+  // blocked) as ClientException('Failed to fetch'); it was shown as a generic
+  // error instead of the network message.
+  test('a request that got no response is a network failure (web fetch)', () {
+    final failure = AppFailure.from(http.ClientException('Failed to fetch', Uri.parse('https://x.test/rest')));
+    expect(failure.kind, FailureKind.network);
+    expect(failure.isRetryable, isTrue);
   });
 
   test('stable server codes map to user-meaningful kinds', () {

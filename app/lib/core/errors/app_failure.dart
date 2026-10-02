@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io' show SocketException;
 
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http show ClientException;
 import 'package:supabase_flutter/supabase_flutter.dart'
     show AuthException, AuthRetryableFetchException, FunctionException, FunctionsFetchException, PostgrestException;
 
@@ -80,6 +81,9 @@ class AppFailure implements Exception {
     if (error is AppFailure) return error;
     if (error is TimeoutException) return const AppFailure(FailureKind.timeout);
     if (error is SocketException) return const AppFailure(FailureKind.network);
+    // The request never got a response (web: fetch failed; also redirects and
+    // aborted connections). Android's socket errors are SocketExceptions too.
+    if (error is http.ClientException) return const AppFailure(FailureKind.network, diagnostic: 'http:client');
     if (error is PostgrestException) return _fromPostgrest(error);
     if (error is AuthException) return _fromAuth(error);
     if (error is FunctionsFetchException) return const AppFailure(FailureKind.network, diagnostic: 'fn:fetch');
