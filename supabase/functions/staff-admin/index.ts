@@ -2,7 +2,8 @@
 //
 // Secrets (Supabase dashboard / `supabase secrets set`):
 //   SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY  (provided by the platform)
-//   LOGIN_DOMAIN  must equal the app's LOGIN_DOMAIN (env/<env>.json)
+//   LOGIN_DOMAIN  optional; must equal the app's LOGIN_DOMAIN (env/<env>.json).
+//                 Defaults to login.vepari.invalid, the app's default too.
 // Deploy: supabase functions deploy staff-admin   (JWT verification stays ON)
 import { createClient } from "npm:@supabase/supabase-js@2.58.0";
 
@@ -16,7 +17,7 @@ const env = (name: string): string => {
 
 const url = env("SUPABASE_URL");
 const anonKey = env("SUPABASE_ANON_KEY");
-const loginDomain = env("LOGIN_DOMAIN");
+const loginDomain = Deno.env.get("LOGIN_DOMAIN") || "login.vepari.invalid";
 const noSession = { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false };
 const admin = createClient(url, env("SUPABASE_SERVICE_ROLE_KEY"), { auth: noSession });
 

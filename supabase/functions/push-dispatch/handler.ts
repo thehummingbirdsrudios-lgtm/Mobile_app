@@ -1,8 +1,9 @@
 // push-dispatch: sends a push for each new in-app notification.
 //
-// Wiring: a Supabase Database Webhook on INSERT into public.notifications
-// POSTs the row here with the header `x-webhook-secret`. This handler is
-// pure (I/O injected) and unit-tested; index.ts wires Supabase and FCM.
+// Wiring: an AFTER INSERT trigger on public.notifications (migration
+// 20261002000100_push_webhook.sql) POSTs `{type, table, record: {id}}` here
+// through pg_net with the header `x-webhook-secret`. This handler is pure
+// (I/O injected) and unit-tested; index.ts wires Supabase and FCM.
 //
 // Status words match the app (app_*.arb status*).
 //
@@ -11,9 +12,18 @@
 //    only while they are an active member of an active business.
 //  - The push text is safe on a lock screen: no amounts, no rates. Tapping
 //    opens the app, which re-reads and re-authorises the target.
-//  - The data payload carries only the notification id and kind.
+//  - The data payload carries ids only: the notification, its kind and what
+//    it is about (so a tap can open that screen). No names or amounts.
 
-export type Target = { token: string; platform: string; locale: string; kind: string; args: Record<string, unknown> };
+export type Target = {
+  token: string;
+  platform: string;
+  locale: string;
+  kind: string;
+  args: Record<string, unknown>;
+  target_kind?: string | null;
+  target_id?: string | null;
+};
 export type Push = { token: string; title: string; body: string; data: Record<string, string> };
 export type SendResult = "ok" | "invalid_token" | "failed";
 
@@ -148,11 +158,12 @@ export async function handle(req: Request, deps: Deps): Promise<Response> {
   for (const target of targets) {
     const text = pushText(target.kind, target.args ?? {}, target.locale);
     if (!text) continue;
-    const result = await deps.send({
-      token: target.token,
-      ...text,
-      data: { notification_id: id, kind: target.kind },
-    }).catch((): SendResult => "failed");
+    const data: Record<string, string> = { notification_id: id, kind: target.kind };
+    if (target.target_kind && target.target_id && UUID.test(target.target_id)) {
+      data.target_kind = target.target_kind;
+      data.target_id = target.target_id;
+    }
+    const result = await deps.send({ token: target.token, ...text, data }).catch((): SendResult => "failed");
     if (result === "ok") sent++;
     else if (result === "invalid_token") invalid.push(target.token);
     else failed++;

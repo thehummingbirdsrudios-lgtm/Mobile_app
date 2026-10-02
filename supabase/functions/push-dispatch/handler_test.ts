@@ -101,6 +101,27 @@ Deno.test("sends one push per device with lock-screen-safe text and minimal data
   assertEquals(deps.sent[1].body, "1024 · Kundan Set");
 });
 
+Deno.test("a tap can open the target: its kind and id ride in the data, nothing else", async () => {
+  const deps = new Fake();
+  const product = "6f1c2a9e-3b4d-4e5f-8a7b-9c0d1e2f3a4b";
+  deps.rows = [
+    {
+      ...target("tok-a", "new_maal", { design_no: "1024", name: "Kundan Set" }),
+      target_kind: "product",
+      target_id: product,
+    },
+    { ...target("tok-b", "new_maal", { design_no: "1025" }), target_kind: "product", target_id: "not-a-uuid" },
+  ];
+  await handle(webhook({ id: ID }), deps);
+  assertEquals(deps.sent[0].data, {
+    notification_id: ID,
+    kind: "new_maal",
+    target_kind: "product",
+    target_id: product,
+  });
+  assertEquals(deps.sent[1].data, { notification_id: ID, kind: "new_maal" }, "a malformed id is dropped");
+});
+
 Deno.test("tokens FCM rejects are forgotten; failures are counted, not fatal", async () => {
   const deps = new Fake();
   deps.rows = [target("dead", "new_maal", { design_no: "1" }), target("flaky", "new_maal", { design_no: "1" })];

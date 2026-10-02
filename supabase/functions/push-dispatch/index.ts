@@ -2,13 +2,16 @@
 //
 // Secrets (Supabase dashboard / `supabase secrets set`):
 //   SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY  (provided by the platform)
-//   PUSH_WEBHOOK_SECRET    random, ≥ 16 chars; sent by the Database Webhook
-//                          as the `x-webhook-secret` header
 //   FCM_SERVICE_ACCOUNT    optional: the Firebase service-account JSON. When
 //                          absent, notifications stay in-app only.
+//   PUSH_WEBHOOK_SECRET    optional override. By default the shared secret is
+//                          read from Vault (`vepari_push_secret`) through the
+//                          service-role-only RPC push_webhook_secret(), so it
+//                          is generated in the database and never handled.
 // Deploy: supabase functions deploy push-dispatch --no-verify-jwt
-//   (the webhook authenticates with PUSH_WEBHOOK_SECRET, not a user JWT)
-// Webhook: Database → Webhooks → INSERT on public.notifications → this URL.
+//   (the trigger authenticates with the shared secret, not a user JWT)
+// Trigger: migration 20261002000100_push_webhook.sql; configure Vault
+//   `vepari_push_url` and `vepari_push_secret` (README → Deploying).
 import { createClient } from "npm:@supabase/supabase-js@2.58.0";
 
 import { FcmSender, type ServiceAccount } from "./fcm.ts";
@@ -27,8 +30,17 @@ const admin = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY")
 const account = Deno.env.get("FCM_SERVICE_ACCOUNT");
 const sender = account ? new FcmSender(JSON.parse(account) as ServiceAccount) : null;
 
-const deps: Deps = {
-  webhookSecret: env("PUSH_WEBHOOK_SECRET"),
+// Resolved once per instance; a failed lookup is retried on the next call.
+let webhookSecret: string | null = Deno.env.get("PUSH_WEBHOOK_SECRET") || null;
+async function resolveSecret(): Promise<string> {
+  if (webhookSecret) return webhookSecret;
+  const { data, error } = await admin.rpc("push_webhook_secret");
+  if (error || typeof data !== "string") return "";
+  webhookSecret = data;
+  return data;
+}
+
+const deps: Omit<Deps, "webhookSecret"> = {
   async targets(id) {
     const { data, error } = await admin.rpc("push_targets", { p_notification_id: id });
     if (error) throw new Error("targets_failed");
@@ -43,4 +55,5 @@ const deps: Deps = {
   },
 };
 
-Deno.serve((req) => handle(req, deps));
+// An empty secret fails closed: handle() rejects every call with 401.
+Deno.serve(async (req) => handle(req, { ...deps, webhookSecret: await resolveSecret() }));
