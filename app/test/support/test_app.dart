@@ -18,6 +18,7 @@ import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/dashboard/dashboard.dart';
 import 'package:vepari/features/hisaab/hisaab.dart';
+import 'package:vepari/features/notifications/notifications.dart';
 import 'package:vepari/features/orders/orders.dart';
 import 'package:vepari/features/remarks/remarks.dart';
 import 'package:vepari/features/search/search.dart';
@@ -85,6 +86,8 @@ Future<ProviderContainer> pumpVepari(
   FakeVoiceRecorder? recorder,
   FakeVoicePlayer? player,
   FakeAdminRepository? admin,
+  FakeNotificationsRepository? notifications,
+  PushTokenSource? pushTokens,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
@@ -131,6 +134,8 @@ Future<ProviderContainer> pumpVepari(
       voiceRecorderProvider.overrideWithValue(recorder ?? FakeVoiceRecorder()),
       voicePlayerProvider.overrideWithValue(player ?? FakeVoicePlayer()),
       adminRepositoryProvider.overrideWithValue(admin ?? FakeAdminRepository()),
+      notificationsRepositoryProvider.overrideWithValue(notifications ?? FakeNotificationsRepository(items: const [])),
+      pushTokenSourceProvider.overrideWithValue(pushTokens ?? const NoPushTokens()),
       imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),

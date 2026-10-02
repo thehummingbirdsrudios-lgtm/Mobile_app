@@ -1361,4 +1361,45 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String get auditEntityRecord => 'રેકોર્ડ';
+
+  @override
+  String get notificationsTitle => 'સૂચનાઓ';
+
+  @override
+  String get notificationsEmpty => 'બધું જોઈ લીધું છે';
+
+  @override
+  String get notificationsEmptyBody => 'તમારા માટે નવો માલ, ઓર્ડર અને પેમેન્ટ અહીં દેખાશે.';
+
+  @override
+  String get notificationsMarkAll => 'બધું વાંચ્યું';
+
+  @override
+  String notificationsUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count નવી સૂચના');
+    return '$_temp0';
+  }
+
+  @override
+  String notifNewMaal(String design) {
+    return 'નવો માલ: $design';
+  }
+
+  @override
+  String notifOrderCreated(String orderNo, String customer) {
+    return 'નવો ઓર્ડર #$orderNo · $customer';
+  }
+
+  @override
+  String notifOrderStatus(String orderNo, String status) {
+    return 'ઓર્ડર #$orderNo: $status';
+  }
+
+  @override
+  String notifPayment(String amount, String customer) {
+    return '$customer તરફથી $amount પેમેન્ટ';
+  }
+
+  @override
+  String get notifOther => 'અપડેટ';
 }

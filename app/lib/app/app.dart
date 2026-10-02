@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/core.dart';
 import '../features/auth/auth.dart';
+import '../features/notifications/notifications.dart';
 import '../features/settings/settings.dart';
 import '../l10n/app_localizations.dart';
 import 'composition.dart';
@@ -37,6 +38,12 @@ class VepariApp extends ConsumerWidget {
         ..clearLiveImages();
       // Disk cache keys are tenant-prefixed storage paths, so another
       // business can never request (or be served) these entries.
+
+      // Push: register this device for the member who just signed in.
+      if (next.$2 != null) {
+        final locale = ref.read(localeControllerProvider)?.languageCode ?? 'gu';
+        unawaited(ref.read(pushRegistrarProvider).register(locale: locale));
+      }
     });
 
     final router = ref.watch(routerProvider);

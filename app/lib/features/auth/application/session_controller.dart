@@ -39,6 +39,11 @@ final class SessionSignedIn extends SessionState {
 
 final sessionControllerProvider = NotifierProvider<SessionController, SessionState>(SessionController.new);
 
+/// Work that must finish while the member is still signed in, e.g. telling
+/// the server this device should stop receiving their notifications. Set by
+/// the app layer; must be bounded in time (sign-out waits for it).
+final beforeSignOutProvider = Provider<Future<void> Function()>((ref) => () async {});
+
 /// Convenience: the signed-in session or null.
 final currentSessionProvider = Provider<UserSession?>((ref) {
   final state = ref.watch(sessionControllerProvider);
@@ -83,6 +88,13 @@ class SessionController extends Notifier<SessionState> {
   }
 
   Future<void> signOut() async {
+    if (state is SessionSignedIn) {
+      try {
+        await ref.read(beforeSignOutProvider)();
+      } on Object {
+        // Never blocks signing out.
+      }
+    }
     _becomeSignedOut(null);
     await _repo.signOut();
   }

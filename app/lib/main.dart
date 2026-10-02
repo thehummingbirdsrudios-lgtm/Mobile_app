@@ -20,6 +20,8 @@ import 'features/dashboard/dashboard.dart';
 import 'features/dashboard/dashboard_adapters.dart';
 import 'features/hisaab/hisaab.dart';
 import 'features/hisaab/hisaab_adapters.dart';
+import 'features/notifications/notifications.dart';
+import 'features/notifications/notifications_adapters.dart';
 import 'features/orders/orders.dart';
 import 'features/orders/orders_adapters.dart';
 import 'features/remarks/remarks.dart';
@@ -67,6 +69,7 @@ Future<void> main() async {
       sharingRepositoryProvider.overrideWithValue(SharingRepositoryImpl(SharingApi(api, storage))),
       remarksRepositoryProvider.overrideWithValue(RemarksRepositoryImpl(RemarksApi(client, api, storage))),
       adminRepositoryProvider.overrideWithValue(AdminRepositoryImpl(AdminApi(client, api, storage))),
+      notificationsRepositoryProvider.overrideWithValue(NotificationsRepositoryImpl(NotificationsApi(api))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

@@ -9,6 +9,7 @@ export 'application/session_controller.dart'
         SessionState,
         SessionUnknown,
         authRepositoryProvider,
+        beforeSignOutProvider,
         currentSessionProvider,
         sessionControllerProvider,
         tenantCacheProvider;

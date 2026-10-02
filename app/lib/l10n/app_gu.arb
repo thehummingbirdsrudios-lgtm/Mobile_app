@@ -407,5 +407,15 @@
   "auditEntityCustomer": "ગ્રાહક",
   "auditEntityCustomerRate": "ગ્રાહકનો ભાવ",
   "auditEntityMember": "સ્ટાફ સભ્ય",
-  "auditEntityRecord": "રેકોર્ડ"
+  "auditEntityRecord": "રેકોર્ડ",
+  "notificationsTitle": "સૂચનાઓ",
+  "notificationsEmpty": "બધું જોઈ લીધું છે",
+  "notificationsEmptyBody": "તમારા માટે નવો માલ, ઓર્ડર અને પેમેન્ટ અહીં દેખાશે.",
+  "notificationsMarkAll": "બધું વાંચ્યું",
+  "notificationsUnread": "{count, plural, other{{count} નવી સૂચના}}",
+  "notifNewMaal": "નવો માલ: {design}",
+  "notifOrderCreated": "નવો ઓર્ડર #{orderNo} · {customer}",
+  "notifOrderStatus": "ઓર્ડર #{orderNo}: {status}",
+  "notifPayment": "{customer} તરફથી {amount} પેમેન્ટ",
+  "notifOther": "અપડેટ"
 }

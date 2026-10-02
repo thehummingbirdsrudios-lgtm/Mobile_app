@@ -1367,4 +1367,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get auditEntityRecord => 'Record';
+
+  @override
+  String get notificationsTitle => 'Notifications';
+
+  @override
+  String get notificationsEmpty => 'You\'re all caught up';
+
+  @override
+  String get notificationsEmptyBody => 'New Maal, orders and payments for you show up here.';
+
+  @override
+  String get notificationsMarkAll => 'Mark all read';
+
+  @override
+  String notificationsUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread notifications',
+      one: '1 unread notification',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifNewMaal(String design) {
+    return 'New Maal: $design';
+  }
+
+  @override
+  String notifOrderCreated(String orderNo, String customer) {
+    return 'New order #$orderNo · $customer';
+  }
+
+  @override
+  String notifOrderStatus(String orderNo, String status) {
+    return 'Order #$orderNo: $status';
+  }
+
+  @override
+  String notifPayment(String amount, String customer) {
+    return 'Payment $amount from $customer';
+  }
+
+  @override
+  String get notifOther => 'Update';
 }

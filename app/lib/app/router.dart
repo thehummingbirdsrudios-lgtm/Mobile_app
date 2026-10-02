@@ -10,6 +10,7 @@ import '../features/catalogue/catalogue.dart';
 import '../features/customers/customers.dart';
 import '../features/dashboard/dashboard.dart';
 import '../features/hisaab/hisaab.dart';
+import '../features/notifications/notifications.dart';
 import '../features/orders/orders.dart';
 import '../features/search/search.dart';
 import '../features/settings/settings.dart';
@@ -61,7 +62,7 @@ abstract final class AppRoutes {
   static String staffMember(String userId) => '/settings/staff/$userId';
   static const audit = '/settings/audit';
   static const export = '/settings/export';
-  static const notifications = '/settings/notifications';
+  static const notifications = '/notifications';
 
   static String legalPath(LegalDocument doc) => '$more/legal/${doc.name}';
 }
@@ -112,6 +113,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: AppRoutes.splash, builder: (_, _) => const SplashScreen()),
       GoRoute(path: AppRoutes.login, builder: (_, _) => const LoginScreen()),
       GoRoute(path: AppRoutes.search, builder: (_, _) => const SearchScreen()),
+      GoRoute(path: AppRoutes.notifications, builder: (_, _) => const NotificationsScreen()),
       GoRoute(path: AppRoutes.navoMaal, builder: (_, _) => const NavoMaalScreen()),
       GoRoute(path: AppRoutes.newCustomer, builder: (_, _) => const CustomerEditScreen()),
       GoRoute(
@@ -205,7 +207,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: AppRoutes.home,
-                builder: (context, _) => HomeScreen(onNavigate: (d) => onHomeNavigate(context, d)),
+                builder: (context, _) =>
+                    HomeScreen(onNavigate: (d) => onHomeNavigate(context, d), headerAction: const NotificationBell()),
               ),
             ],
           ),

@@ -2540,6 +2540,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Record'**
   String get auditEntityRecord;
+
+  /// Inbox screen title / bell tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notificationsTitle;
+
+  /// Inbox empty
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up'**
+  String get notificationsEmpty;
+
+  /// Inbox empty body
+  ///
+  /// In en, this message translates to:
+  /// **'New Maal, orders and payments for you show up here.'**
+  String get notificationsEmptyBody;
+
+  /// Inbox action
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get notificationsMarkAll;
+
+  /// Bell semantics
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 unread notification} other{{count} unread notifications}}'**
+  String notificationsUnread(int count);
+
+  /// Inbox row
+  ///
+  /// In en, this message translates to:
+  /// **'New Maal: {design}'**
+  String notifNewMaal(String design);
+
+  /// Inbox row
+  ///
+  /// In en, this message translates to:
+  /// **'New order #{orderNo} · {customer}'**
+  String notifOrderCreated(String orderNo, String customer);
+
+  /// Inbox row
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNo}: {status}'**
+  String notifOrderStatus(String orderNo, String status);
+
+  /// Inbox row
+  ///
+  /// In en, this message translates to:
+  /// **'Payment {amount} from {customer}'**
+  String notifPayment(String amount, String customer);
+
+  /// Inbox row for unknown kinds
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get notifOther;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

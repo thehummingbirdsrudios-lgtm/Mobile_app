@@ -13,6 +13,7 @@ import 'package:vepari/features/customers/domain/customers.dart' show CustomerCu
 import 'package:vepari/features/dashboard/dashboard.dart';
 import 'package:vepari/features/hisaab/domain/hisaab.dart' show LedgerCursor;
 import 'package:vepari/features/hisaab/hisaab.dart';
+import 'package:vepari/features/notifications/notifications.dart';
 import 'package:vepari/features/orders/domain/orders.dart'
     show OrderCursor, OrderLine, OrderCustomer, OrderRequestLine, PaymentInput, PlacedOrder, ReorderLine;
 import 'package:vepari/features/orders/orders.dart';
@@ -43,7 +44,10 @@ const staffSession = UserSession(
 
 /// Scriptable [AuthRepository] that records calls.
 class FakeAuthRepository implements AuthRepository {
-  FakeAuthRepository({this.restored, this.signInResult, this.signInError, this.restoreError});
+  FakeAuthRepository({this.restored, this.signInResult, this.signInError, this.restoreError, this.journal});
+
+  /// Shared call log (see FakeNotificationsRepository.journal).
+  final List<String>? journal;
 
   UserSession? restored;
   UserSession? signInResult;
@@ -76,7 +80,10 @@ class FakeAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() async => signOutCalls++;
+  Future<void> signOut() async {
+    journal?.add('signOut');
+    signOutCalls++;
+  }
 
   Future<void> dispose() => _ended.close();
 }
@@ -1245,4 +1252,124 @@ class FakeAdminRepository implements AdminRepository {
     ].take(limit).toList();
     return PageResult(rows, next: rows.length < limit ? null : rows.last.id);
   }
+}
+
+// ---------------------------------------------------------------------------
+// Notifications
+// ---------------------------------------------------------------------------
+List<AppNotification> sampleNotifications() => [
+  AppNotification(
+    id: 'n4',
+    kind: 'new_maal',
+    targetKind: 'product',
+    targetId: productKundanId,
+    args: const {'design_no': '1024', 'name': 'Kundan Set'},
+    createdAt: DateTime.utc(2026, 10, 2, 9),
+  ),
+  AppNotification(
+    id: 'n3',
+    kind: 'order_update',
+    targetKind: 'order',
+    targetId: orderFirstId,
+    args: const {'event': 'created', 'order_no': 1045, 'customer_name': 'Rajeshbhai'},
+    createdAt: DateTime.utc(2026, 10, 2, 8),
+  ),
+  AppNotification(
+    id: 'n2',
+    kind: 'order_update',
+    targetKind: 'order',
+    targetId: orderFirstId,
+    args: const {'event': 'status', 'order_no': 1045, 'status': 'ready'},
+    createdAt: DateTime.utc(2026, 10, 2, 7),
+  ),
+  AppNotification(
+    id: 'n1',
+    kind: 'payment_received',
+    targetKind: 'customer',
+    targetId: customerShahId,
+    args: const {'payment_no': 7, 'amount_paise': 250000, 'customer_name': 'Sureshbhai'},
+    readAt: DateTime.utc(2026, 10, 2, 7),
+    createdAt: DateTime.utc(2026, 10, 2, 6),
+  ),
+];
+
+class FakeNotificationsRepository implements NotificationsRepository {
+  FakeNotificationsRepository({List<AppNotification>? items, this.journal}) : items = items ?? sampleNotifications();
+
+  List<AppNotification> items;
+  AppFailure? error;
+  AppFailure? registerError;
+  final markedIds = <String>[];
+  int markAllCalls = 0;
+  final registered = <(String, String, String)>[];
+  final unregistered = <String>[];
+
+  /// Order of calls, to check that unregistering happens before sign-out.
+  final List<String>? journal;
+
+  @override
+  Future<PageResult<AppNotification, NotificationCursor>> page({NotificationCursor? before, int limit = 30}) async {
+    if (error != null) throw error!;
+    return PageResult(items);
+  }
+
+  @override
+  Future<int> unreadCount() async {
+    if (error != null) throw error!;
+    return items.where((n) => n.isUnread).length;
+  }
+
+  AppNotification _read(AppNotification n) => AppNotification(
+    id: n.id,
+    kind: n.kind,
+    targetKind: n.targetKind,
+    targetId: n.targetId,
+    args: n.args,
+    readAt: DateTime.utc(2026, 10, 2, 10),
+    createdAt: n.createdAt,
+  );
+
+  @override
+  Future<void> markRead({List<String>? ids}) async {
+    if (error != null) throw error!;
+    if (ids == null) {
+      markAllCalls++;
+    } else {
+      markedIds.addAll(ids);
+    }
+    items = [
+      for (final n in items)
+        if (ids == null || ids.contains(n.id)) _read(n) else n,
+    ];
+  }
+
+  @override
+  Future<void> registerDevice({required String token, required String platform, required String locale}) async {
+    if (registerError != null) throw registerError!;
+    registered.add((token, platform, locale));
+  }
+
+  @override
+  Future<void> unregisterDevice(String token) async {
+    journal?.add('unregister');
+    unregistered.add(token);
+  }
+}
+
+class FakePushTokens implements PushTokenSource {
+  FakePushTokens(this.token);
+
+  String? token;
+  final refreshes = StreamController<String>.broadcast();
+
+  @override
+  String get platform => 'android';
+
+  @override
+  Future<String?> currentToken() async => token;
+
+  @override
+  Stream<String> get tokenRefreshes => refreshes.stream;
+
+  Future<void> close() => refreshes.close();
 }

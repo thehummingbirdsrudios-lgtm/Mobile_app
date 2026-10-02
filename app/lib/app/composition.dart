@@ -7,6 +7,7 @@ import '../features/auth/auth.dart';
 import '../features/bills/bills.dart';
 import '../features/catalogue/catalogue.dart';
 import '../features/customers/customers.dart';
+import '../features/notifications/notifications.dart';
 import '../features/orders/orders.dart';
 import '../features/remarks/remarks.dart';
 import '../features/sharing/sharing.dart';
@@ -17,6 +18,11 @@ import 'router.dart';
 /// other's screens or state: catalogue and customers get "add to order"
 /// without depending on the orders module.
 List<Override> crossModuleOverrides() => [
+  // Sign-out first tells the server to stop pushing to this device.
+  beforeSignOutProvider.overrideWith(
+    (ref) =>
+        () => ref.read(pushRegistrarProvider).unregister(),
+  ),
   orderActionsProvider.overrideWithValue(
     OrderActions(
       billSection: (order) => BillSection(orderId: order.id, billId: order.bill?.id, billNo: order.bill?.billNo),

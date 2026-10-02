@@ -131,4 +131,24 @@ void main() {
       expect(container.read(currentSessionProvider), same(ownerSession));
     });
   });
+
+  test('a failing before-sign-out hook never blocks signing out', () async {
+    auth.restored = ownerSession;
+    var hookRuns = 0;
+    container = ProviderContainer(
+      overrides: [
+        authRepositoryProvider.overrideWithValue(auth),
+        beforeSignOutProvider.overrideWithValue(() async {
+          hookRuns++;
+          throw const AppFailure(FailureKind.network);
+        }),
+      ],
+    );
+    addTearDown(container.dispose);
+    await settle();
+    await container.read(sessionControllerProvider.notifier).signOut();
+    expect(hookRuns, 1);
+    expect(container.read(sessionControllerProvider), isA<SessionSignedOut>());
+    expect(auth.signOutCalls, 1);
+  });
 }

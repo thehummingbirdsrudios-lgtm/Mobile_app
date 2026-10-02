@@ -14,9 +14,12 @@ enum HomeDestination { orders, payment, newMaal, hisaab }
 /// "Namaskar Rajeshbhai 👋 / Aaje shu che?" — today's position in seconds,
 /// then four quick actions. Not a 30-card dashboard.
 class HomeScreen extends ConsumerWidget {
-  const HomeScreen({super.key, required this.onNavigate});
+  const HomeScreen({super.key, required this.onNavigate, this.headerAction});
 
   final ValueChanged<HomeDestination> onNavigate;
+
+  /// Shown next to the greeting (the app layer puts the notification bell here).
+  final Widget? headerAction;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,11 +43,19 @@ class HomeScreen extends ConsumerWidget {
                     padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, AppSpacing.xl, AppSpacing.gutter, 0),
                     sliver: SliverList.list(
                       children: [
-                        Text(
-                          l10n.greeting(session?.displayName ?? ''),
-                          style: text.headlineSmall,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                l10n.greeting(session?.displayName ?? ''),
+                                style: text.headlineSmall,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            ?headerAction,
+                          ],
                         ),
                         if (session != null)
                           Text(session.businessName, style: text.bodyMedium!.copyWith(color: AppColors.muted)),

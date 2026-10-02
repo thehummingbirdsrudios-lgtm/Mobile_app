@@ -1942,5 +1942,79 @@
   "auditEntityRecord": "Record",
   "@auditEntityRecord": {
     "description": "Audit entity fallback"
+  },
+  "notificationsTitle": "Notifications",
+  "@notificationsTitle": {
+    "description": "Inbox screen title / bell tooltip"
+  },
+  "notificationsEmpty": "You're all caught up",
+  "@notificationsEmpty": {
+    "description": "Inbox empty"
+  },
+  "notificationsEmptyBody": "New Maal, orders and payments for you show up here.",
+  "@notificationsEmptyBody": {
+    "description": "Inbox empty body"
+  },
+  "notificationsMarkAll": "Mark all read",
+  "@notificationsMarkAll": {
+    "description": "Inbox action"
+  },
+  "notificationsUnread": "{count, plural, =1{1 unread notification} other{{count} unread notifications}}",
+  "@notificationsUnread": {
+    "description": "Bell semantics",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notifNewMaal": "New Maal: {design}",
+  "@notifNewMaal": {
+    "description": "Inbox row",
+    "placeholders": {
+      "design": {
+        "type": "String"
+      }
+    }
+  },
+  "notifOrderCreated": "New order #{orderNo} · {customer}",
+  "@notifOrderCreated": {
+    "description": "Inbox row",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      },
+      "customer": {
+        "type": "String"
+      }
+    }
+  },
+  "notifOrderStatus": "Order #{orderNo}: {status}",
+  "@notifOrderStatus": {
+    "description": "Inbox row",
+    "placeholders": {
+      "orderNo": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "notifPayment": "Payment {amount} from {customer}",
+  "@notifPayment": {
+    "description": "Inbox row",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      },
+      "customer": {
+        "type": "String"
+      }
+    }
+  },
+  "notifOther": "Update",
+  "@notifOther": {
+    "description": "Inbox row for unknown kinds"
   }
 }

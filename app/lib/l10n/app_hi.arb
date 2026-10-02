@@ -407,5 +407,15 @@
   "auditEntityCustomer": "ग्राहक",
   "auditEntityCustomerRate": "ग्राहक का रेट",
   "auditEntityMember": "स्टाफ़ सदस्य",
-  "auditEntityRecord": "रिकॉर्ड"
+  "auditEntityRecord": "रिकॉर्ड",
+  "notificationsTitle": "सूचनाएँ",
+  "notificationsEmpty": "सब देख लिया है",
+  "notificationsEmptyBody": "आपके लिए नया माल, ऑर्डर और पेमेंट यहाँ दिखेंगे।",
+  "notificationsMarkAll": "सब पढ़ लिया",
+  "notificationsUnread": "{count, plural, other{{count} नई सूचनाएँ}}",
+  "notifNewMaal": "नया माल: {design}",
+  "notifOrderCreated": "नया ऑर्डर #{orderNo} · {customer}",
+  "notifOrderStatus": "ऑर्डर #{orderNo}: {status}",
+  "notifPayment": "{customer} से {amount} पेमेंट",
+  "notifOther": "अपडेट"
 }
