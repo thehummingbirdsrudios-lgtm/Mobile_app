@@ -370,7 +370,7 @@ void main() {
         admin: FakeAdminRepository(audit: rows),
       );
       await _go(tester, AppRoutes.audit);
-      expect(find.text('Rate changed ₹600 → ₹620'), findsOneWidget);
+      expect(find.text('Rate changed from ₹600 to ₹620'), findsOneWidget);
       expect(find.textContaining('1024 · Kundan Set'), findsOneWidget);
       expect(find.text('Permission taken back: Take orders'), findsOneWidget);
       expect(find.text('Order taken'), findsOneWidget);

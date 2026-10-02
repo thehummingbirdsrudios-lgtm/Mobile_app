@@ -1327,7 +1327,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String auditRateChanged(String from, String to) {
-    return 'रेट बदला $from → $to';
+    return 'रेट $from से $to हुआ';
   }
 
   @override

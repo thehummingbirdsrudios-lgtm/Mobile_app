@@ -1326,7 +1326,7 @@ class AppLocalizationsGu extends AppLocalizations {
 
   @override
   String auditRateChanged(String from, String to) {
-    return 'ભાવ બદલાયો $from → $to';
+    return 'ભાવ $from થી $to થયો';
   }
 
   @override

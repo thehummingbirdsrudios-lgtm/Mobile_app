@@ -398,7 +398,7 @@
   "auditStaffPasswordReset": "સ્ટાફનો પાસવર્ડ બદલાયો",
   "auditPermissionGranted": "પરવાનગી આપી: {permission}",
   "auditPermissionRevoked": "પરવાનગી પાછી લીધી: {permission}",
-  "auditRateChanged": "ભાવ બદલાયો {from} → {to}",
+  "auditRateChanged": "ભાવ {from} થી {to} થયો",
   "auditAdded": "{thing} ઉમેર્યું",
   "auditChanged": "{thing} બદલાયું",
   "auditRemoved": "{thing} કાઢ્યું",

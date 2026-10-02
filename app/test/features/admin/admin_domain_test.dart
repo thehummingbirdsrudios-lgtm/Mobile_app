@@ -178,7 +178,7 @@ void main() {
             'rate_paise': {'from': 50000, 'to': 48000},
           }),
         ),
-        'Rate changed ₹500 → ₹480',
+        'Rate changed from ₹500 to ₹480',
       );
       expect(auditTitle(l10n, entry('update', 'product_private', {'cost_paise': 'changed'})), 'Cost details changed');
       expect(auditTitle(l10n, entry('insert', 'customers')), 'Customer added');

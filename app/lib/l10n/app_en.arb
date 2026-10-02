@@ -1880,9 +1880,9 @@
       }
     }
   },
-  "auditRateChanged": "Rate changed {from} → {to}",
+  "auditRateChanged": "Rate changed from {from} to {to}",
   "@auditRateChanged": {
-    "description": "Audit action",
+    "description": "Audit action (no arrow glyph: the Indic fonts lack it)",
     "placeholders": {
       "from": {
         "type": "String"

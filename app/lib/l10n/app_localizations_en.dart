@@ -1332,7 +1332,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String auditRateChanged(String from, String to) {
-    return 'Rate changed $from → $to';
+    return 'Rate changed from $from to $to';
   }
 
   @override

@@ -7,7 +7,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vepari/app/app.dart';
+import 'package:vepari/app/router.dart';
+import 'package:vepari/features/admin/admin.dart';
 
 import '../support/fakes.dart';
 import '../support/test_app.dart';
@@ -73,4 +76,65 @@ void main() {
     dashboard.release();
     await tester.pumpAndSettle();
   }, skip: !enabled);
+
+  // Owner admin, notifications and export (phone, all three languages).
+  final screens = <(String, String)>[
+    ('business', AppRoutes.businessProfile),
+    ('staff', AppRoutes.staff),
+    ('staff-detail', AppRoutes.staffMember(staffKiranId)),
+    ('staff-new', AppRoutes.newStaff),
+    ('audit', AppRoutes.audit),
+    ('notifications', AppRoutes.notifications),
+    ('export', AppRoutes.export),
+  ];
+  for (final lang in ['gu', 'hi', 'en']) {
+    for (final (name, route) in screens) {
+      testWidgets('$name $lang phone', (tester) async {
+        await pumpVepari(
+          tester,
+          auth: FakeAuthRepository(restored: ownerSession),
+          locale: Locale(lang),
+          size: const Size(360, 780),
+          notifications: FakeNotificationsRepository(),
+          admin: FakeAdminRepository(
+            audit: [
+              AuditEntry(
+                id: 3,
+                action: 'update',
+                entity: 'products',
+                data: const {
+                  'rate_paise': {'from': 60000, 'to': 62000},
+                },
+                actorName: 'Rajeshbhai',
+                subject: '1024 · Kundan Set',
+                createdAt: DateTime.utc(2026, 10, 2, 5),
+              ),
+              AuditEntry(
+                id: 2,
+                action: 'insert',
+                entity: 'member_permissions',
+                data: const {
+                  'permission': {'from': null, 'to': 'payments.record'},
+                },
+                actorName: 'Rajeshbhai',
+                subject: 'Kiranbhai',
+                createdAt: DateTime.utc(2026, 10, 2, 4),
+              ),
+              AuditEntry(
+                id: 1,
+                action: 'staff.created',
+                entity: 'tenant_members',
+                actorName: 'Rajeshbhai',
+                subject: 'Kiranbhai',
+                createdAt: DateTime.utc(2026, 10, 2, 3),
+              ),
+            ],
+          ),
+        );
+        GoRouter.of(tester.element(find.byType(Scaffold).first)).go(route);
+        await tester.pumpAndSettle();
+        await expectLater(find.byType(VepariApp), matchesGoldenFile('goldens/$name-$lang-phone.png'));
+      }, skip: !enabled);
+    }
+  }
 }

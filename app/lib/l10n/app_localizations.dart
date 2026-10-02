@@ -2481,10 +2481,10 @@ abstract class AppLocalizations {
   /// **'Permission taken back: {permission}'**
   String auditPermissionRevoked(String permission);
 
-  /// Audit action
+  /// Audit action (no arrow glyph: the Indic fonts lack it)
   ///
   /// In en, this message translates to:
-  /// **'Rate changed {from} → {to}'**
+  /// **'Rate changed from {from} to {to}'**
   String auditRateChanged(String from, String to);
 
   /// Audit row insert

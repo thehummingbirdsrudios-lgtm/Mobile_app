@@ -398,7 +398,7 @@
   "auditStaffPasswordReset": "स्टाफ़ का पासवर्ड बदला",
   "auditPermissionGranted": "अनुमति दी: {permission}",
   "auditPermissionRevoked": "अनुमति वापस ली: {permission}",
-  "auditRateChanged": "रेट बदला {from} → {to}",
+  "auditRateChanged": "रेट {from} से {to} हुआ",
   "auditAdded": "{thing} जोड़ा गया",
   "auditChanged": "{thing} बदला गया",
   "auditRemoved": "{thing} हटाया गया",
