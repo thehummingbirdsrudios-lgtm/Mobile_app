@@ -1413,4 +1413,182 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifOther => 'Update';
+
+  @override
+  String get adminExport => 'Export data';
+
+  @override
+  String get adminExportHint => 'Customers, Hisaab, orders and designs as a spreadsheet';
+
+  @override
+  String get exportWhat => 'What to export';
+
+  @override
+  String get exportPeriod => 'Period';
+
+  @override
+  String get exportKindCustomers => 'Customers and Baki';
+
+  @override
+  String get exportKindDesigns => 'Designs with cost';
+
+  @override
+  String get exportKindLedger => 'Hisaab entries';
+
+  @override
+  String get exportKindOrders => 'Orders';
+
+  @override
+  String get exportKindOrderLines => 'Order lines (each design)';
+
+  @override
+  String get exportPeriodThisMonth => 'This month';
+
+  @override
+  String get exportPeriodLastMonth => 'Last month';
+
+  @override
+  String get exportPeriodLast3Months => 'Last 3 months';
+
+  @override
+  String get exportPeriodThisYear => 'This year';
+
+  @override
+  String get exportPeriodCustom => 'Pick dates';
+
+  @override
+  String exportPeriodRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get exportCostWarning => 'This file has your cost prices and suppliers. Share it only with people you trust.';
+
+  @override
+  String get exportButton => 'Export CSV';
+
+  @override
+  String exportReading(String count) {
+    return 'Reading… $count rows';
+  }
+
+  @override
+  String exportDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count rows exported',
+      one: '1 row exported',
+      zero: 'Nothing to export for this period',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get exportTooLarge => 'Too much for one file. Choose a shorter period.';
+
+  @override
+  String get exportShareFailed => 'Sharing isn\'t available on this device.';
+
+  @override
+  String get exportYes => 'Yes';
+
+  @override
+  String get exportNo => 'No';
+
+  @override
+  String get exportEntryOrder => 'Order';
+
+  @override
+  String get exportEntryPayment => 'Payment';
+
+  @override
+  String get colCustomer => 'Customer';
+
+  @override
+  String get colShop => 'Shop';
+
+  @override
+  String get colCity => 'City';
+
+  @override
+  String get colPhone => 'Mobile';
+
+  @override
+  String get colWhatsapp => 'WhatsApp';
+
+  @override
+  String get colBaki => 'Baki (₹)';
+
+  @override
+  String get colArchived => 'Archived';
+
+  @override
+  String get colCreatedAt => 'Added on';
+
+  @override
+  String get colDesignNo => 'Design no.';
+
+  @override
+  String get colProduct => 'Name';
+
+  @override
+  String get colCategory => 'Category';
+
+  @override
+  String get colRate => 'Rate (₹)';
+
+  @override
+  String get colWeight => 'Weight (g)';
+
+  @override
+  String get colAvailable => 'Available';
+
+  @override
+  String get colPublishedAt => 'Published on';
+
+  @override
+  String get colCost => 'Cost (₹, owner only)';
+
+  @override
+  String get colSupplier => 'Supplier (owner only)';
+
+  @override
+  String get colDate => 'Date';
+
+  @override
+  String get colEntryKind => 'Entry';
+
+  @override
+  String get colAmount => 'Amount (₹)';
+
+  @override
+  String get colBalanceAfter => 'Baki after (₹)';
+
+  @override
+  String get colOrderNo => 'Order no.';
+
+  @override
+  String get colPaymentMode => 'Mode';
+
+  @override
+  String get colReference => 'Reference';
+
+  @override
+  String get colNote => 'Note';
+
+  @override
+  String get colStatus => 'Status';
+
+  @override
+  String get colTotalQty => 'Pieces';
+
+  @override
+  String get colTotal => 'Total (₹)';
+
+  @override
+  String get colLineNo => 'Line';
+
+  @override
+  String get colQty => 'Qty';
 }

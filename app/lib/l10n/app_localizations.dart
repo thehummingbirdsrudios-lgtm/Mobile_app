@@ -2600,6 +2600,336 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Update'**
   String get notifOther;
+
+  /// More: export entry / screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get adminExport;
+
+  /// More: export subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Customers, Hisaab, orders and designs as a spreadsheet'**
+  String get adminExportHint;
+
+  /// Export section
+  ///
+  /// In en, this message translates to:
+  /// **'What to export'**
+  String get exportWhat;
+
+  /// Export section
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get exportPeriod;
+
+  /// Export kind
+  ///
+  /// In en, this message translates to:
+  /// **'Customers and Baki'**
+  String get exportKindCustomers;
+
+  /// Export kind
+  ///
+  /// In en, this message translates to:
+  /// **'Designs with cost'**
+  String get exportKindDesigns;
+
+  /// Export kind
+  ///
+  /// In en, this message translates to:
+  /// **'Hisaab entries'**
+  String get exportKindLedger;
+
+  /// Export kind
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get exportKindOrders;
+
+  /// Export kind
+  ///
+  /// In en, this message translates to:
+  /// **'Order lines (each design)'**
+  String get exportKindOrderLines;
+
+  /// Export period
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get exportPeriodThisMonth;
+
+  /// Export period
+  ///
+  /// In en, this message translates to:
+  /// **'Last month'**
+  String get exportPeriodLastMonth;
+
+  /// Export period
+  ///
+  /// In en, this message translates to:
+  /// **'Last 3 months'**
+  String get exportPeriodLast3Months;
+
+  /// Export period
+  ///
+  /// In en, this message translates to:
+  /// **'This year'**
+  String get exportPeriodThisYear;
+
+  /// Export period
+  ///
+  /// In en, this message translates to:
+  /// **'Pick dates'**
+  String get exportPeriodCustom;
+
+  /// Chosen dates
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {to}'**
+  String exportPeriodRange(String from, String to);
+
+  /// Designs export warning
+  ///
+  /// In en, this message translates to:
+  /// **'This file has your cost prices and suppliers. Share it only with people you trust.'**
+  String get exportCostWarning;
+
+  /// Export action
+  ///
+  /// In en, this message translates to:
+  /// **'Export CSV'**
+  String get exportButton;
+
+  /// Export progress
+  ///
+  /// In en, this message translates to:
+  /// **'Reading… {count} rows'**
+  String exportReading(String count);
+
+  /// Export result
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{Nothing to export for this period} =1{1 row exported} other{{count} rows exported}}'**
+  String exportDone(int count);
+
+  /// Export too large
+  ///
+  /// In en, this message translates to:
+  /// **'Too much for one file. Choose a shorter period.'**
+  String get exportTooLarge;
+
+  /// Share unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing isn\'t available on this device.'**
+  String get exportShareFailed;
+
+  /// CSV boolean
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get exportYes;
+
+  /// CSV boolean
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get exportNo;
+
+  /// CSV ledger kind
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get exportEntryOrder;
+
+  /// CSV ledger kind
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get exportEntryPayment;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get colCustomer;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get colShop;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get colCity;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile'**
+  String get colPhone;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get colWhatsapp;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Baki (₹)'**
+  String get colBaki;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get colArchived;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Added on'**
+  String get colCreatedAt;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Design no.'**
+  String get colDesignNo;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get colProduct;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get colCategory;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Rate (₹)'**
+  String get colRate;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (g)'**
+  String get colWeight;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get colAvailable;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Published on'**
+  String get colPublishedAt;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Cost (₹, owner only)'**
+  String get colCost;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Supplier (owner only)'**
+  String get colSupplier;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get colDate;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Entry'**
+  String get colEntryKind;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (₹)'**
+  String get colAmount;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Baki after (₹)'**
+  String get colBalanceAfter;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Order no.'**
+  String get colOrderNo;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Mode'**
+  String get colPaymentMode;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Reference'**
+  String get colReference;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get colNote;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get colStatus;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Pieces'**
+  String get colTotalQty;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Total (₹)'**
+  String get colTotal;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Line'**
+  String get colLineNo;
+
+  /// CSV header
+  ///
+  /// In en, this message translates to:
+  /// **'Qty'**
+  String get colQty;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

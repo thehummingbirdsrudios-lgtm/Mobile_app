@@ -117,7 +117,8 @@ void main() {
         pushTokens: FakePushTokens('fcm-token-for-this-phone-0001'),
       );
       await _go(tester, AppRoutes.more);
-      await tester.scrollUntilVisible(find.text('Logout'), 200, scrollable: find.byType(Scrollable).first);
+      await tester.ensureVisible(find.text('Logout'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Logout'));
       await tester.pumpAndSettle();
       expect(journal, ['unregister', 'signOut']);

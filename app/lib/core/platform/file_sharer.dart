@@ -13,7 +13,8 @@ class ShareFile {
 }
 
 /// Opens the system share sheet. Only share-safe content may be passed in:
-/// callers build it from the server's allow-listed share payloads.
+/// callers build it from the server's allow-listed share payloads — the one
+/// exception is the owner's own data export (owner-only on the server).
 abstract interface class FileSharer {
   /// False when sharing is not possible on this device.
   Future<bool> share({List<ShareFile> files, String? text});

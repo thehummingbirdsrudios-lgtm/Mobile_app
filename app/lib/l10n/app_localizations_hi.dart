@@ -1403,4 +1403,181 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get notifOther => 'अपडेट';
+
+  @override
+  String get adminExport => 'डेटा एक्सपोर्ट';
+
+  @override
+  String get adminExportHint => 'ग्राहक, हिसाब, ऑर्डर और डिज़ाइन स्प्रेडशीट में';
+
+  @override
+  String get exportWhat => 'क्या एक्सपोर्ट करें';
+
+  @override
+  String get exportPeriod => 'अवधि';
+
+  @override
+  String get exportKindCustomers => 'ग्राहक और बाकी';
+
+  @override
+  String get exportKindDesigns => 'लागत के साथ डिज़ाइन';
+
+  @override
+  String get exportKindLedger => 'हिसाब की एंट्री';
+
+  @override
+  String get exportKindOrders => 'ऑर्डर';
+
+  @override
+  String get exportKindOrderLines => 'ऑर्डर की लाइनें (हर डिज़ाइन)';
+
+  @override
+  String get exportPeriodThisMonth => 'इस महीने';
+
+  @override
+  String get exportPeriodLastMonth => 'पिछला महीना';
+
+  @override
+  String get exportPeriodLast3Months => 'पिछले 3 महीने';
+
+  @override
+  String get exportPeriodThisYear => 'इस साल';
+
+  @override
+  String get exportPeriodCustom => 'तारीख़ चुनें';
+
+  @override
+  String exportPeriodRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get exportCostWarning => 'इस फ़ाइल में आपकी लागत और सप्लायर हैं। केवल भरोसेमंद लोगों से ही शेयर करें।';
+
+  @override
+  String get exportButton => 'CSV एक्सपोर्ट करें';
+
+  @override
+  String exportReading(String count) {
+    return 'पढ़ रहा है… $count लाइनें';
+  }
+
+  @override
+  String exportDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count लाइनें एक्सपोर्ट हुईं',
+      zero: 'इस अवधि में कुछ नहीं है',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get exportTooLarge => 'एक फ़ाइल के लिए बहुत ज़्यादा। छोटी अवधि चुनें।';
+
+  @override
+  String get exportShareFailed => 'इस फ़ोन पर शेयर नहीं हो सकता।';
+
+  @override
+  String get exportYes => 'हाँ';
+
+  @override
+  String get exportNo => 'नहीं';
+
+  @override
+  String get exportEntryOrder => 'ऑर्डर';
+
+  @override
+  String get exportEntryPayment => 'पेमेंट';
+
+  @override
+  String get colCustomer => 'ग्राहक';
+
+  @override
+  String get colShop => 'दुकान';
+
+  @override
+  String get colCity => 'शहर';
+
+  @override
+  String get colPhone => 'मोबाइल';
+
+  @override
+  String get colWhatsapp => 'व्हाट्सऐप';
+
+  @override
+  String get colBaki => 'बाकी (₹)';
+
+  @override
+  String get colArchived => 'आर्काइव';
+
+  @override
+  String get colCreatedAt => 'जोड़ने की तारीख़';
+
+  @override
+  String get colDesignNo => 'डिज़ाइन नं.';
+
+  @override
+  String get colProduct => 'नाम';
+
+  @override
+  String get colCategory => 'कैटेगरी';
+
+  @override
+  String get colRate => 'रेट (₹)';
+
+  @override
+  String get colWeight => 'वज़न (ग्राम)';
+
+  @override
+  String get colAvailable => 'उपलब्ध';
+
+  @override
+  String get colPublishedAt => 'डालने की तारीख़';
+
+  @override
+  String get colCost => 'लागत (₹, केवल मालिक)';
+
+  @override
+  String get colSupplier => 'सप्लायर (केवल मालिक)';
+
+  @override
+  String get colDate => 'तारीख़';
+
+  @override
+  String get colEntryKind => 'एंट्री';
+
+  @override
+  String get colAmount => 'रकम (₹)';
+
+  @override
+  String get colBalanceAfter => 'बाद की बाकी (₹)';
+
+  @override
+  String get colOrderNo => 'ऑर्डर नं.';
+
+  @override
+  String get colPaymentMode => 'तरीका';
+
+  @override
+  String get colReference => 'रेफ़रेंस';
+
+  @override
+  String get colNote => 'नोट';
+
+  @override
+  String get colStatus => 'स्थिति';
+
+  @override
+  String get colTotalQty => 'नग';
+
+  @override
+  String get colTotal => 'कुल (₹)';
+
+  @override
+  String get colLineNo => 'लाइन';
+
+  @override
+  String get colQty => 'नग';
 }

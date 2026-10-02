@@ -17,6 +17,8 @@ import 'package:vepari/features/bills/bills.dart';
 import 'package:vepari/features/catalogue/catalogue.dart';
 import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/dashboard/dashboard.dart';
+import 'package:vepari/features/export/domain/csv.dart' show Csv;
+import 'package:vepari/features/export/export.dart';
 import 'package:vepari/features/hisaab/hisaab.dart';
 import 'package:vepari/features/notifications/notifications.dart';
 import 'package:vepari/features/orders/orders.dart';
@@ -88,6 +90,7 @@ Future<ProviderContainer> pumpVepari(
   FakeAdminRepository? admin,
   FakeNotificationsRepository? notifications,
   PushTokenSource? pushTokens,
+  FakeExportRepository? exports,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
@@ -136,6 +139,8 @@ Future<ProviderContainer> pumpVepari(
       adminRepositoryProvider.overrideWithValue(admin ?? FakeAdminRepository()),
       notificationsRepositoryProvider.overrideWithValue(notifications ?? FakeNotificationsRepository(items: const [])),
       pushTokenSourceProvider.overrideWithValue(pushTokens ?? const NoPushTokens()),
+      exportRepositoryProvider.overrideWithValue(exports ?? FakeExportRepository()),
+      csvEncoderProvider.overrideWithValue((o) async => Csv.encode(o)),
       imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),

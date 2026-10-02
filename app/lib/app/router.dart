@@ -9,6 +9,7 @@ import '../features/bills/bills.dart';
 import '../features/catalogue/catalogue.dart';
 import '../features/customers/customers.dart';
 import '../features/dashboard/dashboard.dart';
+import '../features/export/export.dart';
 import '../features/hisaab/hisaab.dart';
 import '../features/notifications/notifications.dart';
 import '../features/orders/orders.dart';
@@ -176,6 +177,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Owner settings. Screens refuse non-owners; the server enforces it.
       GoRoute(path: AppRoutes.businessProfile, builder: (_, _) => const BusinessProfileScreen()),
       GoRoute(path: AppRoutes.audit, builder: (_, _) => const AuditScreen()),
+      GoRoute(path: AppRoutes.export, builder: (_, _) => const ExportScreen()),
       GoRoute(
         path: AppRoutes.staff,
         builder: (_, _) => const StaffScreen(),

@@ -11,6 +11,7 @@ import 'package:vepari/features/catalogue/domain/catalogue.dart'
 import 'package:vepari/features/customers/customers.dart';
 import 'package:vepari/features/customers/domain/customers.dart' show CustomerCursor, CustomerDraft;
 import 'package:vepari/features/dashboard/dashboard.dart';
+import 'package:vepari/features/export/export.dart';
 import 'package:vepari/features/hisaab/domain/hisaab.dart' show LedgerCursor;
 import 'package:vepari/features/hisaab/hisaab.dart';
 import 'package:vepari/features/notifications/notifications.dart';
@@ -1372,4 +1373,53 @@ class FakePushTokens implements PushTokenSource {
   Stream<String> get tokenRefreshes => refreshes.stream;
 
   Future<void> close() => refreshes.close();
+}
+
+// ---------------------------------------------------------------------------
+// Export
+// ---------------------------------------------------------------------------
+class FakeExportRepository implements ExportRepository {
+  FakeExportRepository({Map<ExportKind, List<List<Object?>>>? rows, this.pageSize = 2})
+    : rows =
+          rows ??
+          {
+            ExportKind.customers: [
+              [
+                'Rajeshbhai',
+                'Shree Kundan',
+                'Rajkot',
+                '9825012345',
+                null,
+                const Money.paise(482000),
+                false,
+                DateTime.utc(2026, 9, 1, 5, 30),
+              ],
+              [
+                '=HYPERLINK("evil")',
+                null,
+                null,
+                null,
+                null,
+                const Money.paise(-50000),
+                true,
+                DateTime.utc(2026, 9, 2, 5, 30),
+              ],
+              ['Sureshbhai, Surat', null, 'Surat', null, null, Money.zero, false, DateTime.utc(2026, 9, 3, 5, 30)],
+            ],
+          };
+
+  final Map<ExportKind, List<List<Object?>>> rows;
+  final int pageSize;
+  AppFailure? error;
+  final calls = <(ExportKind, ExportRange?, Object?)>[];
+
+  @override
+  Future<ExportPage> page(ExportKind kind, {ExportRange? range, Object? after}) async {
+    calls.add((kind, range, after));
+    if (error != null) throw error!;
+    final all = rows[kind] ?? const [];
+    final start = (after as int?) ?? 0;
+    final end = (start + pageSize).clamp(0, all.length);
+    return ExportPage(all.sublist(start, end), next: end < all.length ? end : null);
+  }
 }

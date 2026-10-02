@@ -42,6 +42,9 @@ void main() {
     await pumpVepari(tester, auth: auth);
     await tester.tap(find.text('More'));
     await tester.pumpAndSettle();
+    // Owners see their business settings first; Logout is further down.
+    await tester.ensureVisible(find.text('Logout'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Logout'));
     await tester.pumpAndSettle();
     expect(find.text('Namaskar 👋'), findsOneWidget);

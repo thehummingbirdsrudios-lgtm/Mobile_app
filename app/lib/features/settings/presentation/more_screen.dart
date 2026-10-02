@@ -131,6 +131,13 @@ class MoreScreen extends ConsumerWidget {
                   trailing: const Icon(Icons.chevron_right_rounded),
                   onTap: nav.openAudit,
                 ),
+                ListTile(
+                  leading: const Icon(Icons.file_download_outlined),
+                  title: Text(l10n.adminExport),
+                  subtitle: Text(l10n.adminExportHint),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: nav.openExport,
+                ),
                 const Divider(indent: AppSpacing.gutter, endIndent: AppSpacing.gutter),
               ],
               ListTile(

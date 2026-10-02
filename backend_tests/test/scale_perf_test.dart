@@ -267,6 +267,13 @@ void main() {
       params: () => {'t': a.tenantId},
     );
     plan('Regular Maal', 'select * from public.regular_maal(@c::uuid)', params: () => {'c': sampleCustomer});
+    plan(
+      'Export: Hisaab entries, one month page',
+      'select l.id, l.created_at, l.amount_paise from public.ledger_entries l where l.tenant_id = @t::uuid '
+          "and l.created_at >= now() - interval '30 days' and l.created_at < now() "
+          'order by l.created_at, l.id limit 500',
+      params: () => {'t': a.tenantId},
+    );
     // The owner's inbox holds a notification for every seeded design and order.
     plan(
       'Notification inbox (latest 30)',
