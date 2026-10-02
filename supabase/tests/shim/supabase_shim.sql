@@ -9,6 +9,10 @@
 --   * auth.users, auth.uid(), auth.jwt(), auth.role() — implemented exactly as
 --     Supabase does: they read the `request.jwt.claims` GUC set per request.
 --   * storage.buckets, storage.objects, storage.foldername()
+--   * pg_net's net.http_post() — records requests in net.shim_requests
+--     instead of sending them
+--   * Vault: vault.secrets, vault.create_secret(), vault.decrypted_secrets
+--     (plain text here; Supabase encrypts at rest)
 --   * Supabase's default privileges on schema public (grant all to API roles),
 --     so tests prove that RLS — not missing grants — is what protects data.
 -- =============================================================================
@@ -112,6 +116,48 @@ end
 $$;
 
 grant execute on all functions in schema storage to anon, authenticated, service_role;
+
+-- pg_net stand-in (same signature as net.http_post); nothing leaves the box.
+create schema if not exists net;
+create table if not exists net.shim_requests (
+  id bigserial primary key,
+  url text not null,
+  headers jsonb not null,
+  body jsonb not null,
+  timeout_milliseconds integer not null,
+  created_at timestamptz not null default now()
+);
+create or replace function net.http_post(
+  url text, body jsonb default '{}'::jsonb, params jsonb default '{}'::jsonb,
+  headers jsonb default '{"Content-Type": "application/json"}'::jsonb, timeout_milliseconds integer default 5000
+) returns bigint
+language sql
+as $$
+  insert into net.shim_requests (url, headers, body, timeout_milliseconds)
+  values (url, headers, body, timeout_milliseconds)
+  returning id
+$$;
+
+-- Vault stand-in: like Supabase, API roles have no access to it.
+create schema if not exists vault;
+create table if not exists vault.secrets (
+  id uuid primary key default gen_random_uuid(),
+  name text unique,
+  description text not null default '',
+  secret text not null,
+  created_at timestamptz not null default now()
+);
+create or replace view vault.decrypted_secrets as
+  select id, name, description, secret, secret as decrypted_secret, created_at from vault.secrets;
+create or replace function vault.create_secret(
+  new_secret text, new_name text default null, new_description text default '', new_key_id uuid default null
+) returns uuid
+language sql
+as $$
+  insert into vault.secrets (secret, name, description) values (new_secret, new_name, new_description) returning id
+$$;
+revoke all on schema vault from public;
+revoke all on all tables in schema vault from public;
 
 -- Supabase's defaults: API roles get broad grants in `public`; RLS is the gate.
 grant usage on schema public to anon, authenticated, service_role;
