@@ -1,6 +1,7 @@
-// Staff accounts created by the staff-admin Edge Function (service role).
-// The tenant is derived from the verified caller (p_actor), never from the
-// request, and every action is attributed to that owner in the audit log.
+// Owner administration: staff accounts created by the staff-admin Edge
+// Function (service role) and the owner's readable audit log. The tenant is
+// derived from the verified caller (p_actor), never from the request, and
+// every action is attributed to that owner in the audit log.
 import 'package:postgres/postgres.dart';
 import 'package:test/test.dart';
 
@@ -23,10 +24,13 @@ void main() {
   }
 
   Future<Result> create(String actor, String userId, String username, {List<String> permissions = const []}) =>
-      service.query(
-        'select public.staff_admin_create(@a::uuid, @u::uuid, @n, @d, @p::public.app_permission[])',
-        {'a': actor, 'u': userId, 'n': username, 'd': 'New Staff', 'p': '{${permissions.join(',')}}'},
-      );
+      service.query('select public.staff_admin_create(@a::uuid, @u::uuid, @n, @d, @p::public.app_permission[])', {
+        'a': actor,
+        'u': userId,
+        'n': username,
+        'd': 'New Staff',
+        'p': '{${permissions.join(',')}}',
+      });
 
   setUpAll(() async {
     db = await TestDb.create();
@@ -70,8 +74,10 @@ void main() {
   test('staff cannot create staff, even through the service role', () async {
     final id = await authUser('evil_staff');
     await expectLater(() => create(a.staffFullId, id, 'evil_staff'), throwsDbError('permission_denied'));
-    expect(await db.admin.execute(Sql.named('select 1 from public.app_users where id = @u::uuid'), parameters: {'u': id}),
-        isEmpty);
+    expect(
+      await db.admin.execute(Sql.named('select 1 from public.app_users where id = @u::uuid'), parameters: {'u': id}),
+      isEmpty,
+    );
   });
 
   test('a suspended business cannot add staff', () async {
@@ -92,19 +98,17 @@ void main() {
     final id = await authUser('bad_name');
     await expectLater(() => create(a.ownerId, id, 'no spaces!'), throwsDbError('invalid_request'));
     await expectLater(
-      () => service.query(
-        "select public.staff_admin_create(@a::uuid, @u::uuid, 'okname', '   ', '{}')",
-        {'a': a.ownerId, 'u': id},
-      ),
+      () => service.query("select public.staff_admin_create(@a::uuid, @u::uuid, 'okname', '   ', '{}')", {
+        'a': a.ownerId,
+        'u': id,
+      }),
       throwsDbError('invalid_request'),
     );
   });
 
   test('password resets are limited to staff of the caller\'s business', () async {
-    Future<Result> check(String actor, String target) => service.query(
-      'select public.staff_admin_check_target(@a::uuid, @t::uuid)',
-      {'a': actor, 't': target},
-    );
+    Future<Result> check(String actor, String target) =>
+        service.query('select public.staff_admin_check_target(@a::uuid, @t::uuid)', {'a': actor, 't': target});
     await check(a.ownerId, a.staffMinId);
     await expectLater(() => check(b.ownerId, a.staffMinId), throwsDbError('member_not_found'));
     await expectLater(() => check(a.ownerId, a.ownerId), throwsDbError('member_not_found'));
@@ -134,10 +138,10 @@ void main() {
     final owner = await db.actor(a.ownerId);
     final id = await authUser('direct_call');
     await expectLater(
-      () => owner.query(
-        "select public.staff_admin_create(@a::uuid, @u::uuid, 'direct_call', 'X', '{}')",
-        {'a': a.ownerId, 'u': id},
-      ),
+      () => owner.query("select public.staff_admin_create(@a::uuid, @u::uuid, 'direct_call', 'X', '{}')", {
+        'a': a.ownerId,
+        'u': id,
+      }),
       throwsDbError(insufficientPrivilege),
     );
     await expectLater(
@@ -155,5 +159,63 @@ void main() {
       }),
       throwsDbError(insufficientPrivilege),
     );
+  });
+
+  group('audit log', () {
+    test('a removed permission records what was removed and whose it was', () async {
+      final owner = await db.actor(a.ownerId);
+      await owner.query("select public.set_member_permissions(@u::uuid, '{orders.create}')", {'u': a.staffMinId});
+      await owner.query("select public.set_member_permissions(@u::uuid, '{}')", {'u': a.staffMinId});
+      final rows = await owner.query(
+        "select action, data, subject from public.audit_page(null, 200) "
+        "where entity = 'member_permissions' and entity_id = @u::uuid order by id",
+        {'u': a.staffMinId},
+      );
+      expect(rows.map((r) => r[0]), ['insert', 'delete']);
+      final removed = rows.last[1]! as Map;
+      expect(removed['permission'], {'from': 'orders.create', 'to': null});
+      expect(rows.last[2], 'Min Staff');
+    });
+
+    test('rows name their subject: design, customer, staff, order', () async {
+      final owner = await db.actor(a.ownerId);
+      await owner.query('update public.products set rate_paise = rate_paise + 100 where id = @p::uuid', {
+        'p': a.kundan,
+      });
+      await owner.query("update public.customers set city = 'Gondal-audit' where id = @c::uuid", {'c': a.rajesh});
+      await owner.query('select public.set_member_active(@u::uuid, false)', {'u': a.staffMinId});
+      await owner.json('select public.create_order(@c::uuid, @items::jsonb, @r::uuid)', {
+        'c': a.rajesh,
+        'items': orderItems([(a.kundan, 2)]),
+        'r': TestDb.newId(),
+      });
+      final rows = await owner.query('select entity, action, subject from public.audit_page(null, 200)');
+      String? subject(String entity, String action) =>
+          rows.firstWhere((r) => r[0] == entity && r[1] == action)[2] as String?;
+      expect(subject('products', 'update'), '1024 · Kundan Set કુંદન');
+      expect(subject('customers', 'update'), 'Rajeshbhai');
+      expect(subject('tenant_members', 'update'), 'Min Staff');
+      expect(subject('orders', 'order.created'), startsWith('#'));
+    });
+
+    test('product cost changes stay redacted, also on delete', () async {
+      final owner = await db.actor(a.ownerId);
+      await owner.query('update public.product_private set cost_paise = 47000 where product_id = @p::uuid', {
+        'p': a.kundan,
+      });
+      final row = await owner.query(
+        "select data::text from public.audit_page(null, 200) where entity = 'product_private' and action = 'update'",
+      );
+      expect(row.first.first, isNot(contains('47000')));
+      expect(row.first.first, contains('changed'));
+    });
+
+    test('staff never read the audit log', () async {
+      final staff = await db.actor(a.staffFullId);
+      await expectLater(
+        () => staff.query('select * from public.audit_page(null, 10)'),
+        throwsDbError('permission_denied'),
+      );
+    });
   });
 }
