@@ -222,149 +222,159 @@ class _ProductEditScreenState extends ConsumerState<ProductEditScreen> {
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: AppSpacing.maxListWidth),
-              child: ListView(
+              // Not a lazy ListView: every field must stay mounted so Form.validate()
+              // also checks fields scrolled off-screen.
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(AppSpacing.gutter),
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                children: [
-                  TextFormField(
-                    controller: _designNo,
-                    decoration: InputDecoration(labelText: l10n.fieldDesignNo, errorText: _designNoError),
-                    textCapitalization: TextCapitalization.characters,
-                    textInputAction: TextInputAction.next,
-                    validator: (v) {
-                      final value = (v ?? '').trim();
-                      if (value.isEmpty) return l10n.validationRequired;
-                      if (!ProductDraft.designNoPattern.hasMatch(value)) return l10n.validationDesignNo;
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  TextFormField(
-                    controller: _name,
-                    decoration: InputDecoration(labelText: l10n.fieldName),
-                    textInputAction: TextInputAction.next,
-                    maxLength: 120,
-                    validator: (v) => (v ?? '').trim().isEmpty ? l10n.validationRequired : null,
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _rate,
-                          enabled: !rateLocked,
-                          decoration: InputDecoration(
-                            labelText: l10n.fieldRate,
-                            prefixText: '₹ ',
-                            helperText: rateLocked ? l10n.rateNeedsPermission : null,
-                            helperMaxLines: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      controller: _designNo,
+                      decoration: InputDecoration(labelText: l10n.fieldDesignNo, errorText: _designNoError),
+                      textCapitalization: TextCapitalization.characters,
+                      textInputAction: TextInputAction.next,
+                      validator: (v) {
+                        final value = (v ?? '').trim();
+                        if (value.isEmpty) return l10n.validationRequired;
+                        if (!ProductDraft.designNoPattern.hasMatch(value)) return l10n.validationDesignNo;
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    TextFormField(
+                      controller: _name,
+                      decoration: InputDecoration(labelText: l10n.fieldName),
+                      textInputAction: TextInputAction.next,
+                      maxLength: 120,
+                      validator: (v) => (v ?? '').trim().isEmpty ? l10n.validationRequired : null,
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _rate,
+                            enabled: !rateLocked,
+                            decoration: InputDecoration(
+                              labelText: l10n.fieldRate,
+                              prefixText: '₹ ',
+                              helperText: rateLocked ? l10n.rateNeedsPermission : null,
+                              helperMaxLines: 2,
+                            ),
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                            validator: rateLocked ? null : validateRate,
                           ),
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-                          validator: rateLocked ? null : validateRate,
                         ),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Expanded(
-                        child: TextFormField(
-                          controller: _weight,
-                          decoration: InputDecoration(labelText: l10n.fieldWeight),
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-                          validator: (v) => (v ?? '').trim().isEmpty || AppFormat.parseGramsToMg(v!) != null
-                              ? null
-                              : l10n.validationWeight,
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _weight,
+                            decoration: InputDecoration(labelText: l10n.fieldWeight),
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                            validator: (v) => (v ?? '').trim().isEmpty || AppFormat.parseGramsToMg(v!) != null
+                                ? null
+                                : l10n.validationWeight,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: DropdownButtonFormField<String?>(
-                          initialValue: categories.any((c) => c.id == _categoryId) ? _categoryId : null,
-                          decoration: InputDecoration(labelText: l10n.fieldCategory),
-                          items: [
-                            DropdownMenuItem(value: null, child: Text(l10n.fieldNoCategory)),
-                            for (final c in categories) DropdownMenuItem(value: c.id, child: Text(c.name)),
-                          ],
-                          onChanged: (v) => setState(() {
-                            _categoryId = v;
-                            _dirty = true;
-                          }),
-                        ),
-                      ),
-                      IconButton(
-                        tooltip: l10n.categoryNew,
-                        icon: const Icon(Icons.add_circle_outline_rounded),
-                        onPressed: _newCategory,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  TextFormField(
-                    controller: _description,
-                    decoration: InputDecoration(labelText: l10n.fieldDescription),
-                    maxLines: 3,
-                    maxLength: 1000,
-                  ),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(l10n.fieldAvailable),
-                    value: _available,
-                    onChanged: (v) => setState(() {
-                      _available = v;
-                      _dirty = true;
-                    }),
-                  ),
-                  if (isOwner) ...[
+                      ],
+                    ),
                     const SizedBox(height: AppSpacing.md),
                     Row(
                       children: [
-                        const Icon(Icons.lock_outline_rounded, size: 18, color: AppColors.goldText),
-                        const SizedBox(width: AppSpacing.xs),
-                        Text(l10n.ownerOnlySection, style: AppType.label.copyWith(color: AppColors.goldText)),
+                        Expanded(
+                          child: DropdownButtonFormField<String?>(
+                            initialValue: categories.any((c) => c.id == _categoryId) ? _categoryId : null,
+                            decoration: InputDecoration(labelText: l10n.fieldCategory),
+                            items: [
+                              DropdownMenuItem(value: null, child: Text(l10n.fieldNoCategory)),
+                              for (final c in categories) DropdownMenuItem(value: c.id, child: Text(c.name)),
+                            ],
+                            onChanged: (v) => setState(() {
+                              _categoryId = v;
+                              _dirty = true;
+                            }),
+                          ),
+                        ),
+                        IconButton(
+                          tooltip: l10n.categoryNew,
+                          icon: const Icon(Icons.add_circle_outline_rounded),
+                          onPressed: _newCategory,
+                        ),
                       ],
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    TextFormField(
-                      controller: _cost,
-                      decoration: InputDecoration(labelText: l10n.fieldCost, prefixText: '₹ '),
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-                      validator: (v) =>
-                          (v ?? '').trim().isEmpty || Money.tryParseRupees(v!) != null ? null : l10n.validationAmount,
                     ),
                     const SizedBox(height: AppSpacing.md),
                     TextFormField(
-                      controller: _supplier,
-                      decoration: InputDecoration(labelText: l10n.fieldSupplier),
-                      maxLength: 120,
-                    ),
-                    TextFormField(
-                      controller: _note,
-                      decoration: InputDecoration(labelText: l10n.fieldInternalNote),
-                      maxLines: 2,
+                      controller: _description,
+                      decoration: InputDecoration(labelText: l10n.fieldDescription),
+                      maxLines: 3,
                       maxLength: 1000,
                     ),
-                  ],
-                  const SizedBox(height: AppSpacing.md),
-                  AppButton(label: l10n.commonSave, icon: Icons.check_rounded, confirmSuccess: true, onPressed: _save),
-                  const SizedBox(height: AppSpacing.xl),
-                  _PhotosEditor(productId: id, photos: detail?.photos ?? const []),
-                  if (detail != null) ...[
-                    const SizedBox(height: AppSpacing.xl),
-                    AppButton(
-                      label: detail.isArchived ? l10n.unarchiveDesign : l10n.archiveDesign,
-                      icon: detail.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
-                      variant: AppButtonVariant.quiet,
-                      onPressed: () => unawaited(_toggleArchive(detail)),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l10n.fieldAvailable),
+                      value: _available,
+                      onChanged: (v) => setState(() {
+                        _available = v;
+                        _dirty = true;
+                      }),
                     ),
+                    if (isOwner) ...[
+                      const SizedBox(height: AppSpacing.md),
+                      Row(
+                        children: [
+                          const Icon(Icons.lock_outline_rounded, size: 18, color: AppColors.goldText),
+                          const SizedBox(width: AppSpacing.xs),
+                          Text(l10n.ownerOnlySection, style: AppType.label.copyWith(color: AppColors.goldText)),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      TextFormField(
+                        controller: _cost,
+                        decoration: InputDecoration(labelText: l10n.fieldCost, prefixText: '₹ '),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                        validator: (v) =>
+                            (v ?? '').trim().isEmpty || Money.tryParseRupees(v!) != null ? null : l10n.validationAmount,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      TextFormField(
+                        controller: _supplier,
+                        decoration: InputDecoration(labelText: l10n.fieldSupplier),
+                        maxLength: 120,
+                      ),
+                      TextFormField(
+                        controller: _note,
+                        decoration: InputDecoration(labelText: l10n.fieldInternalNote),
+                        maxLines: 2,
+                        maxLength: 1000,
+                      ),
+                    ],
+                    const SizedBox(height: AppSpacing.md),
+                    AppButton(
+                      label: l10n.commonSave,
+                      icon: Icons.check_rounded,
+                      confirmSuccess: true,
+                      onPressed: _save,
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    _PhotosEditor(productId: id, photos: detail?.photos ?? const []),
+                    if (detail != null) ...[
+                      const SizedBox(height: AppSpacing.xl),
+                      AppButton(
+                        label: detail.isArchived ? l10n.unarchiveDesign : l10n.archiveDesign,
+                        icon: detail.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
+                        variant: AppButtonVariant.quiet,
+                        onPressed: () => unawaited(_toggleArchive(detail)),
+                      ),
+                    ],
+                    const SizedBox(height: AppSpacing.huge),
                   ],
-                  const SizedBox(height: AppSpacing.huge),
-                ],
+                ),
               ),
             ),
           ),

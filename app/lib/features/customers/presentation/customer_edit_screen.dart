@@ -194,100 +194,105 @@ class _CustomerEditScreenState extends ConsumerState<CustomerEditScreen> {
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: AppSpacing.maxListWidth),
-              child: ListView(
+              // Not a lazy ListView: every field must stay mounted so Form.validate()
+              // also checks fields scrolled off-screen.
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(AppSpacing.gutter),
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                children: [
-                  TextFormField(
-                    controller: _name,
-                    decoration: InputDecoration(labelText: l10n.fieldCustomerName),
-                    textCapitalization: TextCapitalization.words,
-                    textInputAction: TextInputAction.next,
-                    maxLength: 120,
-                    validator: (v) => (v ?? '').trim().isEmpty ? l10n.validationRequired : null,
-                  ),
-                  TextFormField(
-                    controller: _shop,
-                    decoration: InputDecoration(labelText: l10n.fieldShopName),
-                    textCapitalization: TextCapitalization.words,
-                    textInputAction: TextInputAction.next,
-                    maxLength: 120,
-                  ),
-                  TextFormField(
-                    controller: _city,
-                    decoration: InputDecoration(labelText: l10n.fieldCity),
-                    textCapitalization: TextCapitalization.words,
-                    textInputAction: TextInputAction.next,
-                    maxLength: 60,
-                  ),
-                  TextFormField(
-                    controller: _phone,
-                    decoration: InputDecoration(
-                      labelText: l10n.fieldMobile,
-                      prefixIcon: const Icon(Icons.call_outlined),
-                    ),
-                    keyboardType: TextInputType.phone,
-                    inputFormatters: digits,
-                    textInputAction: TextInputAction.next,
-                    validator: phoneValidator,
-                  ),
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(l10n.whatsappSameAsMobile),
-                    value: _sameWhatsapp,
-                    onChanged: (v) => setState(() {
-                      _sameWhatsapp = v;
-                      _dirty = true;
-                    }),
-                  ),
-                  if (!_sameWhatsapp)
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
                     TextFormField(
-                      controller: _whatsapp,
+                      controller: _name,
+                      decoration: InputDecoration(labelText: l10n.fieldCustomerName),
+                      textCapitalization: TextCapitalization.words,
+                      textInputAction: TextInputAction.next,
+                      maxLength: 120,
+                      validator: (v) => (v ?? '').trim().isEmpty ? l10n.validationRequired : null,
+                    ),
+                    TextFormField(
+                      controller: _shop,
+                      decoration: InputDecoration(labelText: l10n.fieldShopName),
+                      textCapitalization: TextCapitalization.words,
+                      textInputAction: TextInputAction.next,
+                      maxLength: 120,
+                    ),
+                    TextFormField(
+                      controller: _city,
+                      decoration: InputDecoration(labelText: l10n.fieldCity),
+                      textCapitalization: TextCapitalization.words,
+                      textInputAction: TextInputAction.next,
+                      maxLength: 60,
+                    ),
+                    TextFormField(
+                      controller: _phone,
                       decoration: InputDecoration(
-                        labelText: l10n.fieldWhatsapp,
-                        prefixIcon: const Icon(Icons.chat_outlined),
+                        labelText: l10n.fieldMobile,
+                        prefixIcon: const Icon(Icons.call_outlined),
                       ),
                       keyboardType: TextInputType.phone,
                       inputFormatters: digits,
+                      textInputAction: TextInputAction.next,
                       validator: phoneValidator,
                     ),
-                  const SizedBox(height: AppSpacing.md),
-                  TextFormField(
-                    controller: _notes,
-                    decoration: InputDecoration(labelText: l10n.fieldNotes),
-                    maxLines: 3,
-                    maxLength: 1000,
-                  ),
-                  if (canOpening) ...[
-                    const SizedBox(height: AppSpacing.sm),
-                    TextFormField(
-                      controller: _opening,
-                      decoration: InputDecoration(
-                        labelText: l10n.fieldOpeningBaki,
-                        prefixText: '₹ ',
-                        helperText: l10n.openingBakiHelp,
-                        helperMaxLines: 2,
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l10n.whatsappSameAsMobile),
+                      value: _sameWhatsapp,
+                      onChanged: (v) => setState(() {
+                        _sameWhatsapp = v;
+                        _dirty = true;
+                      }),
+                    ),
+                    if (!_sameWhatsapp)
+                      TextFormField(
+                        controller: _whatsapp,
+                        decoration: InputDecoration(
+                          labelText: l10n.fieldWhatsapp,
+                          prefixIcon: const Icon(Icons.chat_outlined),
+                        ),
+                        keyboardType: TextInputType.phone,
+                        inputFormatters: digits,
+                        validator: phoneValidator,
                       ),
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-                      validator: (v) => (v ?? '').trim().isEmpty || (Money.tryParseRupees(v!)?.paise ?? 0) > 0
-                          ? null
-                          : l10n.validationAmount,
+                    const SizedBox(height: AppSpacing.md),
+                    TextFormField(
+                      controller: _notes,
+                      decoration: InputDecoration(labelText: l10n.fieldNotes),
+                      maxLines: 3,
+                      maxLength: 1000,
                     ),
+                    if (canOpening) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      TextFormField(
+                        controller: _opening,
+                        decoration: InputDecoration(
+                          labelText: l10n.fieldOpeningBaki,
+                          prefixText: '₹ ',
+                          helperText: l10n.openingBakiHelp,
+                          helperMaxLines: 2,
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                        validator: (v) => (v ?? '').trim().isEmpty || (Money.tryParseRupees(v!)?.paise ?? 0) > 0
+                            ? null
+                            : l10n.validationAmount,
+                      ),
+                    ],
+                    const SizedBox(height: AppSpacing.lg),
+                    AppButton(label: l10n.commonSave, icon: Icons.check_rounded, onPressed: _save),
+                    if (existing != null) ...[
+                      const SizedBox(height: AppSpacing.xl),
+                      AppButton(
+                        label: existing.isArchived ? l10n.unarchiveCustomer : l10n.archiveCustomer,
+                        icon: existing.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
+                        variant: AppButtonVariant.quiet,
+                        onPressed: () => unawaited(_toggleArchive(existing!)),
+                      ),
+                    ],
+                    const SizedBox(height: AppSpacing.huge),
                   ],
-                  const SizedBox(height: AppSpacing.lg),
-                  AppButton(label: l10n.commonSave, icon: Icons.check_rounded, onPressed: _save),
-                  if (existing != null) ...[
-                    const SizedBox(height: AppSpacing.xl),
-                    AppButton(
-                      label: existing.isArchived ? l10n.unarchiveCustomer : l10n.archiveCustomer,
-                      icon: existing.isArchived ? Icons.unarchive_outlined : Icons.archive_outlined,
-                      variant: AppButtonVariant.quiet,
-                      onPressed: () => unawaited(_toggleArchive(existing!)),
-                    ),
-                  ],
-                  const SizedBox(height: AppSpacing.huge),
-                ],
+                ),
               ),
             ),
           ),

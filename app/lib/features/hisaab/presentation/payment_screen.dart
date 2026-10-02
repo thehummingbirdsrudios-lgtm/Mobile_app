@@ -92,76 +92,81 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
           alignment: Alignment.topCenter,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: AppSpacing.maxListWidth),
-            child: ListView(
+            // Not a lazy ListView: every field must stay mounted so Form.validate()
+            // also checks fields scrolled off-screen.
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(AppSpacing.gutter),
-              children: [
-                TextFormField(
-                  controller: _amount,
-                  autofocus: true,
-                  style: text.headlineMedium!.copyWith(fontFeatures: AppType.figures),
-                  decoration: InputDecoration(labelText: l10n.fieldAmount, prefixText: '₹ '),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
-                  validator: (v) => (Money.tryParseRupees(v ?? '')?.paise ?? 0) > 0 ? null : l10n.validationAmount,
-                ),
-                if (baki != null && baki.paise > 0) ...[
-                  const SizedBox(height: AppSpacing.xs),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: ActionChip(
-                      label: Text(l10n.paymentFullBaki(baki.format())),
-                      onPressed: () => _amount.text = baki.format(symbol: false).replaceAll(',', ''),
-                    ),
-                  ),
-                ],
-                if (after != null) ...[
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    after.isNegative
-                        ? l10n.paymentAdvanceAfter((-after).format())
-                        : l10n.paymentBakiAfter(after.format()),
-                    style: text.bodyLarge!.copyWith(color: AppColors.muted, fontFeatures: AppType.figures),
-                  ),
-                ],
-                const SizedBox(height: AppSpacing.lg),
-                Text(l10n.fieldPaymentMode, style: text.titleSmall),
-                const SizedBox(height: AppSpacing.xs),
-                Wrap(
-                  spacing: AppSpacing.xs,
-                  children: [
-                    for (final m in PaymentMode.values)
-                      ChoiceChip(
-                        label: Text(paymentModeLabel(l10n, m)),
-                        selected: _mode == m,
-                        onSelected: (_) => setState(() => _mode = m),
-                      ),
-                  ],
-                ),
-                if (_mode != PaymentMode.cash) ...[
-                  const SizedBox(height: AppSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
                   TextFormField(
-                    controller: _reference,
-                    maxLength: 60,
-                    decoration: InputDecoration(labelText: l10n.fieldReference),
+                    controller: _amount,
+                    autofocus: true,
+                    style: text.headlineMedium!.copyWith(fontFeatures: AppType.figures),
+                    decoration: InputDecoration(labelText: l10n.fieldAmount, prefixText: '₹ '),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[0-9.,]'))],
+                    validator: (v) => (Money.tryParseRupees(v ?? '')?.paise ?? 0) > 0 ? null : l10n.validationAmount,
                   ),
-                ],
-                const SizedBox(height: AppSpacing.sm),
-                TextFormField(
-                  controller: _note,
-                  maxLength: 400,
-                  decoration: InputDecoration(labelText: l10n.fieldNotes),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                AppButton(label: l10n.paymentSave, icon: Icons.check_rounded, onPressed: _save),
-                if (baki != null) ...[
-                  const SizedBox(height: AppSpacing.md),
-                  Text(
-                    '${l10n.bakiLabel}: ${bakiText(l10n, baki)}',
-                    textAlign: TextAlign.center,
-                    style: text.bodyMedium!.copyWith(color: AppColors.muted),
+                  if (baki != null && baki.paise > 0) ...[
+                    const SizedBox(height: AppSpacing.xs),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: ActionChip(
+                        label: Text(l10n.paymentFullBaki(baki.format())),
+                        onPressed: () => _amount.text = baki.format(symbol: false).replaceAll(',', ''),
+                      ),
+                    ),
+                  ],
+                  if (after != null) ...[
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      after.isNegative
+                          ? l10n.paymentAdvanceAfter((-after).format())
+                          : l10n.paymentBakiAfter(after.format()),
+                      style: text.bodyLarge!.copyWith(color: AppColors.muted, fontFeatures: AppType.figures),
+                    ),
+                  ],
+                  const SizedBox(height: AppSpacing.lg),
+                  Text(l10n.fieldPaymentMode, style: text.titleSmall),
+                  const SizedBox(height: AppSpacing.xs),
+                  Wrap(
+                    spacing: AppSpacing.xs,
+                    children: [
+                      for (final m in PaymentMode.values)
+                        ChoiceChip(
+                          label: Text(paymentModeLabel(l10n, m)),
+                          selected: _mode == m,
+                          onSelected: (_) => setState(() => _mode = m),
+                        ),
+                    ],
                   ),
+                  if (_mode != PaymentMode.cash) ...[
+                    const SizedBox(height: AppSpacing.md),
+                    TextFormField(
+                      controller: _reference,
+                      maxLength: 60,
+                      decoration: InputDecoration(labelText: l10n.fieldReference),
+                    ),
+                  ],
+                  const SizedBox(height: AppSpacing.sm),
+                  TextFormField(
+                    controller: _note,
+                    maxLength: 400,
+                    decoration: InputDecoration(labelText: l10n.fieldNotes),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+                  AppButton(label: l10n.paymentSave, icon: Icons.check_rounded, onPressed: _save),
+                  if (baki != null) ...[
+                    const SizedBox(height: AppSpacing.md),
+                    Text(
+                      '${l10n.bakiLabel}: ${bakiText(l10n, baki)}',
+                      textAlign: TextAlign.center,
+                      style: text.bodyMedium!.copyWith(color: AppColors.muted),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),
