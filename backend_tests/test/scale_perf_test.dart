@@ -21,6 +21,7 @@ const _bigTables = {
   'ledger_entries',
   'customer_balances',
   'product_media',
+  'notifications',
 };
 
 void main() {
@@ -266,6 +267,19 @@ void main() {
       params: () => {'t': a.tenantId},
     );
     plan('Regular Maal', 'select * from public.regular_maal(@c::uuid)', params: () => {'c': sampleCustomer});
+    // The owner's inbox holds a notification for every seeded design and order.
+    plan(
+      'Notification inbox (latest 30)',
+      'select id, kind, args, read_at, created_at from public.notifications '
+          'where tenant_id = @t::uuid and recipient_id = @u::uuid order by created_at desc, id desc limit 30',
+      params: () => {'t': a.tenantId, 'u': a.ownerId},
+    );
+    plan(
+      'Unread notification count (capped)',
+      'select count(*) from (select 1 from public.notifications '
+          'where tenant_id = @t::uuid and recipient_id = @u::uuid and read_at is null limit 100) unread',
+      params: () => {'t': a.tenantId, 'u': a.ownerId},
+    );
 
     rpc('search_all: design number', () => owner.query("select * from public.search_all('D4242')"));
     rpc('search_all: design name', () => owner.query("select * from public.search_all('kundan')"));

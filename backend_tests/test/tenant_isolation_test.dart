@@ -14,6 +14,7 @@ void main() {
   late String orderB;
   late String billB;
   late String paymentB;
+  const deviceTokenB = 'fcm-token-of-a-tenant-b-staff-phone-0001';
 
   setUpAll(() async {
     db = await TestDb.create();
@@ -42,6 +43,9 @@ void main() {
       "insert into public.remarks (kind, text_body, customer_id) values ('text', 'B secret vaat', @c::uuid)",
       {'c': b.rajesh},
     );
+    // B's staff get notifications for B's order and payment, on a B device.
+    final staffB = await db.actor(b.staffFullId);
+    await staffB.query("select public.register_device_token(@t, 'android', 'gu')", {'t': deviceTokenB});
   });
 
   tearDownAll(() => db.dispose());
@@ -69,6 +73,7 @@ void main() {
       'photo_enquiries',
       'share_assets',
       'notifications',
+      'device_tokens',
       'audit_logs',
     ];
 
@@ -344,6 +349,71 @@ void main() {
       expect(await ownerC.count('select 1 from public.customers'), greaterThan(0));
       await db.admin.execute("update public.tenants set status = 'suspended' where id = \$1", parameters: [c.tenantId]);
       expect(await ownerC.count('select 1 from public.customers'), 0);
+    });
+  });
+
+  group('notifications and devices', () {
+    test('the inbox, unread count and mark-read only ever touch own rows', () async {
+      final staffB = await db.actor(b.staffFullId);
+      final bIds = (await staffB.query(
+        'select id from public.notification_page(null, null, 100)',
+      )).map((r) => r.first! as String).toList();
+      expect(bIds, isNotEmpty, reason: 'B staff were notified of B activity');
+
+      final aIds = (await ownerA.query(
+        'select id from public.notification_page(null, null, 100)',
+      )).map((r) => r.first! as String).toSet();
+      expect(aIds.intersection(bIds.toSet()), isEmpty);
+      final unreadA = await ownerA.scalar('select public.unread_notification_count()');
+      expect(
+        await ownerA.scalar('select public.mark_notifications_read(@ids::uuid[])', {'ids': '{${bIds.join(',')}}'}),
+        0,
+      );
+      expect(await ownerA.scalar('select public.unread_notification_count()'), unreadA);
+      expect(await staffB.scalar('select public.unread_notification_count()'), bIds.length);
+    });
+
+    test('a device token follows the login that registered it last', () async {
+      final staffB = await db.actor(b.staffFullId);
+      expect(await staffB.count('select 1 from public.device_tokens'), 1);
+      // The phone is handed to someone in business A, who logs in.
+      await ownerA.query("select public.register_device_token(@t, 'android', 'en')", {'t': deviceTokenB});
+      expect(await staffB.count('select 1 from public.device_tokens'), 0);
+      expect(await ownerA.count('select 1 from public.device_tokens where tenant_id = @t::uuid', {'t': a.tenantId}), 1);
+      // B's notifications can no longer reach it.
+      final service = await db.serviceRole();
+      final bNotification = await staffB.scalar('select id from public.notification_page(null, null, 1)');
+      expect(await service.count('select 1 from public.push_targets(@n::uuid)', {'n': bNotification}), 0);
+    });
+
+    test('unregistering only removes the caller\'s own token', () async {
+      final staffB = await db.actor(b.staffFullId);
+      await staffB.query("select public.register_device_token(@t, 'android', 'gu')", {'t': '$deviceTokenB-x'});
+      await ownerA.query('select public.unregister_device_token(@t)', {'t': '$deviceTokenB-x'});
+      expect(await staffB.count('select 1 from public.device_tokens'), 1);
+    });
+
+    test('app users cannot write tokens or notifications directly, nor read push targets', () async {
+      await expectLater(
+        () => ownerA.query(
+          "insert into public.device_tokens (tenant_id, user_id, token, platform) "
+          "values (@t::uuid, @u::uuid, 'forged-token-forged-token-1', 'android')",
+          {'t': b.tenantId, 'u': b.ownerId},
+        ),
+        throwsDbError(insufficientPrivilege),
+      );
+      await expectLater(
+        () => ownerA.query(
+          "insert into public.notifications (tenant_id, recipient_id, kind, dedupe_key) "
+          "values (@t::uuid, @u::uuid, 'new_maal', 'x')",
+          {'t': b.tenantId, 'u': b.ownerId},
+        ),
+        throwsDbError(insufficientPrivilege),
+      );
+      await expectLater(
+        () => ownerA.query('select * from public.push_targets(gen_random_uuid())'),
+        throwsDbError(insufficientPrivilege),
+      );
     });
   });
 }
