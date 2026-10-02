@@ -47,4 +47,19 @@ void main() {
     expect(customers.created, isEmpty);
     expect(find.text('Required'), findsOneWidget);
   });
+
+  testWidgets('business details validate the name even when it is off-screen', (tester) async {
+    final admin = FakeAdminRepository();
+    await pumpVepari(
+      tester,
+      auth: FakeAuthRepository(restored: ownerSession),
+      admin: admin,
+      size: _short,
+    );
+    await _go(tester, AppRoutes.businessProfile);
+    await tester.enterText(find.widgetWithText(TextFormField, 'Business name'), '   ');
+    await _saveFromBottom(tester, 'Save');
+    expect(admin.saved, isEmpty);
+    expect(find.text('Required'), findsOneWidget);
+  });
 }

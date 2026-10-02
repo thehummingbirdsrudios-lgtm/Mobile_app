@@ -2018,6 +2018,528 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Product / item'**
   String get billColItem;
+
+  /// More: owner section header
+  ///
+  /// In en, this message translates to:
+  /// **'Business settings'**
+  String get adminSection;
+
+  /// Business profile screen
+  ///
+  /// In en, this message translates to:
+  /// **'Business details'**
+  String get adminBusinessProfile;
+
+  /// More: business profile subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Name, phone, GSTIN, logo, bill note'**
+  String get adminBusinessProfileHint;
+
+  /// Staff management screen
+  ///
+  /// In en, this message translates to:
+  /// **'Staff'**
+  String get adminStaff;
+
+  /// More: staff subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Logins and permissions'**
+  String get adminStaffHint;
+
+  /// Audit log screen
+  ///
+  /// In en, this message translates to:
+  /// **'Activity log'**
+  String get adminAudit;
+
+  /// More: audit subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Who changed what, and when'**
+  String get adminAuditHint;
+
+  /// Non-owner opened an owner screen
+  ///
+  /// In en, this message translates to:
+  /// **'Only the owner can open this.'**
+  String get adminOwnerOnly;
+
+  /// Profile field
+  ///
+  /// In en, this message translates to:
+  /// **'Business name'**
+  String get fieldBusinessName;
+
+  /// Profile field
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get fieldAddress;
+
+  /// Profile field
+  ///
+  /// In en, this message translates to:
+  /// **'GSTIN (optional)'**
+  String get fieldGstin;
+
+  /// Profile field
+  ///
+  /// In en, this message translates to:
+  /// **'Note at the bottom of bills'**
+  String get fieldBillFooter;
+
+  /// Validation: GSTIN
+  ///
+  /// In en, this message translates to:
+  /// **'GSTIN has 15 letters and numbers'**
+  String get validationGstin;
+
+  /// Profile switch
+  ///
+  /// In en, this message translates to:
+  /// **'Watermark on shared photos'**
+  String get profileWatermark;
+
+  /// Profile switch subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your business name on photos you send'**
+  String get profileWatermarkHint;
+
+  /// Profile default locale
+  ///
+  /// In en, this message translates to:
+  /// **'Language for new staff phones'**
+  String get profileDefaultLanguage;
+
+  /// Profile logo section
+  ///
+  /// In en, this message translates to:
+  /// **'Logo'**
+  String get profileLogo;
+
+  /// Profile logo hint
+  ///
+  /// In en, this message translates to:
+  /// **'Printed on bills'**
+  String get profileLogoHint;
+
+  /// Profile logo button
+  ///
+  /// In en, this message translates to:
+  /// **'Add logo'**
+  String get profileLogoAdd;
+
+  /// Profile logo button
+  ///
+  /// In en, this message translates to:
+  /// **'Change logo'**
+  String get profileLogoChange;
+
+  /// Profile logo button
+  ///
+  /// In en, this message translates to:
+  /// **'Remove logo'**
+  String get profileLogoRemove;
+
+  /// Logo uploaded
+  ///
+  /// In en, this message translates to:
+  /// **'Logo updated'**
+  String get profileLogoSaved;
+
+  /// Logo removed
+  ///
+  /// In en, this message translates to:
+  /// **'Logo removed'**
+  String get profileLogoRemoved;
+
+  /// Staff list action
+  ///
+  /// In en, this message translates to:
+  /// **'Add staff'**
+  String get staffAdd;
+
+  /// Staff list empty
+  ///
+  /// In en, this message translates to:
+  /// **'No staff yet'**
+  String get staffEmpty;
+
+  /// Staff list empty body
+  ///
+  /// In en, this message translates to:
+  /// **'Make a login for each person who works with you.'**
+  String get staffEmptyBody;
+
+  /// Staff status chip
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get staffActive;
+
+  /// Staff status chip
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get staffInactive;
+
+  /// Staff row subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No extra permissions} =1{1 permission} other{{count} permissions}}'**
+  String staffPermissionCount(int count);
+
+  /// Staff active switch
+  ///
+  /// In en, this message translates to:
+  /// **'Can log in'**
+  String get staffAccess;
+
+  /// Staff active switch subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off to stop access at once'**
+  String get staffAccessHint;
+
+  /// Deactivate dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Stop {name}\'s access?'**
+  String staffDeactivateTitle(String name);
+
+  /// Deactivate dialog body
+  ///
+  /// In en, this message translates to:
+  /// **'They are signed out at their next action and cannot log in until you turn this back on. Their past work stays.'**
+  String get staffDeactivateBody;
+
+  /// Deactivate confirm
+  ///
+  /// In en, this message translates to:
+  /// **'Stop access'**
+  String get staffDeactivate;
+
+  /// After deactivation
+  ///
+  /// In en, this message translates to:
+  /// **'Access stopped'**
+  String get staffAccessStopped;
+
+  /// After reactivation
+  ///
+  /// In en, this message translates to:
+  /// **'Access restored'**
+  String get staffAccessRestored;
+
+  /// Staff permissions header
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get staffPermissions;
+
+  /// Staff permissions explanation
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone can see Maal, customers and orders. Give only what each person needs.'**
+  String get staffPermissionsHint;
+
+  /// Save permissions button
+  ///
+  /// In en, this message translates to:
+  /// **'Save permissions'**
+  String get staffSavePermissions;
+
+  /// Owner row detail
+  ///
+  /// In en, this message translates to:
+  /// **'The owner has every permission.'**
+  String get staffOwnerHasAll;
+
+  /// Reset password action
+  ///
+  /// In en, this message translates to:
+  /// **'Set new password'**
+  String get staffResetPassword;
+
+  /// Reset password dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Set a new password for {name}, then tell them in person.'**
+  String staffResetPasswordBody(String name);
+
+  /// After reset
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed'**
+  String get staffPasswordChanged;
+
+  /// Password field
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get fieldNewPassword;
+
+  /// Staff name field
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fieldPersonName;
+
+  /// Validation: password
+  ///
+  /// In en, this message translates to:
+  /// **'At least 8 characters'**
+  String get validationPasswordShort;
+
+  /// Validation: password
+  ///
+  /// In en, this message translates to:
+  /// **'Too long — use a shorter password'**
+  String get validationPasswordLong;
+
+  /// Validation: password
+  ///
+  /// In en, this message translates to:
+  /// **'Must not be the same as the username'**
+  String get validationPasswordSameAsUsername;
+
+  /// Add staff screen
+  ///
+  /// In en, this message translates to:
+  /// **'New staff login'**
+  String get staffNewTitle;
+
+  /// Username helper
+  ///
+  /// In en, this message translates to:
+  /// **'Small letters, numbers, dot or underscore. They log in with this.'**
+  String get staffUsernameHint;
+
+  /// Password helper
+  ///
+  /// In en, this message translates to:
+  /// **'Tell this password to them in person. You can set a new one any time.'**
+  String get staffPasswordHint;
+
+  /// Create staff button
+  ///
+  /// In en, this message translates to:
+  /// **'Create login'**
+  String get staffCreate;
+
+  /// After create
+  ///
+  /// In en, this message translates to:
+  /// **'{name} can log in now'**
+  String staffCreated(String name);
+
+  /// Username exists
+  ///
+  /// In en, this message translates to:
+  /// **'This username is taken. Try another.'**
+  String get staffUsernameTaken;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Add and edit Maal'**
+  String get permCatalogueManage;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Change rates'**
+  String get permRatesManage;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Add and edit customers'**
+  String get permCustomersManage;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Take orders'**
+  String get permOrdersCreate;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Move and cancel orders'**
+  String get permOrdersManage;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Record payments'**
+  String get permPaymentsRecord;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'See Hisaab and Baki'**
+  String get permHisaabView;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Baki and corrections'**
+  String get permHisaabAdjust;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'Make bills'**
+  String get permBillsIssue;
+
+  /// Permission
+  ///
+  /// In en, this message translates to:
+  /// **'See reports'**
+  String get permReportsView;
+
+  /// Audit empty
+  ///
+  /// In en, this message translates to:
+  /// **'No activity yet'**
+  String get auditEmpty;
+
+  /// Audit actor unknown
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get auditSystem;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Order taken'**
+  String get auditOrderCreated;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Order moved forward'**
+  String get auditOrderStatus;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Order cancelled'**
+  String get auditOrderCancelled;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Payment recorded'**
+  String get auditPaymentRecorded;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Bill made'**
+  String get auditBillIssued;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Opening Baki set'**
+  String get auditLedgerOpening;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Hisaab corrected'**
+  String get auditLedgerAdjustment;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Staff login created'**
+  String get auditStaffCreated;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Staff password changed'**
+  String get auditStaffPasswordReset;
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Permission given: {permission}'**
+  String auditPermissionGranted(String permission);
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Permission taken back: {permission}'**
+  String auditPermissionRevoked(String permission);
+
+  /// Audit action
+  ///
+  /// In en, this message translates to:
+  /// **'Rate changed {from} → {to}'**
+  String auditRateChanged(String from, String to);
+
+  /// Audit row insert
+  ///
+  /// In en, this message translates to:
+  /// **'{thing} added'**
+  String auditAdded(String thing);
+
+  /// Audit row update
+  ///
+  /// In en, this message translates to:
+  /// **'{thing} changed'**
+  String auditChanged(String thing);
+
+  /// Audit row delete
+  ///
+  /// In en, this message translates to:
+  /// **'{thing} removed'**
+  String auditRemoved(String thing);
+
+  /// Audit entity
+  ///
+  /// In en, this message translates to:
+  /// **'Design'**
+  String get auditEntityProduct;
+
+  /// Audit entity
+  ///
+  /// In en, this message translates to:
+  /// **'Cost details'**
+  String get auditEntityCost;
+
+  /// Audit entity
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get auditEntityCustomer;
+
+  /// Audit entity
+  ///
+  /// In en, this message translates to:
+  /// **'Customer rate'**
+  String get auditEntityCustomerRate;
+
+  /// Audit entity
+  ///
+  /// In en, this message translates to:
+  /// **'Staff member'**
+  String get auditEntityMember;
+
+  /// Audit entity fallback
+  ///
+  /// In en, this message translates to:
+  /// **'Record'**
+  String get auditEntityRecord;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

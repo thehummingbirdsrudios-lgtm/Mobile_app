@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:image/image.dart' as img;
 import 'package:vepari/app/app.dart';
 import 'package:vepari/core/core.dart';
+import 'package:vepari/features/admin/admin.dart';
 import 'package:vepari/features/auth/auth.dart';
 import 'package:vepari/features/bills/application/pdf/bill_pdf_renderer.dart' show renderBillPdf;
 import 'package:vepari/features/bills/application/pdf/bill_pdf_service.dart'
@@ -83,6 +84,7 @@ Future<ProviderContainer> pumpVepari(
   FakeRemarksRepository? remarks,
   FakeVoiceRecorder? recorder,
   FakeVoicePlayer? player,
+  FakeAdminRepository? admin,
   Locale locale = const Locale('en'),
   Size size = const Size(390, 844),
   AppConfig config = testConfig,
@@ -128,6 +130,7 @@ Future<ProviderContainer> pumpVepari(
       remarksRepositoryProvider.overrideWithValue(remarks ?? FakeRemarksRepository()),
       voiceRecorderProvider.overrideWithValue(recorder ?? FakeVoiceRecorder()),
       voicePlayerProvider.overrideWithValue(player ?? FakeVoicePlayer()),
+      adminRepositoryProvider.overrideWithValue(admin ?? FakeAdminRepository()),
       imageProcessorProvider.overrideWithValue((bytes) async => processImage(bytes)),
       appConfigProvider.overrideWithValue(config),
       preferenceStoreProvider.overrideWithValue(prefs),

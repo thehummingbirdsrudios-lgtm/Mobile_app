@@ -7,8 +7,8 @@ import '../../auth/auth.dart';
 import '../application/locale_controller.dart';
 import 'legal_screen.dart';
 
-/// More: who I am, language, legal, logout. Owner settings sections grow here
-/// in later increments via progressive disclosure — not a 40-item menu.
+/// More: who I am, the owner's business settings (progressive disclosure:
+/// three entries, each opening one focused screen), language, legal, logout.
 class MoreScreen extends ConsumerWidget {
   const MoreScreen({super.key, required this.onOpenLegal});
 
@@ -58,6 +58,7 @@ class MoreScreen extends ConsumerWidget {
     final session = ref.watch(currentSessionProvider);
     final config = ref.watch(appConfigProvider);
     final languageCode = Localizations.localeOf(context).languageCode;
+    final nav = ref.read(appNavigatorProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.navMore)),
@@ -104,6 +105,34 @@ class MoreScreen extends ConsumerWidget {
                   ),
                 ),
               const SizedBox(height: AppSpacing.xs),
+              if (session?.isOwner ?? false) ...[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.gutter, AppSpacing.sm, AppSpacing.gutter, 0),
+                  child: Text(l10n.adminSection, style: text.labelLarge!.copyWith(color: AppColors.muted)),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.storefront_outlined),
+                  title: Text(l10n.adminBusinessProfile),
+                  subtitle: Text(l10n.adminBusinessProfileHint),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: nav.openBusinessProfile,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.groups_outlined),
+                  title: Text(l10n.adminStaff),
+                  subtitle: Text(l10n.adminStaffHint),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: nav.openStaff,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.history_rounded),
+                  title: Text(l10n.adminAudit),
+                  subtitle: Text(l10n.adminAuditHint),
+                  trailing: const Icon(Icons.chevron_right_rounded),
+                  onTap: nav.openAudit,
+                ),
+                const Divider(indent: AppSpacing.gutter, endIndent: AppSpacing.gutter),
+              ],
               ListTile(
                 leading: const Icon(Icons.translate_rounded),
                 title: Text(l10n.moreLanguage),

@@ -8,6 +8,7 @@ export 'design/tokens.dart';
 export 'errors/app_failure.dart';
 export 'format/formatters.dart';
 export 'format/labels.dart';
+export 'format/phone.dart';
 export 'logging/app_logger.dart';
 export 'logging/logger_provider.dart';
 export 'media/capture.dart';

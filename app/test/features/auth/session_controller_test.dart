@@ -86,4 +86,49 @@ void main() {
     expect(staffSession.can(Permission.ordersCreate), isTrue);
     expect(staffSession.can(Permission.hisaabView), isFalse);
   });
+
+  group('refresh', () {
+    const renamed = UserSession(
+      userId: 'u-owner',
+      tenantId: 't-a',
+      username: 'rajesh',
+      displayName: 'Rajeshbhai',
+      businessName: 'Shree Jewels Rajkot',
+      role: MemberRole.owner,
+      permissions: {},
+    );
+
+    test('picks up server changes for the same member', () async {
+      auth.restored = ownerSession;
+      container = make();
+      await settle();
+      auth.restored = renamed;
+      await container.read(sessionControllerProvider.notifier).refresh();
+      expect(container.read(currentSessionProvider)?.businessName, 'Shree Jewels Rajkot');
+    });
+
+    test('signs out when the membership is gone', () async {
+      auth.restored = ownerSession;
+      container = make();
+      await settle();
+      auth.restored = null;
+      await container.read(sessionControllerProvider.notifier).refresh();
+      expect(container.read(sessionControllerProvider), isA<SessionSignedOut>());
+    });
+
+    test('offline keeps the verified session; another identity is ignored', () async {
+      auth.restored = ownerSession;
+      container = make();
+      await settle();
+      auth.restoreError = const AppFailure(FailureKind.network);
+      await container.read(sessionControllerProvider.notifier).refresh();
+      expect(container.read(currentSessionProvider), same(ownerSession));
+
+      auth
+        ..restoreError = null
+        ..restored = staffSession;
+      await container.read(sessionControllerProvider.notifier).refresh();
+      expect(container.read(currentSessionProvider), same(ownerSession));
+    });
+  });
 }

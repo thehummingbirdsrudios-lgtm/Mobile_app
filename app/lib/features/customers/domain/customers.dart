@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 
+import '../../../core/format/phone.dart';
 import '../../../core/money/money.dart';
 import '../../../core/state/paged.dart';
 
@@ -162,21 +163,10 @@ class CustomerDraft {
   final String whatsappPhone;
   final String notes;
 
-  /// Keeps digits and a leading +; Indian numbers are stored as 10 digits
-  /// ("+91 98250 12345" → "9825012345"). Null when empty.
-  static String? normalisePhone(String input) {
-    final trimmed = input.trim();
-    if (trimmed.isEmpty) return null;
-    final digits = trimmed.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digits.isEmpty) return trimmed; // fails validation
-    if (digits.length == 12 && digits.startsWith('91')) return digits.substring(2);
-    if (!trimmed.startsWith('+') && digits.length == 11 && digits.startsWith('0')) return digits.substring(1);
-    return trimmed.startsWith('+') ? '+$digits' : digits;
-  }
+  /// See [PhoneNumbers.normalise].
+  static String? normalisePhone(String input) => PhoneNumbers.normalise(input);
 
-  static final _phonePattern = RegExp(r'^\+?[0-9]{10,15}$');
-
-  static bool isValidPhone(String? normalised) => normalised == null || _phonePattern.hasMatch(normalised);
+  static bool isValidPhone(String? normalised) => PhoneNumbers.isValid(normalised);
 
   /// Mirrors the database CHECK constraints.
   Set<CustomerIssue> validate() => {

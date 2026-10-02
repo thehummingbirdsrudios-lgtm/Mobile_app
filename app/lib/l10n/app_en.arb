@@ -1541,5 +1541,406 @@
   "billColItem": "Product / item",
   "@billColItem": {
     "description": "Bill PDF column"
+  },
+  "adminSection": "Business settings",
+  "@adminSection": {
+    "description": "More: owner section header"
+  },
+  "adminBusinessProfile": "Business details",
+  "@adminBusinessProfile": {
+    "description": "Business profile screen"
+  },
+  "adminBusinessProfileHint": "Name, phone, GSTIN, logo, bill note",
+  "@adminBusinessProfileHint": {
+    "description": "More: business profile subtitle"
+  },
+  "adminStaff": "Staff",
+  "@adminStaff": {
+    "description": "Staff management screen"
+  },
+  "adminStaffHint": "Logins and permissions",
+  "@adminStaffHint": {
+    "description": "More: staff subtitle"
+  },
+  "adminAudit": "Activity log",
+  "@adminAudit": {
+    "description": "Audit log screen"
+  },
+  "adminAuditHint": "Who changed what, and when",
+  "@adminAuditHint": {
+    "description": "More: audit subtitle"
+  },
+  "adminOwnerOnly": "Only the owner can open this.",
+  "@adminOwnerOnly": {
+    "description": "Non-owner opened an owner screen"
+  },
+  "fieldBusinessName": "Business name",
+  "@fieldBusinessName": {
+    "description": "Profile field"
+  },
+  "fieldAddress": "Address",
+  "@fieldAddress": {
+    "description": "Profile field"
+  },
+  "fieldGstin": "GSTIN (optional)",
+  "@fieldGstin": {
+    "description": "Profile field"
+  },
+  "fieldBillFooter": "Note at the bottom of bills",
+  "@fieldBillFooter": {
+    "description": "Profile field"
+  },
+  "validationGstin": "GSTIN has 15 letters and numbers",
+  "@validationGstin": {
+    "description": "Validation: GSTIN"
+  },
+  "profileWatermark": "Watermark on shared photos",
+  "@profileWatermark": {
+    "description": "Profile switch"
+  },
+  "profileWatermarkHint": "Your business name on photos you send",
+  "@profileWatermarkHint": {
+    "description": "Profile switch subtitle"
+  },
+  "profileDefaultLanguage": "Language for new staff phones",
+  "@profileDefaultLanguage": {
+    "description": "Profile default locale"
+  },
+  "profileLogo": "Logo",
+  "@profileLogo": {
+    "description": "Profile logo section"
+  },
+  "profileLogoHint": "Printed on bills",
+  "@profileLogoHint": {
+    "description": "Profile logo hint"
+  },
+  "profileLogoAdd": "Add logo",
+  "@profileLogoAdd": {
+    "description": "Profile logo button"
+  },
+  "profileLogoChange": "Change logo",
+  "@profileLogoChange": {
+    "description": "Profile logo button"
+  },
+  "profileLogoRemove": "Remove logo",
+  "@profileLogoRemove": {
+    "description": "Profile logo button"
+  },
+  "profileLogoSaved": "Logo updated",
+  "@profileLogoSaved": {
+    "description": "Logo uploaded"
+  },
+  "profileLogoRemoved": "Logo removed",
+  "@profileLogoRemoved": {
+    "description": "Logo removed"
+  },
+  "staffAdd": "Add staff",
+  "@staffAdd": {
+    "description": "Staff list action"
+  },
+  "staffEmpty": "No staff yet",
+  "@staffEmpty": {
+    "description": "Staff list empty"
+  },
+  "staffEmptyBody": "Make a login for each person who works with you.",
+  "@staffEmptyBody": {
+    "description": "Staff list empty body"
+  },
+  "staffActive": "Active",
+  "@staffActive": {
+    "description": "Staff status chip"
+  },
+  "staffInactive": "Stopped",
+  "@staffInactive": {
+    "description": "Staff status chip"
+  },
+  "staffPermissionCount": "{count, plural, =0{No extra permissions} =1{1 permission} other{{count} permissions}}",
+  "@staffPermissionCount": {
+    "description": "Staff row subtitle",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "staffAccess": "Can log in",
+  "@staffAccess": {
+    "description": "Staff active switch"
+  },
+  "staffAccessHint": "Turn off to stop access at once",
+  "@staffAccessHint": {
+    "description": "Staff active switch subtitle"
+  },
+  "staffDeactivateTitle": "Stop {name}'s access?",
+  "@staffDeactivateTitle": {
+    "description": "Deactivate dialog title",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "staffDeactivateBody": "They are signed out at their next action and cannot log in until you turn this back on. Their past work stays.",
+  "@staffDeactivateBody": {
+    "description": "Deactivate dialog body"
+  },
+  "staffDeactivate": "Stop access",
+  "@staffDeactivate": {
+    "description": "Deactivate confirm"
+  },
+  "staffAccessStopped": "Access stopped",
+  "@staffAccessStopped": {
+    "description": "After deactivation"
+  },
+  "staffAccessRestored": "Access restored",
+  "@staffAccessRestored": {
+    "description": "After reactivation"
+  },
+  "staffPermissions": "Permissions",
+  "@staffPermissions": {
+    "description": "Staff permissions header"
+  },
+  "staffPermissionsHint": "Everyone can see Maal, customers and orders. Give only what each person needs.",
+  "@staffPermissionsHint": {
+    "description": "Staff permissions explanation"
+  },
+  "staffSavePermissions": "Save permissions",
+  "@staffSavePermissions": {
+    "description": "Save permissions button"
+  },
+  "staffOwnerHasAll": "The owner has every permission.",
+  "@staffOwnerHasAll": {
+    "description": "Owner row detail"
+  },
+  "staffResetPassword": "Set new password",
+  "@staffResetPassword": {
+    "description": "Reset password action"
+  },
+  "staffResetPasswordBody": "Set a new password for {name}, then tell them in person.",
+  "@staffResetPasswordBody": {
+    "description": "Reset password dialog",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "staffPasswordChanged": "Password changed",
+  "@staffPasswordChanged": {
+    "description": "After reset"
+  },
+  "fieldNewPassword": "New password",
+  "@fieldNewPassword": {
+    "description": "Password field"
+  },
+  "fieldPersonName": "Full name",
+  "@fieldPersonName": {
+    "description": "Staff name field"
+  },
+  "validationPasswordShort": "At least 8 characters",
+  "@validationPasswordShort": {
+    "description": "Validation: password"
+  },
+  "validationPasswordLong": "Too long — use a shorter password",
+  "@validationPasswordLong": {
+    "description": "Validation: password"
+  },
+  "validationPasswordSameAsUsername": "Must not be the same as the username",
+  "@validationPasswordSameAsUsername": {
+    "description": "Validation: password"
+  },
+  "staffNewTitle": "New staff login",
+  "@staffNewTitle": {
+    "description": "Add staff screen"
+  },
+  "staffUsernameHint": "Small letters, numbers, dot or underscore. They log in with this.",
+  "@staffUsernameHint": {
+    "description": "Username helper"
+  },
+  "staffPasswordHint": "Tell this password to them in person. You can set a new one any time.",
+  "@staffPasswordHint": {
+    "description": "Password helper"
+  },
+  "staffCreate": "Create login",
+  "@staffCreate": {
+    "description": "Create staff button"
+  },
+  "staffCreated": "{name} can log in now",
+  "@staffCreated": {
+    "description": "After create",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "staffUsernameTaken": "This username is taken. Try another.",
+  "@staffUsernameTaken": {
+    "description": "Username exists"
+  },
+  "permCatalogueManage": "Add and edit Maal",
+  "@permCatalogueManage": {
+    "description": "Permission"
+  },
+  "permRatesManage": "Change rates",
+  "@permRatesManage": {
+    "description": "Permission"
+  },
+  "permCustomersManage": "Add and edit customers",
+  "@permCustomersManage": {
+    "description": "Permission"
+  },
+  "permOrdersCreate": "Take orders",
+  "@permOrdersCreate": {
+    "description": "Permission"
+  },
+  "permOrdersManage": "Move and cancel orders",
+  "@permOrdersManage": {
+    "description": "Permission"
+  },
+  "permPaymentsRecord": "Record payments",
+  "@permPaymentsRecord": {
+    "description": "Permission"
+  },
+  "permHisaabView": "See Hisaab and Baki",
+  "@permHisaabView": {
+    "description": "Permission"
+  },
+  "permHisaabAdjust": "Opening Baki and corrections",
+  "@permHisaabAdjust": {
+    "description": "Permission"
+  },
+  "permBillsIssue": "Make bills",
+  "@permBillsIssue": {
+    "description": "Permission"
+  },
+  "permReportsView": "See reports",
+  "@permReportsView": {
+    "description": "Permission"
+  },
+  "auditEmpty": "No activity yet",
+  "@auditEmpty": {
+    "description": "Audit empty"
+  },
+  "auditSystem": "System",
+  "@auditSystem": {
+    "description": "Audit actor unknown"
+  },
+  "auditOrderCreated": "Order taken",
+  "@auditOrderCreated": {
+    "description": "Audit action"
+  },
+  "auditOrderStatus": "Order moved forward",
+  "@auditOrderStatus": {
+    "description": "Audit action"
+  },
+  "auditOrderCancelled": "Order cancelled",
+  "@auditOrderCancelled": {
+    "description": "Audit action"
+  },
+  "auditPaymentRecorded": "Payment recorded",
+  "@auditPaymentRecorded": {
+    "description": "Audit action"
+  },
+  "auditBillIssued": "Bill made",
+  "@auditBillIssued": {
+    "description": "Audit action"
+  },
+  "auditLedgerOpening": "Opening Baki set",
+  "@auditLedgerOpening": {
+    "description": "Audit action"
+  },
+  "auditLedgerAdjustment": "Hisaab corrected",
+  "@auditLedgerAdjustment": {
+    "description": "Audit action"
+  },
+  "auditStaffCreated": "Staff login created",
+  "@auditStaffCreated": {
+    "description": "Audit action"
+  },
+  "auditStaffPasswordReset": "Staff password changed",
+  "@auditStaffPasswordReset": {
+    "description": "Audit action"
+  },
+  "auditPermissionGranted": "Permission given: {permission}",
+  "@auditPermissionGranted": {
+    "description": "Audit action",
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "auditPermissionRevoked": "Permission taken back: {permission}",
+  "@auditPermissionRevoked": {
+    "description": "Audit action",
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "auditRateChanged": "Rate changed {from} → {to}",
+  "@auditRateChanged": {
+    "description": "Audit action",
+    "placeholders": {
+      "from": {
+        "type": "String"
+      },
+      "to": {
+        "type": "String"
+      }
+    }
+  },
+  "auditAdded": "{thing} added",
+  "@auditAdded": {
+    "description": "Audit row insert",
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "auditChanged": "{thing} changed",
+  "@auditChanged": {
+    "description": "Audit row update",
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "auditRemoved": "{thing} removed",
+  "@auditRemoved": {
+    "description": "Audit row delete",
+    "placeholders": {
+      "thing": {
+        "type": "String"
+      }
+    }
+  },
+  "auditEntityProduct": "Design",
+  "@auditEntityProduct": {
+    "description": "Audit entity"
+  },
+  "auditEntityCost": "Cost details",
+  "@auditEntityCost": {
+    "description": "Audit entity"
+  },
+  "auditEntityCustomer": "Customer",
+  "@auditEntityCustomer": {
+    "description": "Audit entity"
+  },
+  "auditEntityCustomerRate": "Customer rate",
+  "@auditEntityCustomerRate": {
+    "description": "Audit entity"
+  },
+  "auditEntityMember": "Staff member",
+  "@auditEntityMember": {
+    "description": "Audit entity"
+  },
+  "auditEntityRecord": "Record",
+  "@auditEntityRecord": {
+    "description": "Audit entity fallback"
   }
 }

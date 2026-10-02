@@ -98,4 +98,21 @@ void main() {
     expect(const AppFailure(FailureKind.permissionDenied).isRetryable, isFalse);
     expect(const AppFailure(FailureKind.rateChanged).isRetryable, isFalse);
   });
+
+  test('Edge Function errors map by code, then by status', () {
+    AppFailure fn(int status, Object? body) => AppFailure.from(FunctionException(status: status, details: body));
+    final taken = fn(409, {'error': 'username_taken'});
+    expect(taken.kind, FailureKind.alreadyExists);
+    expect(taken.code, 'username_taken');
+    final invalid = fn(400, {'error': 'invalid_request', 'field': 'password'});
+    expect(invalid.kind, FailureKind.invalidInput);
+    expect(invalid.details, {'field': 'password'});
+    expect(fn(403, {'error': 'permission_denied'}).kind, FailureKind.permissionDenied);
+    expect(fn(404, {'error': 'member_not_found'}).kind, FailureKind.notFound);
+    expect(fn(401, {'error': 'not_authenticated'}).kind, FailureKind.sessionExpired);
+    expect(fn(500, {'error': 'server_error'}).kind, FailureKind.serverUnavailable);
+    expect(fn(502, 'Bad gateway').kind, FailureKind.serverUnavailable);
+    expect(fn(401, null).kind, FailureKind.sessionExpired);
+    expect(AppFailure.from(const FunctionsFetchException(details: 'offline')).kind, FailureKind.network);
+  });
 }

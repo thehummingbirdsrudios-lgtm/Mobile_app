@@ -26,6 +26,8 @@ abstract interface class AppNavigator {
 
   void openBusinessProfile();
   void openStaff();
+  void openStaffMember(String userId);
+  void openAddStaff();
   void openAudit();
   void openExport();
   void openNotifications();

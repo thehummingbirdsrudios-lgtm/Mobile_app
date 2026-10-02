@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/core.dart';
+import '../features/admin/admin.dart';
 import '../features/auth/auth.dart';
 import '../features/bills/bills.dart';
 import '../features/catalogue/catalogue.dart';
@@ -56,6 +57,8 @@ abstract final class AppRoutes {
 
   static const businessProfile = '/settings/business';
   static const staff = '/settings/staff';
+  static const newStaff = '/settings/staff/new';
+  static String staffMember(String userId) => '/settings/staff/$userId';
   static const audit = '/settings/audit';
   static const export = '/settings/export';
   static const notifications = '/settings/notifications';
@@ -168,6 +171,21 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
+      // Owner settings. Screens refuse non-owners; the server enforces it.
+      GoRoute(path: AppRoutes.businessProfile, builder: (_, _) => const BusinessProfileScreen()),
+      GoRoute(path: AppRoutes.audit, builder: (_, _) => const AuditScreen()),
+      GoRoute(
+        path: AppRoutes.staff,
+        builder: (_, _) => const StaffScreen(),
+        routes: [
+          GoRoute(path: 'new', builder: (_, _) => const AddStaffScreen()),
+          GoRoute(
+            path: ':id',
+            redirect: (_, s) => _requireUuid(s, 'id', AppRoutes.staff),
+            builder: (_, s) => StaffDetailScreen(userId: s.pathParameters['id']!),
+          ),
+        ],
+      ),
       GoRoute(path: AppRoutes.newProduct, builder: (_, _) => const ProductEditScreen()),
       GoRoute(
         path: '/product/:id',
@@ -274,6 +292,10 @@ class GoRouterNavigator implements AppNavigator {
   void openBusinessProfile() => _push(AppRoutes.businessProfile);
   @override
   void openStaff() => _push(AppRoutes.staff);
+  @override
+  void openStaffMember(String userId) => _push(AppRoutes.staffMember(userId));
+  @override
+  void openAddStaff() => _push(AppRoutes.newStaff);
   @override
   void openAudit() => _push(AppRoutes.audit);
   @override

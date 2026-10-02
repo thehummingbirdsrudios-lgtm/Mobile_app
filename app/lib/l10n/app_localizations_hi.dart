@@ -1073,4 +1073,293 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get billColItem => 'सामान';
+
+  @override
+  String get adminSection => 'व्यापार सेटिंग';
+
+  @override
+  String get adminBusinessProfile => 'व्यापार की जानकारी';
+
+  @override
+  String get adminBusinessProfileHint => 'नाम, फ़ोन, GSTIN, लोगो, बिल नोट';
+
+  @override
+  String get adminStaff => 'स्टाफ़';
+
+  @override
+  String get adminStaffHint => 'लॉगिन और अनुमतियाँ';
+
+  @override
+  String get adminAudit => 'गतिविधि लॉग';
+
+  @override
+  String get adminAuditHint => 'किसने क्या कब बदला';
+
+  @override
+  String get adminOwnerOnly => 'इसे केवल मालिक खोल सकते हैं।';
+
+  @override
+  String get fieldBusinessName => 'व्यापार का नाम';
+
+  @override
+  String get fieldAddress => 'पता';
+
+  @override
+  String get fieldGstin => 'GSTIN (वैकल्पिक)';
+
+  @override
+  String get fieldBillFooter => 'बिल के नीचे नोट';
+
+  @override
+  String get validationGstin => 'GSTIN में 15 अक्षर-अंक होते हैं';
+
+  @override
+  String get profileWatermark => 'शेयर की गई फ़ोटो पर वॉटरमार्क';
+
+  @override
+  String get profileWatermarkHint => 'भेजी गई फ़ोटो पर आपके व्यापार का नाम';
+
+  @override
+  String get profileDefaultLanguage => 'नए स्टाफ़ फ़ोन की भाषा';
+
+  @override
+  String get profileLogo => 'लोगो';
+
+  @override
+  String get profileLogoHint => 'बिल पर छपता है';
+
+  @override
+  String get profileLogoAdd => 'लोगो जोड़ें';
+
+  @override
+  String get profileLogoChange => 'लोगो बदलें';
+
+  @override
+  String get profileLogoRemove => 'लोगो हटाएँ';
+
+  @override
+  String get profileLogoSaved => 'लोगो बदल गया';
+
+  @override
+  String get profileLogoRemoved => 'लोगो हटाया गया';
+
+  @override
+  String get staffAdd => 'स्टाफ़ जोड़ें';
+
+  @override
+  String get staffEmpty => 'अभी कोई स्टाफ़ नहीं';
+
+  @override
+  String get staffEmptyBody => 'आपके साथ काम करने वाले हर व्यक्ति के लिए लॉगिन बनाएँ।';
+
+  @override
+  String get staffActive => 'चालू';
+
+  @override
+  String get staffInactive => 'बंद';
+
+  @override
+  String staffPermissionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count अनुमतियाँ',
+      zero: 'कोई अतिरिक्त अनुमति नहीं',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get staffAccess => 'लॉगिन कर सकते हैं';
+
+  @override
+  String get staffAccessHint => 'बंद करने पर पहुँच तुरंत बंद हो जाएगी';
+
+  @override
+  String staffDeactivateTitle(String name) {
+    return '$name की पहुँच बंद करें?';
+  }
+
+  @override
+  String get staffDeactivateBody =>
+      'अगली किसी भी क्रिया पर वे लॉगआउट हो जाएँगे और जब तक आप इसे फिर से चालू न करें, लॉगिन नहीं कर पाएँगे। उनका पुराना काम बना रहेगा।';
+
+  @override
+  String get staffDeactivate => 'पहुँच बंद करें';
+
+  @override
+  String get staffAccessStopped => 'पहुँच बंद की गई';
+
+  @override
+  String get staffAccessRestored => 'पहुँच फिर चालू की गई';
+
+  @override
+  String get staffPermissions => 'अनुमतियाँ';
+
+  @override
+  String get staffPermissionsHint =>
+      'सभी माल, ग्राहक और ऑर्डर देख सकते हैं। हर व्यक्ति को उतना ही दें जितना ज़रूरी हो।';
+
+  @override
+  String get staffSavePermissions => 'अनुमतियाँ सहेजें';
+
+  @override
+  String get staffOwnerHasAll => 'मालिक के पास सभी अनुमतियाँ हैं।';
+
+  @override
+  String get staffResetPassword => 'नया पासवर्ड रखें';
+
+  @override
+  String staffResetPasswordBody(String name) {
+    return '$name के लिए नया पासवर्ड रखें, फिर उन्हें खुद बताएँ।';
+  }
+
+  @override
+  String get staffPasswordChanged => 'पासवर्ड बदल गया';
+
+  @override
+  String get fieldNewPassword => 'नया पासवर्ड';
+
+  @override
+  String get fieldPersonName => 'पूरा नाम';
+
+  @override
+  String get validationPasswordShort => 'कम से कम 8 अक्षर';
+
+  @override
+  String get validationPasswordLong => 'बहुत लंबा — छोटा पासवर्ड रखें';
+
+  @override
+  String get validationPasswordSameAsUsername => 'यूज़रनेम जैसा नहीं होना चाहिए';
+
+  @override
+  String get staffNewTitle => 'नया स्टाफ़ लॉगिन';
+
+  @override
+  String get staffUsernameHint => 'छोटे अक्षर, अंक, डॉट या अंडरस्कोर। इसी से लॉगिन करेंगे।';
+
+  @override
+  String get staffPasswordHint => 'यह पासवर्ड उन्हें खुद बताएँ। कभी भी नया रखा जा सकता है।';
+
+  @override
+  String get staffCreate => 'लॉगिन बनाएँ';
+
+  @override
+  String staffCreated(String name) {
+    return '$name अब लॉगिन कर सकते हैं';
+  }
+
+  @override
+  String get staffUsernameTaken => 'यह यूज़रनेम लिया जा चुका है। दूसरा आज़माएँ।';
+
+  @override
+  String get permCatalogueManage => 'माल जोड़ें और बदलें';
+
+  @override
+  String get permRatesManage => 'रेट बदलें';
+
+  @override
+  String get permCustomersManage => 'ग्राहक जोड़ें और बदलें';
+
+  @override
+  String get permOrdersCreate => 'ऑर्डर लें';
+
+  @override
+  String get permOrdersManage => 'ऑर्डर आगे बढ़ाएँ और रद्द करें';
+
+  @override
+  String get permPaymentsRecord => 'पेमेंट दर्ज करें';
+
+  @override
+  String get permHisaabView => 'हिसाब और बाकी देखें';
+
+  @override
+  String get permHisaabAdjust => 'शुरुआती बाकी और सुधार';
+
+  @override
+  String get permBillsIssue => 'बिल बनाएँ';
+
+  @override
+  String get permReportsView => 'रिपोर्ट देखें';
+
+  @override
+  String get auditEmpty => 'अभी कोई गतिविधि नहीं';
+
+  @override
+  String get auditSystem => 'सिस्टम';
+
+  @override
+  String get auditOrderCreated => 'ऑर्डर लिया';
+
+  @override
+  String get auditOrderStatus => 'ऑर्डर आगे बढ़ा';
+
+  @override
+  String get auditOrderCancelled => 'ऑर्डर रद्द हुआ';
+
+  @override
+  String get auditPaymentRecorded => 'पेमेंट दर्ज हुआ';
+
+  @override
+  String get auditBillIssued => 'बिल बना';
+
+  @override
+  String get auditLedgerOpening => 'शुरुआती बाकी दर्ज हुई';
+
+  @override
+  String get auditLedgerAdjustment => 'हिसाब सुधारा गया';
+
+  @override
+  String get auditStaffCreated => 'स्टाफ़ लॉगिन बना';
+
+  @override
+  String get auditStaffPasswordReset => 'स्टाफ़ का पासवर्ड बदला';
+
+  @override
+  String auditPermissionGranted(String permission) {
+    return 'अनुमति दी: $permission';
+  }
+
+  @override
+  String auditPermissionRevoked(String permission) {
+    return 'अनुमति वापस ली: $permission';
+  }
+
+  @override
+  String auditRateChanged(String from, String to) {
+    return 'रेट बदला $from → $to';
+  }
+
+  @override
+  String auditAdded(String thing) {
+    return '$thing जोड़ा गया';
+  }
+
+  @override
+  String auditChanged(String thing) {
+    return '$thing बदला गया';
+  }
+
+  @override
+  String auditRemoved(String thing) {
+    return '$thing हटाया गया';
+  }
+
+  @override
+  String get auditEntityProduct => 'डिज़ाइन';
+
+  @override
+  String get auditEntityCost => 'लागत विवरण';
+
+  @override
+  String get auditEntityCustomer => 'ग्राहक';
+
+  @override
+  String get auditEntityCustomerRate => 'ग्राहक का रेट';
+
+  @override
+  String get auditEntityMember => 'स्टाफ़ सदस्य';
+
+  @override
+  String get auditEntityRecord => 'रिकॉर्ड';
 }

@@ -4,7 +4,7 @@ import 'dart:io' show SocketException;
 
 import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart'
-    show AuthException, AuthRetryableFetchException, PostgrestException;
+    show AuthException, AuthRetryableFetchException, FunctionException, FunctionsFetchException, PostgrestException;
 
 import '../../l10n/app_localizations.dart';
 
@@ -82,6 +82,8 @@ class AppFailure implements Exception {
     if (error is SocketException) return const AppFailure(FailureKind.network);
     if (error is PostgrestException) return _fromPostgrest(error);
     if (error is AuthException) return _fromAuth(error);
+    if (error is FunctionsFetchException) return const AppFailure(FailureKind.network, diagnostic: 'fn:fetch');
+    if (error is FunctionException) return _fromFunction(error);
     final text = error.toString();
     if (text.contains('SocketException') || text.contains('Failed host lookup') || text.contains('XMLHttpRequest')) {
       return const AppFailure(FailureKind.network);
@@ -147,6 +149,7 @@ class AppFailure implements Exception {
     401 => FailureKind.sessionExpired,
     403 => FailureKind.permissionDenied,
     404 => FailureKind.notFound,
+    409 => FailureKind.alreadyExists,
     408 || 504 => FailureKind.timeout,
     503 => FailureKind.maintenance,
     >= 500 => FailureKind.serverUnavailable,
@@ -164,6 +167,26 @@ class AppFailure implements Exception {
     _ when code.startsWith('22') || code.startsWith('23') => FailureKind.invalidInput, // data / constraint
     _ => FailureKind.unknown,
   };
+
+  /// Edge Functions answer `{error: code[, field]}` (docs/architecture/api.md).
+  static AppFailure _fromFunction(FunctionException e) {
+    final body = e.details;
+    final code = body is Map ? body['error'] : null;
+    final kind = switch (code) {
+      'not_authenticated' => FailureKind.sessionExpired,
+      'permission_denied' => FailureKind.permissionDenied,
+      'member_not_found' => FailureKind.notFound,
+      'username_taken' => FailureKind.alreadyExists,
+      'invalid_request' => FailureKind.invalidInput,
+      _ => _fromHttpStatus(e.status),
+    };
+    return AppFailure(
+      kind,
+      code: code is String ? code : null,
+      diagnostic: 'fn:${e.status}',
+      details: body is Map ? {'field': body['field']} : null,
+    );
+  }
 
   static AppFailure _fromAuth(AuthException e) {
     // Network-level failure inside the auth client (no HTTP response at all).

@@ -6,6 +6,8 @@ import 'app/app.dart';
 import 'core/core.dart';
 import 'core/network/api_client.dart' show SupabaseRpcTransport;
 import 'core/network/storage_client.dart' show SupabaseObjectStorage;
+import 'features/admin/admin.dart';
+import 'features/admin/admin_adapters.dart';
 import 'features/auth/auth.dart';
 import 'features/auth/auth_adapters.dart';
 import 'features/bills/bills.dart';
@@ -64,6 +66,7 @@ Future<void> main() async {
       billsRepositoryProvider.overrideWithValue(BillsRepositoryImpl(BillsApi(api))),
       sharingRepositoryProvider.overrideWithValue(SharingRepositoryImpl(SharingApi(api, storage))),
       remarksRepositoryProvider.overrideWithValue(RemarksRepositoryImpl(RemarksApi(client, api, storage))),
+      adminRepositoryProvider.overrideWithValue(AdminRepositoryImpl(AdminApi(client, api, storage))),
       authRepositoryProvider.overrideWithValue(
         AuthRepositoryImpl(AuthApi(client.auth, api), loginDomain: config.loginDomain),
       ),

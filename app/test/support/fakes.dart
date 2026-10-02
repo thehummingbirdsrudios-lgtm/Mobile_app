@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:vepari/core/core.dart';
+import 'package:vepari/features/admin/admin.dart';
 import 'package:vepari/features/auth/auth.dart';
 import 'package:vepari/features/bills/bills.dart';
 import 'package:vepari/features/catalogue/catalogue.dart';
@@ -1067,4 +1068,181 @@ class FakeVoicePlayer implements VoicePlayer {
 
   @override
   Future<void> stop() async => _now.add(null);
+}
+
+// ---------------------------------------------------------------------------
+// Admin (owner)
+// ---------------------------------------------------------------------------
+const staffKiranId = '00000000-0000-4000-8000-00000000e001';
+const staffMeenaId = '00000000-0000-4000-8000-00000000e002';
+
+List<StaffMember> sampleMembers() => [
+  const StaffMember(
+    userId: 'u-owner',
+    username: 'rajesh',
+    displayName: 'Rajeshbhai',
+    role: MemberRole.owner,
+    isActive: true,
+    permissions: {},
+  ),
+  const StaffMember(
+    userId: staffKiranId,
+    username: 'kiran',
+    displayName: 'Kiranbhai',
+    role: MemberRole.staff,
+    isActive: true,
+    permissions: {Permission.ordersCreate, Permission.hisaabView},
+  ),
+  const StaffMember(
+    userId: staffMeenaId,
+    username: 'meena',
+    displayName: 'Meenaben',
+    role: MemberRole.staff,
+    isActive: false,
+    permissions: {},
+  ),
+];
+
+class FakeAdminRepository implements AdminRepository {
+  FakeAdminRepository({BusinessProfile? profile, List<StaffMember>? members, List<AuditEntry>? audit})
+    : profileValue = profile ?? const BusinessProfile(businessName: 'Shree Jewels', phone: '9825012345'),
+      membersList = members ?? sampleMembers(),
+      auditRows = audit ?? const [];
+
+  BusinessProfile profileValue;
+  List<StaffMember> membersList;
+  List<AuditEntry> auditRows;
+  AppFailure? error;
+  AppFailure? createError;
+  int profileCalls = 0;
+  int memberCalls = 0;
+  final saved = <(BusinessProfileDraft, String)>[];
+  final logos = <(Uint8List, String, String)>[];
+  int logoRemovals = 0;
+  final permissionCalls = <(String, Set<Permission>)>[];
+  final activeCalls = <(String, bool)>[];
+  final created = <NewStaff>[];
+  final resets = <(String, String)>[];
+  final auditCalls = <int?>[];
+
+  @override
+  Future<BusinessProfile> profile() async {
+    profileCalls++;
+    if (error != null) throw error!;
+    return profileValue;
+  }
+
+  @override
+  Future<void> saveProfile(BusinessProfileDraft draft, {required String tenantId}) async {
+    if (error != null) throw error!;
+    saved.add((draft, tenantId));
+    profileValue = BusinessProfile(
+      businessName: draft.businessName.trim(),
+      phone: PhoneNumbers.normalise(draft.phone),
+      gstin: BusinessProfileDraft.normaliseGstin(draft.gstin),
+      logoPath: profileValue.logoPath,
+      watermarkEnabled: draft.watermarkEnabled,
+      defaultLocale: draft.defaultLocale,
+    );
+  }
+
+  @override
+  Future<String> replaceLogo(Uint8List jpeg, {required String tenantId, required String sha256}) async {
+    if (error != null) throw error!;
+    logos.add((jpeg, tenantId, sha256));
+    final path = '$tenantId/logo-${sha256.substring(0, 16)}.jpg';
+    profileValue = BusinessProfile(businessName: profileValue.businessName, logoPath: path);
+    return path;
+  }
+
+  @override
+  Future<void> removeLogo({required String tenantId}) async {
+    logoRemovals++;
+    profileValue = BusinessProfile(businessName: profileValue.businessName);
+  }
+
+  @override
+  Future<List<StaffMember>> members() async {
+    memberCalls++;
+    if (error != null) throw error!;
+    return membersList;
+  }
+
+  StaffMember _replace(String userId, StaffMember Function(StaffMember) update) {
+    final i = membersList.indexWhere((m) => m.userId == userId);
+    if (i < 0) throw const AppFailure(FailureKind.notFound, code: 'member_not_found');
+    final next = update(membersList[i]);
+    membersList = [...membersList]..[i] = next;
+    return next;
+  }
+
+  @override
+  Future<void> setPermissions(String userId, Set<Permission> permissions) async {
+    if (error != null) throw error!;
+    permissionCalls.add((userId, {...permissions}));
+    _replace(
+      userId,
+      (m) => StaffMember(
+        userId: m.userId,
+        username: m.username,
+        displayName: m.displayName,
+        role: m.role,
+        isActive: m.isActive,
+        permissions: {...permissions},
+      ),
+    );
+  }
+
+  @override
+  Future<void> setActive(String userId, {required bool active}) async {
+    if (error != null) throw error!;
+    activeCalls.add((userId, active));
+    _replace(
+      userId,
+      (m) => StaffMember(
+        userId: m.userId,
+        username: m.username,
+        displayName: m.displayName,
+        role: m.role,
+        isActive: active,
+        permissions: m.permissions,
+      ),
+    );
+  }
+
+  @override
+  Future<String> createStaff(NewStaff staff) async {
+    if (createError != null) throw createError!;
+    created.add(staff);
+    const id = '00000000-0000-4000-8000-00000000e0ff';
+    membersList = [
+      ...membersList,
+      StaffMember(
+        userId: id,
+        username: Username.normalize(staff.username),
+        displayName: staff.displayName.trim(),
+        role: MemberRole.staff,
+        isActive: true,
+        permissions: staff.permissions,
+      ),
+    ];
+    return id;
+  }
+
+  @override
+  Future<void> resetPassword(String userId, String password) async {
+    if (error != null) throw error!;
+    resets.add((userId, password));
+  }
+
+  @override
+  Future<PageResult<AuditEntry, int>> audit({int? before, int limit = 50}) async {
+    auditCalls.add(before);
+    if (error != null) throw error!;
+    final rows = [
+      for (final e in auditRows)
+        if (before == null || e.id < before) e,
+    ].take(limit).toList();
+    return PageResult(rows, next: rows.length < limit ? null : rows.last.id);
+  }
 }

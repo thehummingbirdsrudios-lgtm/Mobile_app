@@ -87,6 +87,24 @@ class SessionController extends Notifier<SessionState> {
     await _repo.signOut();
   }
 
+  /// Re-reads the session from the server, e.g. after the owner renamed the
+  /// business or changed a permission. Offline, the current session stays.
+  Future<void> refresh() async {
+    final before = state;
+    if (before is! SessionSignedIn) return;
+    try {
+      final session = await _repo.restore();
+      if (state != before) return; // signed out or replaced meanwhile
+      if (session == null) {
+        _becomeSignedOut(null);
+      } else if (session.userId == before.session.userId && session.tenantId == before.session.tenantId) {
+        state = SessionSignedIn(session);
+      }
+    } on AppFailure {
+      // Keep the verified session; the next server call re-checks it anyway.
+    }
+  }
+
   void _becomeSignedIn(UserSession session) {
     _cache.bind(tenantId: session.tenantId, userId: session.userId);
     state = SessionSignedIn(session);
