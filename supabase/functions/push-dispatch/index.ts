@@ -27,8 +27,23 @@ const admin = createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY")
   auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
 });
 
-const account = Deno.env.get("FCM_SERVICE_ACCOUNT");
-const sender = account ? new FcmSender(JSON.parse(account) as ServiceAccount) : null;
+// A malformed secret (e.g. a partial paste) must not take the function down:
+// pushes are skipped and the problem is logged (never the value itself).
+function fcmSender(raw: string | undefined): FcmSender | null {
+  if (!raw) return null;
+  try {
+    const account = JSON.parse(raw) as Partial<ServiceAccount>;
+    if (account.project_id && account.client_email && account.private_key) {
+      return new FcmSender(account as ServiceAccount);
+    }
+  } catch {
+    // fall through
+  }
+  console.log(JSON.stringify({ fn: "push-dispatch", event: "fcm.config_invalid" }));
+  return null;
+}
+
+const sender = fcmSender(Deno.env.get("FCM_SERVICE_ACCOUNT"));
 
 // Resolved once per instance; a failed lookup is retried on the next call.
 let webhookSecret: string | null = Deno.env.get("PUSH_WEBHOOK_SECRET") || null;
